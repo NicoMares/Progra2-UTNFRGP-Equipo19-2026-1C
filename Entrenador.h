@@ -3,7 +3,7 @@
 #include "Persona.h"
 
 
-class Entrenador:public Persona {
+class Entrenador : public Persona {
 
 private :
      int _IdClub;

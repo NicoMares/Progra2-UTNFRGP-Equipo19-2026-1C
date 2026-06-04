@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Fecha.h"
+#include <cstdlib>
 
 Fecha::Fecha() {
     _Dia = 0 ;
@@ -46,7 +47,7 @@ void Fecha::set_Dia( int dia){
         _Dia = dia;
     }
     else {
-        exit -1;
+        exit (-1);
     }
 }
 
@@ -56,7 +57,7 @@ void Fecha::set_Mes(int mes ){
         _Mes = mes;
     }
     else {
-        exit -1;
+        exit (-1);
     }
 }
 
