@@ -112,14 +112,7 @@ void Menu::menuEquipos()
             cout << "\n[Accion] Cargar Equipo... \n" << endl;
             Club equipo;
             equipo.cargar();
-            if (equipo.grabarEnDisco())
-            {
-                cout << "Equipo guardado correctamente." << endl;
-            }
-            else
-            {
-                cout << "No se pudo guardar el equipo." << endl;
-            }
+            equipo.grabarEnDisco();
             system("pause");
         }
         break;
@@ -189,14 +182,7 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Cargar Jugador...\n" << endl;
             Jugador jugador;
             jugador.cargar();
-            if (jugador.grabarEnDisco())
-            {
-                cout << "Jugador guardado correctamente." << endl;
-            }
-            else
-            {
-                cout << "No se pudo guardar el jugador." << endl;
-            }
+            jugador.grabarEnDisco();
             system("pause");
         }
         break;
@@ -272,14 +258,7 @@ void Menu::menuEntrenadores()
             cout << "\n[Accion] Cargar Entrenador...\n" << endl;
             Entrenador entrenador;
             entrenador.cargar();
-            if (entrenador.grabarEnDisco())
-            {
-                cout << "Entrenador guardado correctamente." << endl;
-            }
-            else
-            {
-                cout << "No se pudo guardar el entrenador." << endl;
-            }
+            entrenador.grabarEnDisco();
             system("pause");
         }
         break;
