@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 #include "Entrenador.h"
 
 Entrenador::Entrenador() {
@@ -21,13 +22,39 @@ void Entrenador::mostrar() {
     std::cout << "ID CLUB: " << _IdClub << std::endl;
 }
 
-/* HACER METODOS PARA INTERACTUAR CON EL DISCO */
 bool Entrenador::grabarEnDisco() {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("entrenadores.dat", "ab");
+
+    if (pFile == NULL) {
+        return false;
+    }
+
+    result = fwrite(this, sizeof(Entrenador), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 bool Entrenador::leerDisco(int posicion) {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("entrenadores.dat", "rb");
+
+    if (pFile == NULL) {
+        return false;
+    }
+
+    fseek(pFile, posicion * sizeof(Entrenador), SEEK_SET);
+    result = fread(this, sizeof(Entrenador), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 int Entrenador::get_IdClub ()  {

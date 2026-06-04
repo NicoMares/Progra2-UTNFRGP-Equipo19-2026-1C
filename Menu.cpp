@@ -112,6 +112,14 @@ void Menu::menuEquipos()
             cout << "\n[Accion] Cargar Equipo... \n" << endl;
             Club equipo;
             equipo.cargar();
+            if (equipo.grabarEnDisco())
+            {
+                cout << "Equipo guardado correctamente." << endl;
+            }
+            else
+            {
+                cout << "No se pudo guardar el equipo." << endl;
+            }
             system("pause");
         }
         break;
@@ -120,8 +128,20 @@ void Menu::menuEquipos()
             system("pause");
             break;
         case 3:
+        {
             cout << "\n[Accion] Listado de Clubes... \n" << endl;
+            Club equipo;
+            int pos = 0;
+
+            while (equipo.leerDeDisco(pos))
+            {
+                equipo.mostrar();
+                cout << endl;
+                pos++;
+            }
+
             system("pause");
+        }
             break;
         case 4:
             cout << "\n[Accion] Racha... \n" << endl;
@@ -169,6 +189,14 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Cargar Jugador...\n" << endl;
             Jugador jugador;
             jugador.cargar();
+            if (jugador.grabarEnDisco())
+            {
+                cout << "Jugador guardado correctamente." << endl;
+            }
+            else
+            {
+                cout << "No se pudo guardar el jugador." << endl;
+            }
             system("pause");
         }
         break;
@@ -182,8 +210,20 @@ void Menu::menuJugadores()
             system("pause");
             break;
         case 4:
+        {
             cout << "\n[Accion] Listar Jugadores ordenados por DNI...)\n" << endl;
+            Jugador jugador;
+            int pos = 0;
+
+            while (jugador.leerDeDisco(pos))
+            {
+                jugador.mostrar();
+                cout << endl;
+                pos++;
+            }
+
             system("pause");
+        }
             break;
         case 5:
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
@@ -230,9 +270,17 @@ void Menu::menuEntrenadores()
         case 1:
         {
             cout << "\n[Accion] Cargar Entrenador...\n" << endl;
-            system("pause");
             Entrenador entrenador;
             entrenador.cargar();
+            if (entrenador.grabarEnDisco())
+            {
+                cout << "Entrenador guardado correctamente." << endl;
+            }
+            else
+            {
+                cout << "No se pudo guardar el entrenador." << endl;
+            }
+            system("pause");
         }
         break;
         case 2:
@@ -240,8 +288,20 @@ void Menu::menuEntrenadores()
             system("pause");
             break;
         case 3:
+        {
             cout << "\n[Accion] Listar todos los Entrenadores...\n" << endl;
+            Entrenador entrenador;
+            int pos = 0;
+
+            while (entrenador.leerDisco(pos))
+            {
+                entrenador.mostrar();
+                cout << endl;
+                pos++;
+            }
+
             system("pause");
+        }
             break;
         case 0:
             break;

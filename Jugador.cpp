@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cstdio>
 #include "Jugador.h"
 
 Jugador::Jugador() {
@@ -42,14 +43,40 @@ void Jugador::mostrar() {
     std::cout << "Posicion: " << _Posicion << std::endl;
     std::cout << "Valor de mercado: " << _ValorMercado << std::endl;
 }
-/* hacer los F*/
 
 bool Jugador::grabarEnDisco() {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("jugadores.dat", "ab");
+
+    if (pFile == NULL) {
+        return false;
+    }
+
+    result = fwrite(this, sizeof(Jugador), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 bool Jugador::leerDeDisco(int posicion) {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("jugadores.dat", "rb");
+
+    if (pFile == NULL) {
+        return false;
+    }
+
+    fseek(pFile, posicion * sizeof(Jugador), SEEK_SET);
+    result = fread(this, sizeof(Jugador), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 int Jugador::get_idclub() {

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstring>
+#include <cstdio>
 #include "Club.h"
 
 Club::Club()
@@ -83,15 +84,43 @@ void Club::mostrar()
     }
 }
 
-/* HACER METODOS PARA INTERACTUAR CON EL DISCO */
 bool Club::grabarEnDisco()
 {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("clubes.dat", "ab");
+
+    if (pFile == NULL)
+    {
+        return false;
+    }
+
+    result = fwrite(this, sizeof(Club), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 bool Club::leerDeDisco(int posicion)
 {
-    return false;
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("clubes.dat", "rb");
+
+    if (pFile == NULL)
+    {
+        return false;
+    }
+
+    fseek(pFile, posicion * sizeof(Club), SEEK_SET);
+    result = fread(this, sizeof(Club), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
 }
 
 int Club::get_idclub()
