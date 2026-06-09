@@ -1,5 +1,4 @@
-#ifndef MANU_H_INCLUDED
-#define MANU_H_INCLUDED
+#pragma once
 
 class Menu
 {
@@ -19,4 +18,4 @@ void menuTabla();
 
 };
 
-#endif // MANU_H_INCLUDED
+

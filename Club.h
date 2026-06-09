@@ -18,6 +18,7 @@ public:
 
     void mostrar();
     void cargar();
+    void mostrarPorID();
 
     bool grabarEnDisco();
     bool leerDeDisco(int posicion);

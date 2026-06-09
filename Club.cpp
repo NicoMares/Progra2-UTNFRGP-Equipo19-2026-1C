@@ -59,7 +59,7 @@ void Club::cargar()
 
     do ///VALIDACI�N PARA FECHA DE FUNDACI�N -Leandro
     {
-        std::cout << "INGRESE FECHA DE FUNDACION: " << std::endl;
+        std::cout << "INGRESE FECHA DE FUNDACIóN: " << std::endl;
         fechaFundacion.cargar();
 
         if (fechaFundacion.get_Anio() < 1800 || fechaFundacion.get_Anio() > 2026)
@@ -180,6 +180,35 @@ bool Club::leerDeDisco(int posicion)
     fclose(pFile);
 
     return result;
+}
+
+void Club :: mostrarPorID()
+{
+std::cout << "ENTRE AL MOSTRAR POR ID" << std::endl;
+
+    int idBuscado;
+    std::cout << "Ingrese el ID del club que desea consultar: ";
+    std::cin >> idBuscado;
+
+    Club clubTemp;
+    int pos = 0;
+    bool encontrado = false;
+
+    while (clubTemp.leerDeDisco(pos))
+    {
+        if (clubTemp.get_idclub() == idBuscado)
+        {
+            clubTemp.mostrar();
+            encontrado = true;
+            break;
+        }
+        pos++;
+    }
+
+    if (!encontrado)
+    {
+        std::cout << "No se encontro un club con el ID: " << idBuscado << std::endl;
+    }
 }
 
 int Club::get_idclub()

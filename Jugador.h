@@ -5,7 +5,7 @@ class Jugador : public Persona {
 private:
     int _IdClub;
     int _NumeroCamiseta;
-    char _Posicion[30];
+    char _Posicion[50];
     float _ValorMercado;
 
 public:
@@ -13,6 +13,10 @@ public:
 
     void cargar();
     void mostrar();
+    void ConsultarPorDNI();
+    void consultarPorPosicion();
+    void TodosJugadores();
+    void listarPorClub();
 
     bool grabarEnDisco();
     bool leerDeDisco(int posicion);

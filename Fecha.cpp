@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Fecha.h"
 #include <cstdlib>
+#include <locale>
 
 Fecha::Fecha() {
     _Dia = 0 ;
@@ -9,10 +10,13 @@ Fecha::Fecha() {
 }
 
 void Fecha::cargar() {
+    
+      setlocale(LC_ALL, "spanish");
+      
     int dia,mes,anio;
     bool fechaCorrecta = false;
     do {
-        std::cout << "Ingrese el dia: ";
+        std::cout << "Ingrese el día: ";
         std::cin >> dia;
         set_Dia(dia);
 

@@ -20,7 +20,7 @@ void  Menu :: run()
     do
     {
         Mostrar();
-        cout<<"Ingresá una opcion: "<<endl;
+        cout<<"Ingresï¿½ una opciÃ³n: "<<endl;
         cin>>opcion;
 
         switch (opcion)
@@ -47,7 +47,7 @@ void  Menu :: run()
             cout<<"Saliendo del programa..."<<endl;
             break;
         default:
-            cout<<"Opción no válida. Por favor, ingrese una opción válida."<<endl;
+            cout<<"Opciï¿½n no vï¿½lida. Por favor, ingrese una opciï¿½n vï¿½lida."<<endl;
         }
 
         system("pause");
@@ -90,6 +90,7 @@ void Menu::menuEquipos()
 {
     int op;
 
+    setlocale(LC_ALL, "spanish");
     do
     {
         system("cls");
@@ -100,9 +101,9 @@ void Menu::menuEquipos()
         cout << "| 1. Cargar Equipo                    |" << endl;
         cout << "| 2. Consulta por ID de Club          |" << endl;
         cout << "| 3. Listado de Clubes                |" << endl;
-        cout << "| 0. Volver al Menú Principal         |" << endl;
+        cout << "| 0. Volver al Menï¿½ Principal         |" << endl;
         cout << "=======================================" << endl;
-        cout << "Ingresá una opción: " << endl;
+        cout << "Ingresï¿½ una opciï¿½n: " << endl;
         cin >> op;
 
         switch (op)
@@ -117,9 +118,16 @@ void Menu::menuEquipos()
         }
         break;
         case 2:
+        {
             cout << "\n[Accion] Consulta por ID de Club... \n" << endl;
+           Club equipo;
+           equipo.mostrarPorID();
+       
+           
             system("pause");
-            break;
+             }
+             break;
+           
         case 3:
         {
             cout << "\n[Accion] Listado de Clubes... \n" << endl;
@@ -143,7 +151,7 @@ void Menu::menuEquipos()
         case 0:
             break;
         default:
-            cout << "\nOpción no válida. Por favor, intente de nuevo.\n" << endl;
+            cout << "\nOpciï¿½n no vï¿½lida. Por favor, intente de nuevo.\n" << endl;
             system("pause");
             break;
         }
@@ -156,6 +164,7 @@ void Menu::menuJugadores()
 {
     int op;
 
+    setlocale(LC_ALL, "spanish");
     do
     {
         system("cls");
@@ -165,14 +174,14 @@ void Menu::menuJugadores()
         cout << "==========================================================" << endl;
         cout << "| 1. Cargar Jugador                                      |" << endl;
         cout << "| 2. Consulta por DNI                                    |" << endl;
-        cout << "| 3. Consulta por Posicion                               |" << endl;
+        cout << "| 3. Consulta por PosiciÃ³n                               |" << endl;
         cout << "| 4. Listar Jugadores ordenados por DNI                  |" << endl;
         cout << "| 5. Listar Jugadores agrupados por Club                 |" << endl;
-        cout << "| 6. Listar Jugadores clasificados por Posicion          |" << endl;
+        cout << "| 6. Mostrar Todos Los Jugadores De La Liga          |" << endl;
         cout << "|                                                        |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
-        cout << " Selecciona una opcion: ";
+        cout << " Selecciona una opciÃ³n: ";
         cin >> op;
 
         switch (op)
@@ -188,12 +197,24 @@ void Menu::menuJugadores()
         break;
 
         case 2:
+        {
             cout << "\n[Accion] Consulta por DNI...\n" << endl;
+            
+            Jugador jugador;
+            jugador.ConsultarPorDNI();
+        
             system("pause");
             break;
+            }
         case 3:
-            cout << "\n[Accion] Consulta por Posicion...\n" << endl;
+        {
+            cout << "\n[Accion] Consulta por PosiciÃ³n...\n" << endl;
+           
+            Jugador jugador;
+            jugador.consultarPorPosicion();
+            
             system("pause");
+            }
             break;
         case 4:
         {
@@ -212,17 +233,31 @@ void Menu::menuJugadores()
         }
             break;
         case 5:
+        {
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
+            
+            Jugador jugador;
+            jugador.listarPorClub();
+            
+            
             system("pause");
+            }
             break;
         case 6:
-            cout << "\n[Accion] Listar Jugadores clasificados por Posicion...\n" << endl;
+        {
+            cout << "\n[Accion] Mostrar Todos Los Jugadores De La Liga...\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
+
+            Jugador jugador;
+            jugador.TodosJugadores();
+            
             system("pause");
+        }
             break;
         case 0:
             break;
         default:
-            cout << "\nOpcion incorrecta. Intente de nuevo.\n" << endl;
+            cout << "\nOpciÃ³n incorrecta. Intente de nuevo.\n" << endl;
             system("pause");
             break;
         }
@@ -248,7 +283,7 @@ void Menu::menuEntrenadores()
         cout << "|                                                        |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
-        cout << " Selecciona una opcion: ";
+        cout << " Selecciona una opciÃ³n: ";
         cin >> op;
 
         switch (op)
@@ -310,7 +345,7 @@ void Menu::menuPartidos()
         cout << "|                                                        |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
-        cout << " Selecciona una opcion: ";
+        cout << " Selecciona una opciÃ³n: ";
         cin >> op;
 
         switch (op)
@@ -331,7 +366,7 @@ void Menu::menuPartidos()
         case 0:
             break;
         default:
-            cout << "\nOpcion incorrecta. Intente de nuevo.\n" << endl;
+            cout << "\nOpciÃ³n incorrecta. Intente de nuevo.\n" << endl;
             system("pause");
             break;
         }
@@ -361,7 +396,7 @@ void Menu::menuTabla()
         cout << "|                                                        |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
-        cout << " Selecciona una opcion: ";
+        cout << " Selecciona una opciÃ³n: ";
         cin >> op;
 
         switch (op)
@@ -381,7 +416,7 @@ void Menu::menuTabla()
         case 0:
             break;
         default:
-            cout << "\nOpcion incorrecta. Intente de nuevo.\n" << endl;
+            cout << "\nOpciÃ³n incorrecta. Intente de nuevo.\n" << endl;
             system("pause");
             break;
         }
