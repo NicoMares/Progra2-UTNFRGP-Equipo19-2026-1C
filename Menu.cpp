@@ -298,12 +298,21 @@ void Menu::menuEntrenadores()
         }
         break;
         case 2:
+            {
             cout << "\n[Accion] Consulta por ID de Entrenador...\n" << endl;
+               cout<< "-------------------------------------------------------------"<<endl;
+            
+               Entrenador entrenador;
+            entrenador.mostrarDTPorID();
+            
             system("pause");
+            }
             break;
         case 3:
         {
             cout << "\n[Accion] Listar todos los Entrenadores...\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
+
             Entrenador entrenador;
             int pos = 0;
 

@@ -4,14 +4,33 @@
 
 Entrenador::Entrenador() {
     _IdClub = -1;
+    _IdEntrenador = 0;
 }
 
 void Entrenador::cargar() {
     int idclub;
+    int siguienteId = 1;
+
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+
+    if (pFile != NULL) {
+        Entrenador entrenadorTemp;
+
+        while (fread(&entrenadorTemp, sizeof(Entrenador), 1, pFile) == 1) {
+            if (entrenadorTemp.get_IdEntrenador() >= siguienteId) {
+                siguienteId = entrenadorTemp.get_IdEntrenador() + 1;
+            }
+        }
+
+        fclose(pFile);
+    }
+
+    set_idEntrenador(siguienteId);
+    std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
 
     Persona::cargar();
 
-    std::cout << "INGRESE ID DEL CLUB " << std::endl;
+    std::cout << "INGRESE ID DEL CLUB: ";
     std::cin >> idclub;
     set_idclub(idclub);
 }
@@ -19,6 +38,7 @@ void Entrenador::cargar() {
 void Entrenador::mostrar() {
     Persona::mostrar();
 
+    std::cout << "ID ENTRENADOR: " << _IdEntrenador << std::endl;
     std::cout << "ID CLUB: " << _IdClub << std::endl;
 }
 
@@ -57,10 +77,42 @@ bool Entrenador::leerDisco(int posicion) {
     return result;
 }
 
+void Entrenador::mostrarDTPorID() {
+    int idBuscado;
+    std::cout << "Ingrese el ID del entrenador a buscar: " << std::endl;
+    std::cin >> idBuscado;
+
+    Entrenador entrenadorTemp;
+    int pos = 0;
+    bool encontrado = false;
+
+    while (entrenadorTemp.leerDisco(pos)) {
+        if (entrenadorTemp.get_IdEntrenador() == idBuscado) {
+            entrenadorTemp.mostrar();
+            std::cout << "-----------------------------" << std::endl;
+            encontrado = true;
+            break; 
+        }
+        pos++;
+    }
+
+    if (!encontrado) {
+        std::cout << "No se encontró un entrenador con el ID: " << idBuscado << std::endl;
+    }
+}
+
 int Entrenador::get_IdClub ()  {
     return _IdClub;
 }
 
+int Entrenador::get_IdEntrenador() {
+    return _IdEntrenador;
+}
+
 void Entrenador::set_idclub(int idClub) {
     _IdClub = idClub;
+}
+
+void Entrenador::set_idEntrenador(int idEntrenador) {
+  _IdEntrenador = idEntrenador;
 }
