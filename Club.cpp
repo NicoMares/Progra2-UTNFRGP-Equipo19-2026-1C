@@ -5,7 +5,7 @@
 
 Club::Club()
 {
-    _IdClub = -1;
+    _IdClub = 0;
     strcpy(_Nombre, "");
     strcpy(_Presidente, "");
     _CantidadTrofeos = 0;
@@ -20,26 +20,44 @@ Club::Club()
 
 void Club::cargar()
 {
-    int idClub;
     char nombre[50];
     char presidente[50];
     Fecha fechaFundacion;
     int cantidadTrofeos;
     int cantidadDescensos;
 
-    std::cout << "INGRESE ID DEL CLUB: ";
-    std::cin >> idClub;
-    set_idclub(idClub);
+    int siguienteId = 1;
+    FILE *pFile = fopen("clubes.dat", "rb");
+
+    if (pFile != NULL)
+    {
+        Club Tempclub;
+
+        while (fread(&Tempclub, sizeof(Club), 1, pFile) == 1)
+        {
+            if (Tempclub.get_idclub() >= siguienteId)
+            {
+                siguienteId = Tempclub.get_idclub() + 1;
+            }
+        }
+
+        fclose(pFile);
+    }
+
+    set_idclub(siguienteId);
+    std::cout << "ID CLUB ASIGNADO Al Club: " << _IdClub << std::endl;
 
     std::cout << "INGRESE NOMBRE DEL CLUB: ";
     std::cin >> nombre;
+    std::cin.ignore(); ///Preguntar Juan --- Puesto para poder Poner Espacios pero no funca /// NICO
     set_nombre(nombre);
 
     std::cout << "INGRESE NOMBRE DEL PRESIDENTE "; ///CAMBIADO -Leandro
     std::cin >> presidente;
+    std::cin.ignore(); /// Puesto para poder Poner Espacios pero no funca /// NICO
     set_presidente(presidente);
 
-    do ///VALIDACIÓN PARA FECHA DE FUNDACIÓN -Leandro
+    do ///VALIDACIï¿½N PARA FECHA DE FUNDACIï¿½N -Leandro
     {
         std::cout << "INGRESE FECHA DE FUNDACION: " << std::endl;
         fechaFundacion.cargar();
@@ -81,23 +99,26 @@ void Club::mostrar()
 
     int contadorMostrados = 0;
 
-    /// Recorremos el vector al revez así podemos utilizar las ultimas jornadas - Leandro
+    /// Recorremos el vector al revez asï¿½ podemos utilizar las ultimas jornadas - Leandro
     for (int i = 15; i >= 0; i--)
     {
         int resultado = get_racha(i);
 
-        if (resultado == 0 || resultado == 1 || resultado == 2)
+        if (resultado == 0 || resultado == 1 || resultado == 2 || resultado == 3)
         {
             switch (resultado)
             {
-                case 2:
-                    std::cout << "[V] "; /// Victoria en lugar de '2'
+                case 0:
+                    std::cout << "[-] "; /// Jornada no jugada o sin resultado registrado
                     break;
                 case 1:
-                    std::cout << "[E] "; /// Empate en lugar de '1'
+                    std::cout << "[V] "; /// Victoria 
                     break;
-                case 0:
-                    std::cout << "[D] "; /// Derrota en lugar de '0'
+                case 2:
+                    std::cout << "[E] "; /// Empate 
+                    break;
+                case 3:
+                    std::cout << "[D] "; /// Derrota 
                     break;
             }
             contadorMostrados++;
@@ -163,6 +184,7 @@ bool Club::leerDeDisco(int posicion)
 
 int Club::get_idclub()
 {
+
     return _IdClub;
 }
 
