@@ -1,9 +1,12 @@
 #pragma once
 #include "Jugador.h"
 
+
 class JugadorArchivo
 {
 public:
+
+    JugadorArchivo();
     bool grabarEnDisco();
     bool leerDeDisco(int posicion); 
     void ConsultarPorDNI();

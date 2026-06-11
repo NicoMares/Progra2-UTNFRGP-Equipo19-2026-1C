@@ -3,7 +3,7 @@
 class ClubArchivo
 {
 public:
-  
+  ClubArchivo();
 
 private:
 

@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "Accion.h"
 #include "Jugador.h"
+#include "JugadorArchivo.h"
 
 Accion::Accion() {
     _IdAccion = 0;
@@ -18,9 +19,11 @@ Accion::Accion() {
 
 bool Accion::obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador) {
     Jugador jugadorTemp;
+    JugadorArchivo archivo;
+
     int pos = 0;
 
-    while (jugadorTemp.leerDeDisco(pos)) {
+    while (archivo.leerDeDisco(pos)) {
         if (jugadorTemp.get_dni() == dniJugador) {
             strcpy(posicionJugador, jugadorTemp.get_posicion());
             idClubJugador = jugadorTemp.get_idclub();

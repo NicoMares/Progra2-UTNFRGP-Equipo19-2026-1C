@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include "Club.h"
+#include "utils.h"
 
 Club::Club()
 {
@@ -48,14 +49,15 @@ void Club::cargar()
     std::cout << "ID CLUB ASIGNADO Al Club: " << _IdClub << std::endl;
 
     std::cout << "INGRESE NOMBRE DEL CLUB: ";
-    std::cin >> nombre;
-    std::cin.ignore(); ///Preguntar Juan --- Puesto para poder Poner Espacios pero no funca /// NICO
-    set_nombre(nombre);
+    
+    cargarCadena(nombre, 49);
+   
 
-    std::cout << "INGRESE NOMBRE DEL PRESIDENTE "; ///CAMBIADO -Leandro
-    std::cin >> presidente;
-    std::cin.ignore(); /// Puesto para poder Poner Espacios pero no funca /// NICO
-    set_presidente(presidente);
+    std::cout << "INGRESE NOMBRE DEL PRESIDENTE "; 
+ 
+
+    cargarCadena(presidente, 49);
+ 
 
     do ///VALIDACI�N PARA FECHA DE FUNDACI�N -Leandro
     {

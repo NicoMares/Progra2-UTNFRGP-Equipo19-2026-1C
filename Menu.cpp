@@ -220,7 +220,7 @@ void Menu::menuJugadores()
             JugadorArchivo archivo;
 
             jugador.cargar();
-            archivo.grabarEnDisco(jugador);
+            archivo.grabarEnDisco();
 
             system("pause");
         }

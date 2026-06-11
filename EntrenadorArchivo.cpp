@@ -24,6 +24,27 @@ bool EntrenadorArchivo::leerDisco(int posicion) {
     return result;
 }
 
+bool EntrenadorArchivo::grabarEnDisco(){
+
+    FILE *pFile;
+    bool result;
+
+    pFile = fopen("Entrenadores.dat", "ab");
+
+    if (pFile == NULL) {
+        return false;
+    }
+
+    result = fwrite(this, sizeof(Entrenador), 1, pFile);
+
+    fclose(pFile);
+
+    return result;
+}
+
+
+
+
 void EntrenadorArchivo::mostrarDTPorID() {
     int idBuscado;
 
@@ -61,13 +82,13 @@ EntrenadorArchivo archivo;
             while (archivo.leerDisco(pos))
             {
                 entrenador.mostrar();
-              
+
                 pos++;
             }
 
 
 }
-    
+
 
 
 void EntrenadorArchivo::EliminarEntrenador() {
