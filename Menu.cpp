@@ -1,9 +1,10 @@
 #include "Menu.h"
 #include <iostream>
-#include <locale>
+
 #include "Club.h"
 #include "Jugador.h"
 #include "Entrenador.h"
+#include "Accion.h"
 
 
 using namespace std;
@@ -60,7 +61,7 @@ void  Menu :: run()
 
 void  Menu :: Mostrar()
 {
-    setlocale(LC_ALL, "spanish");
+    setlocale(LC_ALL, " ");
 
 
 
@@ -122,12 +123,12 @@ void Menu::menuEquipos()
             cout << "\n[Accion] Consulta por ID de Club... \n" << endl;
            Club equipo;
            equipo.mostrarPorID();
-       
-           
+
+
             system("pause");
              }
              break;
-           
+
         case 3:
         {
             cout << "\n[Accion] Listado de Clubes... \n" << endl;
@@ -199,20 +200,20 @@ void Menu::menuJugadores()
         case 2:
         {
             cout << "\n[Accion] Consulta por DNI...\n" << endl;
-            
+
             Jugador jugador;
             jugador.ConsultarPorDNI();
-        
+
             system("pause");
             break;
             }
         case 3:
         {
             cout << "\n[Accion] Consulta por Posición...\n" << endl;
-           
+
             Jugador jugador;
             jugador.consultarPorPosicion();
-            
+
             system("pause");
             }
             break;
@@ -235,11 +236,11 @@ void Menu::menuJugadores()
         case 5:
         {
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
-            
+
             Jugador jugador;
             jugador.listarPorClub();
-            
-            
+
+
             system("pause");
             }
             break;
@@ -250,7 +251,7 @@ void Menu::menuJugadores()
 
             Jugador jugador;
             jugador.TodosJugadores();
-            
+
             system("pause");
         }
             break;
@@ -301,10 +302,10 @@ void Menu::menuEntrenadores()
             {
             cout << "\n[Accion] Consulta por ID de Entrenador...\n" << endl;
                cout<< "-------------------------------------------------------------"<<endl;
-            
+
                Entrenador entrenador;
             entrenador.mostrarDTPorID();
-            
+
             system("pause");
             }
             break;
@@ -386,7 +387,102 @@ void Menu::menuPartidos()
 
 }
 
-void Menu::menuAcciones() {}
+void Menu::menuAcciones()
+{
+    int op;
+
+    do
+    {
+        system("cls");
+
+        cout << "==========================================================" << endl;
+        cout << "|                    GESTION DE ACCIONES                 |" << endl;
+        cout << "==========================================================" << endl;
+        cout << "| 1. Cargar Accion                                       |" << endl;
+        cout << "| 2. Consultar Acciones por Jugador                      |" << endl;
+        cout << "| 3. Consultar Acciones por Partido                      |" << endl;
+        cout << "| 4. Listar Todas las Acciones                           |" << endl;
+        cout << "|                                                        |" << endl;
+        cout << "| 0. Volver al Menu Principal                            |" << endl;
+        cout << "==========================================================" << endl;
+        cout << "Selecciona una opcion: ";
+        cin >> op;
+
+        switch (op)
+        {
+        case 1:
+        {
+            cout << endl;
+            cout << "[Accion] Cargar Accion..." << endl;
+            cout << endl;
+
+            Accion accion;
+            accion.cargar();
+
+            if (accion.grabarEnDisco())
+            {
+                cout << "Accion guardada correctamente." << endl;
+            }
+            else
+            {
+                cout << "No se pudo guardar la accion." << endl;
+            }
+
+            system("pause");
+        }
+        break;
+
+        case 2:
+        {
+            cout << endl;
+            cout << "[Accion] Consultar Acciones por Jugador..." << endl;
+            cout << endl;
+
+            Accion accion;
+            accion.consultarPorJugador();
+
+            system("pause");
+        }
+        break;
+
+        case 3:
+        {
+            cout << endl;
+            cout << "[Accion] Consultar Acciones por Partido..." << endl;
+            cout << endl;
+
+            Accion accion;
+            accion.consultarPorPartido();
+
+            system("pause");
+        }
+        break;
+
+        case 4:
+        {
+            cout << endl;
+            cout << "[Accion] Listar Todas las Acciones..." << endl;
+            cout << endl;
+
+            Accion accion;
+            accion.listarTodas();
+
+            system("pause");
+        }
+        break;
+
+        case 0:
+            break;
+
+        default:
+            cout << endl;
+            cout << "Opcion incorrecta. Intente de nuevo." << endl;
+            system("pause");
+            break;
+        }
+
+    } while (op != 0);
+}
 
 void Menu::menuTabla()
 {

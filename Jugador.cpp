@@ -17,7 +17,7 @@ void Jugador::cargar() {
     float valorMercado;
 
     Persona::cargar();
-
+    // DEBERIA CHEQUEAR SI EXISTE ANTES DE CARGARLO
     std::cout << "Ingrese ID del club: ";
     std::cin >> idClub;
     set_idclub(idClub);
@@ -142,7 +142,7 @@ void Jugador::listarPorClub() {
     std::cin >> idClubBuscado;
 
     std::cout<<  "------------------------------" << std::endl;
-    
+
     Jugador jugadorTemp;
     int pos = 0;
     bool encontrado = false;

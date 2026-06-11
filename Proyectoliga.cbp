@@ -32,6 +32,10 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="Accion.cpp" />
+		<Unit filename="Accion.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="Club.cpp" />
 		<Unit filename="Club.h">
 			<Option target="&lt;{~None~}&gt;" />

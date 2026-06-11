@@ -6,7 +6,7 @@ Entrenador::Entrenador() {
     _IdClub = -1;
     _IdEntrenador = 0;
 }
-
+// LEE Y ASIGNA ID AUTOINCREMENTAL  EN LA CARGA
 void Entrenador::cargar() {
     int idclub;
     int siguienteId = 1;
@@ -29,7 +29,7 @@ void Entrenador::cargar() {
     std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
 
     Persona::cargar();
-
+    // DEBERIA  CHEQUEAR QUE EL ID DEL CLUB EXISTE ANTES DE ESCRIBIR
     std::cout << "INGRESE ID DEL CLUB: ";
     std::cin >> idclub;
     set_idclub(idclub);
@@ -91,7 +91,7 @@ void Entrenador::mostrarDTPorID() {
             entrenadorTemp.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
-            break; 
+            break;
         }
         pos++;
     }

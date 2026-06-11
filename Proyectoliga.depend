@@ -1,0 +1,68 @@
+# depslib dependency file v1.0
+1781134460 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\club.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Club.h"
+
+1781134460 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\club.h
+	"Fecha.h"
+
+1781134460 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\fecha.h
+
+1781146044 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\entrenador.cpp
+	<iostream>
+	<cstdio>
+	"Entrenador.h"
+
+1781134460 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\entrenador.h
+	"Persona.h"
+
+1780464584 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\persona.h
+	"Fecha.h"
+
+1781146032 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\fecha.cpp
+	<iostream>
+	"Fecha.h"
+	<cstdlib>
+	<locale>
+
+1781152111 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\jugador.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Jugador.h"
+
+1781134460 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\jugador.h
+	"Persona.h"
+
+1781134880 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\main.cpp
+	<iostream>
+	"Menu.h"
+	<locale.h>
+	<windows.h>
+
+1781152111 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\menu.h
+
+1781152111 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\menu.cpp
+	"Menu.h"
+	<iostream>
+	"Club.h"
+	"Jugador.h"
+	"Entrenador.h"
+	"Accion.h"
+
+1780464584 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\persona.cpp
+	<iostream>
+	<cstring>
+	"Persona.h"
+
+1781152111 source:c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\accion.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Accion.h"
+	"Jugador.h"
+
+1781152111 c:\users\lenovo\desktop\proyectos local\progra2-utnfrgp-equipo19-2026-1c\accion.h
+

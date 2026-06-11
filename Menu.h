@@ -17,5 +17,3 @@ void menuAcciones();
 void menuTabla();
 
 };
-
-

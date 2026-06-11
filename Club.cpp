@@ -112,13 +112,13 @@ void Club::mostrar()
                     std::cout << "[-] "; /// Jornada no jugada o sin resultado registrado
                     break;
                 case 1:
-                    std::cout << "[V] "; /// Victoria 
+                    std::cout << "[V] "; /// Victoria
                     break;
                 case 2:
-                    std::cout << "[E] "; /// Empate 
+                    std::cout << "[E] "; /// Empate
                     break;
                 case 3:
-                    std::cout << "[D] "; /// Derrota 
+                    std::cout << "[D] "; /// Derrota
                     break;
             }
             contadorMostrados++;

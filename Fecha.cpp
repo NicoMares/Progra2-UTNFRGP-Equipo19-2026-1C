@@ -10,9 +10,9 @@ Fecha::Fecha() {
 }
 
 void Fecha::cargar() {
-    
+
       setlocale(LC_ALL, "spanish");
-      
+
     int dia,mes,anio;
     bool fechaCorrecta = false;
     do {
@@ -56,19 +56,17 @@ int Fecha::get_Anio( ) {
 return _Anio;
 
 }
-
+//SAQUE VALIDACIONES DE LOS SETTERS
 void Fecha::set_Dia( int dia){
-    if (dia > 0 && dia <=31 ){
+
 
         _Dia = dia;
-    }
 }
 
 void Fecha::set_Mes(int mes ){
-    if (mes > 0 && mes < 13){
 
-        _Mes = mes;
-    }
+    _Mes = mes;
+
 }
 
 void Fecha::set_Anio(int anio ){
