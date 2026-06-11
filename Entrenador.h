@@ -14,11 +14,10 @@ public :
 
      void cargar ();
      void mostrar ();
-     void mostrarDTPorID();
+     
 
 
-     bool grabarEnDisco ();
-     bool leerDisco (int posicion);
+
 
      int get_IdClub ();
      int get_IdEntrenador ();

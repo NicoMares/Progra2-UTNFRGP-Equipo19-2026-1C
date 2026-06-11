@@ -42,64 +42,7 @@ void Entrenador::mostrar() {
     std::cout << "ID CLUB: " << _IdClub << std::endl;
 }
 
-bool Entrenador::grabarEnDisco() {
-    FILE *pFile;
-    bool result;
 
-    pFile = fopen("entrenadores.dat", "ab");
-
-    if (pFile == NULL) {
-        return false;
-    }
-
-    result = fwrite(this, sizeof(Entrenador), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
-}
-
-bool Entrenador::leerDisco(int posicion) {
-    FILE *pFile;
-    bool result;
-
-    pFile = fopen("entrenadores.dat", "rb");
-
-    if (pFile == NULL) {
-        return false;
-    }
-
-    fseek(pFile, posicion * sizeof(Entrenador), SEEK_SET);
-    result = fread(this, sizeof(Entrenador), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
-}
-
-void Entrenador::mostrarDTPorID() {
-    int idBuscado;
-    std::cout << "Ingrese el ID del entrenador a buscar: " << std::endl;
-    std::cin >> idBuscado;
-
-    Entrenador entrenadorTemp;
-    int pos = 0;
-    bool encontrado = false;
-
-    while (entrenadorTemp.leerDisco(pos)) {
-        if (entrenadorTemp.get_IdEntrenador() == idBuscado) {
-            entrenadorTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
-            break;
-        }
-        pos++;
-    }
-
-    if (!encontrado) {
-        std::cout << "No se encontró un entrenador con el ID: " << idBuscado << std::endl;
-    }
-}
 
 int Entrenador::get_IdClub ()  {
     return _IdClub;

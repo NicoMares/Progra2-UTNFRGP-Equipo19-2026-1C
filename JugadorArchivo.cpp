@@ -96,6 +96,7 @@ void JugadorArchivo ::consultarPorPosicion() {
 }
 
 void JugadorArchivo::ListarDni() {
+
     
 
     JugadorArchivo ArchivoTemp;

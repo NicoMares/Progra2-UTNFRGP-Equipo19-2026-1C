@@ -3,8 +3,13 @@
 class EntrenadorArchivo
 {
 public:
+
     EntrenadorArchivo();
-    ~EntrenadorArchivo();
+    void mostrarDTPorID();
+    void MostrarTodos();
+    void EliminarEntrenador();
+     bool grabarEnDisco ();
+     bool leerDisco (int posicion);
 
 private:
 

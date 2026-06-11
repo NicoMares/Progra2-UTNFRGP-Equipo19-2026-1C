@@ -5,7 +5,9 @@
 #include "Jugador.h"
 #include "Entrenador.h"
 #include "Accion.h"
-
+#include "ClubArchivo.h"
+#include "JugadorArchivo.h"
+#include "EntrenadorArchivo.h"
 
 using namespace std;
 
@@ -215,8 +217,10 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Cargar Jugador...\n" << endl;
 
             Jugador jugador;
+            JugadorArchivo archivo;
+
             jugador.cargar();
-            jugador.grabarEnDisco();
+            archivo.grabarEnDisco(jugador);
 
             system("pause");
         }
@@ -228,7 +232,8 @@ void Menu::menuJugadores()
             cout<< "-------------------------------------------------------------"<<endl;
 
             Jugador jugador;
-            jugador.ConsultarPorDNI();
+            JugadorArchivo archivo;
+            archivo.ConsultarPorDNI();
 
             system("pause");
             
@@ -239,8 +244,8 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Consulta por Posición...\n" << endl;
              cout<< "-------------------------------------------------------------"<<endl;
            
-            Jugador jugador;
-            jugador.consultarPorPosicion();
+            JugadorArchivo archivo;
+            archivo.consultarPorPosicion();
 
             system("pause");
             }
@@ -251,8 +256,8 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Listar Jugadores ordenados por DNI...)\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
             
-              Jugador jugador;
-            jugador.ListarDni();
+              JugadorArchivo archivo;
+            archivo.ListarDni();
 
         
 
@@ -264,8 +269,8 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
           
-            Jugador jugador;
-            jugador.listarPorClub();
+            JugadorArchivo archivo;
+            archivo.listarPorClub();
 
 
             system("pause");
@@ -276,8 +281,8 @@ void Menu::menuJugadores()
             cout << "\n[Accion] Mostrar Todos Los Jugadores De La Liga...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
 
-            Jugador jugador;
-            jugador.TodosJugadores();
+            JugadorArchivo archivo;
+            archivo.TodosJugadores();
 
             system("pause");
         }
@@ -290,8 +295,9 @@ void Menu::menuJugadores()
          cout<< "-------------------------------------------------------------"<<endl;
 
 
-        Jugador jugador;
-        jugador.EliminarJugador();
+        JugadorArchivo Archivo;
+        
+        Archivo.EliminarJugador();
 
          
            
@@ -306,8 +312,9 @@ void Menu::menuJugadores()
        
          int posicion=0;
 
-          Jugador jugador;
-          jugador.modificarEnDisco(posicion);  
+          JugadorArchivo Archivo;
+
+          Archivo.modificarEnDisco(posicion);  
 
             system("pause");
 
@@ -352,9 +359,13 @@ void Menu::menuEntrenadores()
         case 1:
         {
             cout << "\n[Accion] Cargar Entrenador...\n" << endl;
+           
             Entrenador entrenador;
+            EntrenadorArchivo archivo;
+
+
             entrenador.cargar();
-            entrenador.grabarEnDisco();
+            archivo.grabarEnDisco();
             system("pause");
         }
         break;
@@ -364,7 +375,8 @@ void Menu::menuEntrenadores()
                cout<< "-------------------------------------------------------------"<<endl;
 
                Entrenador entrenador;
-            entrenador.mostrarDTPorID();
+            EntrenadorArchivo archivo;
+            archivo.mostrarDTPorID();
 
             system("pause");
             }
@@ -374,15 +386,9 @@ void Menu::menuEntrenadores()
             cout << "\n[Accion] Listar todos los Entrenadores...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
 
-            Entrenador entrenador;
-            int pos = 0;
-
-            while (entrenador.leerDisco(pos))
-            {
-                entrenador.mostrar();
-                cout << endl;
-                pos++;
-            }
+            EntrenadorArchivo archivo;
+          
+                archivo.MostrarTodos();
 
             system("pause");
         }
@@ -390,37 +396,7 @@ void Menu::menuEntrenadores()
         case 4:
         {
             cout << "\n[Accion] Eliminar Club... \n" << endl;
-            int idBuscado;
-            cout << "Ingrese el ID del club que desea eliminar: ";
-            cin >> idBuscado;
-
-            Club equipo;
-            int pos = 0;
-            bool encontrado = false;
-
-            while (equipo.leerDeDisco(pos))
-            {
-                if (equipo.get_idclub() == idBuscado && equipo.get_activo() == true)
-                {
-                    encontrado = true;
-
-
-                    equipo.set_activo(false);
-
-
-                    if (equipo.modificarEnDisco(pos))
-                    {
-                        cout << "\n El club '" << equipo.get_nombre() << "' fue eliminado con éxito." << endl;
-                    }
-                    else
-                    {
-                        cout << "\n Error al intentar guardar en el archivo." << endl;
-                    }
-                    break;
-                }
-                pos++;
-            }
-            if (!encontrado) cout << "No se encontró ningún club activo con el ID: " << idBuscado << endl;
+           
             system("pause");
         }
         break;
