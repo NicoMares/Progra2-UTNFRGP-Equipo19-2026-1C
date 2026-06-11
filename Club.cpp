@@ -211,6 +211,66 @@ std::cout << "ENTRE AL MOSTRAR POR ID" << std::endl;
     }
 }
 
+bool Club::modificarEnDisco(int posicion)
+{
+    
+    FILE *pFile = fopen("clubes.dat", "rb+"); 
+    
+  
+    if (pFile == NULL)
+    {
+        return false;
+    }
+
+   
+    fseek(pFile, posicion * sizeof(Club), SEEK_SET); 
+    
+   
+    bool seEscribio = fwrite(this, sizeof(Club), 1, pFile); 
+    
+   
+    fclose(pFile); 
+    
+    
+    return seEscribio;
+}
+
+void Club::eliminarDeDisco()
+{
+            int idBuscado;
+            std::cout << "Ingrese el ID del club que desea eliminar: ";
+            std::cin >> idBuscado;
+
+            Club equipo;
+            int pos = 0;
+            bool encontrado = false;
+
+            while (equipo.leerDeDisco(pos))
+            {
+                if (equipo.get_idclub() == idBuscado && equipo.get_activo() == true)
+                {
+                    encontrado = true;
+
+
+                    equipo.set_activo(false);
+
+
+                    if (equipo.modificarEnDisco(pos))
+                    {
+                        std::cout << "\n El club '" << equipo.get_nombre() << "' fue eliminado con éxito." << std::endl;
+                    }
+                    else
+                    {
+                        std::cout << "\n Error al intentar guardar en el archivo." << std::endl;
+                    }
+                    break;
+                }
+                pos++;
+            }
+            if (!encontrado) std::cout << "No se encontró ningún club activo con el ID: " << idBuscado << std::endl;
+            system("pause");
+        }
+
 int Club::get_idclub()
 {
 

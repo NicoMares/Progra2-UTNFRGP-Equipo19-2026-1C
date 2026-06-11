@@ -102,9 +102,11 @@ void Menu::menuEquipos()
         cout << "| 1. Cargar Equipo                    |" << endl;
         cout << "| 2. Consulta por ID de Club          |" << endl;
         cout << "| 3. Listado de Clubes                |" << endl;
-        cout << "| 0. Volver al Men� Principal         |" << endl;
+        cout << "| 4. Eliminar Club                    |" << endl;
+        cout << "| 5. Modificar Club                   |" << endl;
+        cout << "| 0. Volver al Men Principal          |" << endl;
         cout << "=======================================" << endl;
-        cout << "Ingres� una opci�n: " << endl;
+        cout << "Ingresá una opción: " << endl;
         cin >> op;
 
         switch (op)
@@ -137,19 +139,39 @@ void Menu::menuEquipos()
 
             while (equipo.leerDeDisco(pos))
             {
-                equipo.mostrar();
-                cout << endl;
+                if (equipo.get_activo() == true)
+                {
+                    equipo.mostrar();
+                    cout << endl;
+                }
                 pos++;
             }
+            system("pause");
+            
+
+        }
+            break;
+        case 4:
+        {
+            cout << "\n[Accion] Eliminando Equipo... \n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
+
+            Club equipo;
+            equipo.eliminarDeDisco();
 
             system("pause");
         }
             break;
-        case 4:
-            cout << "\n[Accion] Racha... \n" << endl;
-            system("pause");
-            break;
-        case 0:
+        
+        case 5:
+        {
+            cout << "\n[Accion] Modificando Equipo... \n" << endl;
+        
+            Club equipo;
+            equipo.modificarEnDisco(0); 
+        }
+            case 0:
+        
             break;
         default:
             cout << "\nOpci�n no v�lida. Por favor, intente de nuevo.\n" << endl;
@@ -178,8 +200,9 @@ void Menu::menuJugadores()
         cout << "| 3. Consulta por Posición                               |" << endl;
         cout << "| 4. Listar Jugadores ordenados por DNI                  |" << endl;
         cout << "| 5. Listar Jugadores agrupados por Club                 |" << endl;
-        cout << "| 6. Mostrar Todos Los Jugadores De La Liga          |" << endl;
-        cout << "|                                                        |" << endl;
+        cout << "| 6. Mostrar Todos Los Jugadores De La Liga              |" << endl;
+        cout << "| 7. Eliminar Jugador                                    |" << endl;
+        cout << "| 8. Modificar Jugador                                   |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << " Selecciona una opción: ";
@@ -190,9 +213,11 @@ void Menu::menuJugadores()
         case 1:
         {
             cout << "\n[Accion] Cargar Jugador...\n" << endl;
+
             Jugador jugador;
             jugador.cargar();
             jugador.grabarEnDisco();
+
             system("pause");
         }
         break;
@@ -200,17 +225,20 @@ void Menu::menuJugadores()
         case 2:
         {
             cout << "\n[Accion] Consulta por DNI...\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
 
             Jugador jugador;
             jugador.ConsultarPorDNI();
 
             system("pause");
+            
             break;
             }
         case 3:
         {
             cout << "\n[Accion] Consulta por Posición...\n" << endl;
-
+             cout<< "-------------------------------------------------------------"<<endl;
+           
             Jugador jugador;
             jugador.consultarPorPosicion();
 
@@ -219,16 +247,14 @@ void Menu::menuJugadores()
             break;
         case 4:
         {
-            cout << "\n[Accion] Listar Jugadores ordenados por DNI...)\n" << endl;
-            Jugador jugador;
-            int pos = 0;
 
-            while (jugador.leerDeDisco(pos))
-            {
-                jugador.mostrar();
-                cout << endl;
-                pos++;
-            }
+            cout << "\n[Accion] Listar Jugadores ordenados por DNI...)\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
+            
+              Jugador jugador;
+            jugador.ListarDni();
+
+        
 
             system("pause");
         }
@@ -236,7 +262,8 @@ void Menu::menuJugadores()
         case 5:
         {
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
-
+            cout<< "-------------------------------------------------------------"<<endl;
+          
             Jugador jugador;
             jugador.listarPorClub();
 
@@ -255,7 +282,38 @@ void Menu::menuJugadores()
             system("pause");
         }
             break;
-        case 0:
+        
+        case 7:
+        {
+
+         cout << "\n[Accion] Eliminar Jugador... \n" << endl;
+         cout<< "-------------------------------------------------------------"<<endl;
+
+
+        Jugador jugador;
+        jugador.EliminarJugador();
+
+         
+           
+         system("pause"); 
+            
+        
+        }
+        case 8:
+        {
+        cout << "\n[Accion] Modificar Jugador... \n" << endl;
+         cout<< "-------------------------------------------------------------"<<endl;
+       
+         int posicion=0;
+
+          Jugador jugador;
+          jugador.modificarEnDisco(posicion);  
+
+            system("pause");
+
+        }
+
+            case 0:
             break;
         default:
             cout << "\nOpción incorrecta. Intente de nuevo.\n" << endl;
@@ -268,6 +326,7 @@ void Menu::menuJugadores()
 }
 
 void Menu::menuEntrenadores()
+
 {
     int op;
 
@@ -281,7 +340,8 @@ void Menu::menuEntrenadores()
         cout << "| 1. Cargar Entrenador                                   |" << endl;
         cout << "| 2. Consulta por ID de Entrenador                       |" << endl;
         cout << "| 3. Listar todos los Entrenadores                       |" << endl;
-        cout << "|                                                        |" << endl;
+        cout << "| 4. Eliminar Entrenador                                 |" << endl;
+        cout << "| 5. Modificar Entrenador                                |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << " Selecciona una opción: ";
@@ -326,11 +386,49 @@ void Menu::menuEntrenadores()
 
             system("pause");
         }
-            break;
+
+        case 4:
+        {
+            cout << "\n[Accion] Eliminar Club... \n" << endl;
+            int idBuscado;
+            cout << "Ingrese el ID del club que desea eliminar: ";
+            cin >> idBuscado;
+
+            Club equipo;
+            int pos = 0;
+            bool encontrado = false;
+
+            while (equipo.leerDeDisco(pos))
+            {
+                if (equipo.get_idclub() == idBuscado && equipo.get_activo() == true)
+                {
+                    encontrado = true;
+
+
+                    equipo.set_activo(false);
+
+
+                    if (equipo.modificarEnDisco(pos))
+                    {
+                        cout << "\n El club '" << equipo.get_nombre() << "' fue eliminado con éxito." << endl;
+                    }
+                    else
+                    {
+                        cout << "\n Error al intentar guardar en el archivo." << endl;
+                    }
+                    break;
+                }
+                pos++;
+            }
+            if (!encontrado) cout << "No se encontró ningún club activo con el ID: " << idBuscado << endl;
+            system("pause");
+        }
+        break;
+
         case 0:
             break;
         default:
-            cout << "\nOpcion incorrecta. Intente de nuevo.\n" << endl;
+            cout << "\nOpción no válida. Por favor, intente de nuevo.\n" << endl;
             system("pause");
             break;
         }
@@ -338,6 +436,7 @@ void Menu::menuEntrenadores()
     }
     while (op != 0);
 }
+
 void Menu::menuPartidos()
 {
     int op;
