@@ -18,14 +18,7 @@ public:
 
     void mostrar();
     void cargar();
-    void mostrarPorID();
-
-    bool grabarEnDisco();
-    bool leerDeDisco(int posicion);
-    bool modificarEnDisco(int posicion);
-    void eliminarDeDisco();
-
-
+    
 
     int get_idclub();
     const char* get_nombre();

@@ -23,12 +23,9 @@ public:
     void cargar();
     void mostrar();
 
-    bool grabarEnDisco();
-    bool leerDeDisco(int posicion);
+   
 
-    void listarTodas();
-    void consultarPorJugador();
-    void consultarPorPartido();
+    
 
     int get_idaccion();
     int get_idpartido();

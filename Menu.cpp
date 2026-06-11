@@ -8,6 +8,8 @@
 #include "ClubArchivo.h"
 #include "JugadorArchivo.h"
 #include "EntrenadorArchivo.h"
+#include "AccionArchivo.h"
+
 
 using namespace std;
 
@@ -116,17 +118,24 @@ void Menu::menuEquipos()
         case 1:
         {
             cout << "\n[Accion] Cargar Equipo... \n" << endl;
+            
+            
             Club equipo;
+            ClubArchivo archivo;
+
             equipo.cargar();
-            equipo.grabarEnDisco();
+            archivo.grabarEnDisco();
             system("pause");
         }
         break;
         case 2:
         {
             cout << "\n[Accion] Consulta por ID de Club... \n" << endl;
-           Club equipo;
-           equipo.mostrarPorID();
+           
+         
+           ClubArchivo archivo;
+           
+            archivo.mostrarPorID();
 
 
             system("pause");
@@ -137,29 +146,20 @@ void Menu::menuEquipos()
         {
             cout << "\n[Accion] Listado de Clubes... \n" << endl;
             Club equipo;
-            int pos = 0;
-
-            while (equipo.leerDeDisco(pos))
-            {
-                if (equipo.get_activo() == true)
-                {
-                    equipo.mostrar();
-                    cout << endl;
-                }
-                pos++;
-            }
-            system("pause");
-            
-
+            ClubArchivo archivo;
+           
+           archivo.mostrarClubes();
+           
         }
+            
             break;
         case 4:
         {
             cout << "\n[Accion] Eliminando Equipo... \n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
 
-            Club equipo;
-            equipo.eliminarDeDisco();
+            ClubArchivo archivo;
+            archivo.eliminarDeDisco();
 
             system("pause");
         }
@@ -169,8 +169,8 @@ void Menu::menuEquipos()
         {
             cout << "\n[Accion] Modificando Equipo... \n" << endl;
         
-            Club equipo;
-            equipo.modificarEnDisco(0); 
+            ClubArchivo archivo;
+            archivo.modificarEnDisco(0); 
         }
             case 0:
         
@@ -492,16 +492,11 @@ void Menu::menuAcciones()
             cout << endl;
 
             Accion accion;
+            AccionArchivo archivo;
+
             accion.cargar();
 
-            if (accion.grabarEnDisco())
-            {
-                cout << "Accion guardada correctamente." << endl;
-            }
-            else
-            {
-                cout << "No se pudo guardar la accion." << endl;
-            }
+            archivo.CoutGuardar();
 
             system("pause");
         }
@@ -513,8 +508,9 @@ void Menu::menuAcciones()
             cout << "[Accion] Consultar Acciones por Jugador..." << endl;
             cout << endl;
 
-            Accion accion;
-            accion.consultarPorJugador();
+        
+            AccionArchivo archivo;
+            archivo.consultarPorJugador();
 
             system("pause");
         }
@@ -526,8 +522,9 @@ void Menu::menuAcciones()
             cout << "[Accion] Consultar Acciones por Partido..." << endl;
             cout << endl;
 
-            Accion accion;
-            accion.consultarPorPartido();
+       
+            AccionArchivo archivo;
+            archivo.consultarPorPartido();
 
             system("pause");
         }
@@ -539,8 +536,8 @@ void Menu::menuAcciones()
             cout << "[Accion] Listar Todas las Acciones..." << endl;
             cout << endl;
 
-            Accion accion;
-            accion.listarTodas();
+            AccionArchivo archivo;
+            archivo.listarTodas();
 
             system("pause");
         }

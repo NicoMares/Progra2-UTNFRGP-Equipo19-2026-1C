@@ -17,24 +17,7 @@ Accion::Accion() {
     _Activo = true;
 }
 
-bool Accion::obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador) {
-    Jugador jugadorTemp;
-    JugadorArchivo archivo;
 
-    int pos = 0;
-
-    while (archivo.leerDeDisco(pos)) {
-        if (jugadorTemp.get_dni() == dniJugador) {
-            strcpy(posicionJugador, jugadorTemp.get_posicion());
-            idClubJugador = jugadorTemp.get_idclub();
-            return true;
-        }
-
-        pos++;
-    }
-
-    return false;
-}
 
 void Accion::seleccionarTipoAccion(char tipoAccion[]) {
     int opcion;
@@ -257,101 +240,14 @@ void Accion::mostrar() {
     }
 }
 
-bool Accion::grabarEnDisco() {
-    FILE *pFile;
-    bool result;
 
-    pFile = fopen("acciones.dat", "ab");
 
-    if (pFile == NULL) {
-        return false;
-    }
 
-    result = fwrite(this, sizeof(Accion), 1, pFile);
 
-    fclose(pFile);
 
-    return result;
-}
 
-bool Accion::leerDeDisco(int posicion) {
-    FILE *pFile;
-    bool result;
 
-    pFile = fopen("acciones.dat", "rb");
 
-    if (pFile == NULL) {
-        return false;
-    }
-
-    fseek(pFile, posicion * sizeof(Accion), SEEK_SET);
-    result = fread(this, sizeof(Accion), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
-}
-
-void Accion::listarTodas() {
-    Accion accionTemp;
-    int pos = 0;
-
-    while (accionTemp.leerDeDisco(pos)) {
-        accionTemp.mostrar();
-        std::cout << "-----------------------------" << std::endl;
-        pos++;
-    }
-}
-
-void Accion::consultarPorJugador() {
-    int dniBuscado;
-
-    std::cout << "Ingrese DNI del jugador: ";
-    std::cin >> dniBuscado;
-
-    Accion accionTemp;
-    int pos = 0;
-    bool encontrado = false;
-
-    while (accionTemp.leerDeDisco(pos)) {
-        if (accionTemp.get_dnijugador() == dniBuscado) {
-            accionTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
-        }
-
-        pos++;
-    }
-
-    if (encontrado == false) {
-        std::cout << "No se encontraron acciones para ese jugador." << std::endl;
-    }
-}
-
-void Accion::consultarPorPartido() {
-    int idPartidoBuscado;
-
-    std::cout << "Ingrese ID del partido: ";
-    std::cin >> idPartidoBuscado;
-
-    Accion accionTemp;
-    int pos = 0;
-    bool encontrado = false;
-
-    while (accionTemp.leerDeDisco(pos)) {
-        if (accionTemp.get_idpartido() == idPartidoBuscado) {
-            accionTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
-        }
-
-        pos++;
-    }
-
-    if (encontrado == false) {
-        std::cout << "No se encontraron acciones para ese partido." << std::endl;
-    }
-}
 
 int Accion::get_idaccion() {
     return _IdAccion;
