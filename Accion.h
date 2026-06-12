@@ -13,9 +13,7 @@ private:
     bool _Positiva;
     bool _Activo;
 
-    bool obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador);
-    void seleccionarTipoAccion(char tipoAccion[]);
-    int calcularPuntaje(const char tipoAccion[], const char posicionJugador[]);
+  
 
 public:
     Accion();

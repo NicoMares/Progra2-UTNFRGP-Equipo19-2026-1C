@@ -4,6 +4,7 @@
 #include "Accion.h"
 #include "Jugador.h"
 #include "JugadorArchivo.h"
+#include "AccionArchivo.h"
 
 Accion::Accion() {
     _IdAccion = 0;
@@ -18,130 +19,6 @@ Accion::Accion() {
 }
 
 
-
-void Accion::seleccionarTipoAccion(char tipoAccion[]) {
-    int opcion;
-
-    std::cout << "Seleccione tipo de accion: " << std::endl;
-    std::cout << "1 - Gol" << std::endl;
-    std::cout << "2 - Asistencia" << std::endl;
-    std::cout << "3 - Tarjeta amarilla" << std::endl;
-    std::cout << "4 - Tarjeta roja" << std::endl;
-    std::cout << "5 - Falta cometida" << std::endl;
-    std::cout << "6 - Atajada" << std::endl;
-    std::cout << "7 - Lesion" << std::endl;
-    std::cout << "Opcion: ";
-    std::cin >> opcion;
-
-    switch (opcion) {
-        case 1:
-            strcpy(tipoAccion, "Gol");
-            break;
-        case 2:
-            strcpy(tipoAccion, "Asistencia");
-            break;
-        case 3:
-            strcpy(tipoAccion, "Amarilla");
-            break;
-        case 4:
-            strcpy(tipoAccion, "Roja");
-            break;
-        case 5:
-            strcpy(tipoAccion, "Falta");
-            break;
-        case 6:
-            strcpy(tipoAccion, "Atajada");
-            break;
-        case 7:
-            strcpy(tipoAccion, "Lesion");
-            break;
-        default:
-            strcpy(tipoAccion, "Sin definir");
-            break;
-    }
-}
-
-int Accion::calcularPuntaje(const char tipoAccion[], const char posicionJugador[]) {
-
-    bool esArquero =
-        strcmp(posicionJugador, "Arquero") == 0 ||
-        strcmp(posicionJugador, "arquero") == 0;
-
-    bool esDefensor =
-        strcmp(posicionJugador, "Defensor") == 0 ||
-        strcmp(posicionJugador, "defensor") == 0;
-
-    bool esMediocampo =
-        strcmp(posicionJugador, "Mediocampo") == 0 ||
-        strcmp(posicionJugador, "mediocampo") == 0 ||
-        strcmp(posicionJugador, "Mediocampista") == 0 ||
-        strcmp(posicionJugador, "mediocampista") == 0;
-
-    bool esDelantero =
-        strcmp(posicionJugador, "Delantero") == 0 ||
-        strcmp(posicionJugador, "delantero") == 0;
-
-    if (strcmp(tipoAccion, "Gol") == 0) {
-        if (esArquero) {
-            return 10;
-        }
-        if (esDefensor) {
-            return 8;
-        }
-        if (esMediocampo) {
-            return 6;
-        }
-        if (esDelantero) {
-            return 5;
-        }
-
-        return 5;
-    }
-
-    if (strcmp(tipoAccion, "Asistencia") == 0) {
-        if (esArquero) {
-            return 6;
-        }
-        if (esDefensor) {
-            return 5;
-        }
-        if (esMediocampo) {
-            return 4;
-        }
-        if (esDelantero) {
-            return 3;
-        }
-
-        return 3;
-    }
-
-    if (strcmp(tipoAccion, "Amarilla") == 0) {
-        return -2;
-    }
-
-    if (strcmp(tipoAccion, "Roja") == 0) {
-        return -6;
-    }
-
-    if (strcmp(tipoAccion, "Falta") == 0) {
-        return -1;
-    }
-
-    if (strcmp(tipoAccion, "Atajada") == 0) {
-        if (esArquero) {
-            return 4;
-        }
-
-        return 0;
-    }
-
-    if (strcmp(tipoAccion, "Lesion") == 0) {
-        return -3;
-    }
-
-    return 0;
-}
-
 void Accion::cargar() {
     int idPartido;
     int dniJugador;
@@ -155,6 +32,8 @@ void Accion::cargar() {
 
     if (pFile != NULL) {
         Accion accionTemp;
+        AccionArchivo archivo;
+
 
         while (fread(&accionTemp, sizeof(Accion), 1, pFile) == 1) {
             if (accionTemp.get_idaccion() >= siguienteId) {
@@ -239,14 +118,6 @@ void Accion::mostrar() {
         std::cout << "NO" << std::endl;
     }
 }
-
-
-
-
-
-
-
-
 
 
 int Accion::get_idaccion() {

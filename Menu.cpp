@@ -103,7 +103,7 @@ void Menu::menuEquipos()
         cout << "=======================================" << endl;
         cout << "|          GESTION DE EQUIPOS         |" << endl;
         cout << "=======================================" << endl;
-        cout << "| 1. Cargar Equipo                    |" << endl;
+        cout << "| 1. Cargar Equipo    1                |" << endl;
         cout << "| 2. Consulta por ID de Club          |" << endl;
         cout << "| 3. Listado de Clubes                |" << endl;
         cout << "| 4. Eliminar Club                    |" << endl;

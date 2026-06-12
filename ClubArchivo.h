@@ -13,8 +13,10 @@ public:
     void mostrarPorID();
     void mostrarClubes();
     void mostrarCout();
-    
+
 private:
+
+   
 
 };
 
