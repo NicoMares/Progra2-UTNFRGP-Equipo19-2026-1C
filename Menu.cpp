@@ -118,8 +118,8 @@ void Menu::menuEquipos()
         case 1:
         {
             cout << "\n[Accion] Cargar Equipo... \n" << endl;
-            
-            
+
+
             Club equipo;
             ClubArchivo archivo;
 
@@ -131,10 +131,10 @@ void Menu::menuEquipos()
         case 2:
         {
             cout << "\n[Accion] Consulta por ID de Club... \n" << endl;
-           
-         
+
+
            ClubArchivo archivo;
-           
+
             archivo.mostrarPorID();
 
 
@@ -147,11 +147,11 @@ void Menu::menuEquipos()
             cout << "\n[Accion] Listado de Clubes... \n" << endl;
             Club equipo;
             ClubArchivo archivo;
-           
+
            archivo.mostrarClubes();
-           
+
         }
-            
+
             break;
         case 4:
         {
@@ -164,16 +164,16 @@ void Menu::menuEquipos()
             system("pause");
         }
             break;
-        
+
         case 5:
         {
             cout << "\n[Accion] Modificando Equipo... \n" << endl;
-        
+
             ClubArchivo archivo;
-            archivo.modificarEnDisco(0); 
+            archivo.modificarEnDisco(0);
         }
             case 0:
-        
+
             break;
         default:
             cout << "\nOpci�n no v�lida. Por favor, intente de nuevo.\n" << endl;
@@ -236,14 +236,14 @@ void Menu::menuJugadores()
             archivo.ConsultarPorDNI();
 
             system("pause");
-            
+
             break;
             }
         case 3:
         {
             cout << "\n[Accion] Consulta por Posición...\n" << endl;
              cout<< "-------------------------------------------------------------"<<endl;
-           
+
             JugadorArchivo archivo;
             archivo.consultarPorPosicion();
 
@@ -255,11 +255,11 @@ void Menu::menuJugadores()
 
             cout << "\n[Accion] Listar Jugadores ordenados por DNI...)\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
-            
+
               JugadorArchivo archivo;
             archivo.ListarDni();
 
-        
+
 
             system("pause");
         }
@@ -268,7 +268,7 @@ void Menu::menuJugadores()
         {
             cout << "\n[Accion] Listar Jugadores agrupados por Club...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
-          
+
             JugadorArchivo archivo;
             archivo.listarPorClub();
 
@@ -287,7 +287,7 @@ void Menu::menuJugadores()
             system("pause");
         }
             break;
-        
+
         case 7:
         {
 
@@ -296,25 +296,25 @@ void Menu::menuJugadores()
 
 
         JugadorArchivo Archivo;
-        
+
         Archivo.EliminarJugador();
 
-         
-           
-         system("pause"); 
-            
-        
+
+
+         system("pause");
+
+
         }
         case 8:
         {
         cout << "\n[Accion] Modificar Jugador... \n" << endl;
          cout<< "-------------------------------------------------------------"<<endl;
-       
+
          int posicion=0;
 
           JugadorArchivo Archivo;
 
-          Archivo.modificarEnDisco(posicion);  
+          Archivo.modificarEnDisco(posicion);
 
             system("pause");
 
@@ -359,7 +359,7 @@ void Menu::menuEntrenadores()
         case 1:
         {
             cout << "\n[Accion] Cargar Entrenador...\n" << endl;
-           
+
             Entrenador entrenador;
             EntrenadorArchivo archivo;
 
@@ -387,7 +387,7 @@ void Menu::menuEntrenadores()
             cout<< "-------------------------------------------------------------"<<endl;
 
             EntrenadorArchivo archivo;
-          
+
                 archivo.MostrarTodos();
 
             system("pause");
@@ -396,7 +396,7 @@ void Menu::menuEntrenadores()
         case 4:
         {
             cout << "\n[Accion] Eliminar Club... \n" << endl;
-           
+
             system("pause");
         }
         break;
@@ -485,122 +485,87 @@ void Menu::menuAcciones()
 
         switch (op)
         {
-        case 1:
-        {
-            cout << endl;
-            cout << "[Accion] Cargar Accion..." << endl;
-            cout << endl;
+            case 1:
+            {
+                cout << endl;
+                cout << "[Accion] Cargar Accion..." << endl;
+                cout << endl;
 
-            Accion accion;
-            AccionArchivo archivo;
+                Accion accion;
+                AccionArchivo archivo;
 
-            accion.cargar();
+                accion.cargar();
 
-            archivo.CoutGuardar();
+                if (archivo.completarDatosAccion(accion))
+                {
+                    if (archivo.grabarEnDisco(accion))
+                    {
+                        cout << "Accion guardada correctamente." << endl;
+                    }
+                    else
+                    {
+                        cout << "No se pudo guardar la accion." << endl;
+                    }
+                }
+                else
+                {
+                    cout << "No se pudo completar la accion." << endl;
+                    cout << "Verifique que el DNI del jugador exista." << endl;
+                }
 
-            system("pause");
-        }
-        break;
-
-        case 2:
-        {
-            cout << endl;
-            cout << "[Accion] Consultar Acciones por Jugador..." << endl;
-            cout << endl;
-
-        
-            AccionArchivo archivo;
-            archivo.consultarPorJugador();
-
-            system("pause");
-        }
-        break;
-
-        case 3:
-        {
-            cout << endl;
-            cout << "[Accion] Consultar Acciones por Partido..." << endl;
-            cout << endl;
-
-       
-            AccionArchivo archivo;
-            archivo.consultarPorPartido();
-
-            system("pause");
-        }
-        break;
-
-        case 4:
-        {
-            cout << endl;
-            cout << "[Accion] Listar Todas las Acciones..." << endl;
-            cout << endl;
-
-            AccionArchivo archivo;
-            archivo.listarTodas();
-
-            system("pause");
-        }
-        break;
-
-        case 0:
+                system("pause");
+            }
             break;
 
-        default:
-            cout << endl;
-            cout << "Opcion incorrecta. Intente de nuevo." << endl;
-            system("pause");
+            case 2:
+            {
+                cout << endl;
+                cout << "[Accion] Consultar Acciones por Jugador..." << endl;
+                cout << endl;
+
+                AccionArchivo archivo;
+                archivo.consultarPorJugador();
+
+                system("pause");
+            }
             break;
+
+            case 3:
+            {
+                cout << endl;
+                cout << "[Accion] Consultar Acciones por Partido..." << endl;
+                cout << endl;
+
+                AccionArchivo archivo;
+                archivo.consultarPorPartido();
+
+                system("pause");
+            }
+            break;
+
+            case 4:
+            {
+                cout << endl;
+                cout << "[Accion] Listar Todas las Acciones..." << endl;
+                cout << endl;
+
+                AccionArchivo archivo;
+                archivo.listarTodas();
+
+                system("pause");
+            }
+            break;
+
+            case 0:
+                break;
+
+            default:
+                cout << endl;
+                cout << "Opcion incorrecta. Intente de nuevo." << endl;
+                system("pause");
+                break;
         }
 
     } while (op != 0);
 }
-
-void Menu::menuTabla()
-{
-    int op;
-
-    do
-    {
-        system("cls");
-
-        cout << "==========================================================" << endl;
-        cout << "|                  TABLAS Y ESTADISTICAS                 |" << endl;
-        cout << "==========================================================" << endl;
-        cout << "| 1. Mostrar Tabla de Posiciones Completa                |" << endl;
-        cout << "| 2. Goleadores del Torneo (Top Scorers)                 |" << endl;
-        cout << "| 3. Racha (Ultimos 5 Partidos.)      |" << endl;
-        cout << "|                                                        |" << endl;
-        cout << "| 0. Volver al Menu Principal                            |" << endl;
-        cout << "==========================================================" << endl;
-        cout << " Selecciona una opción: ";
-        cin >> op;
-
-        switch (op)
-        {
-        case 1:
-            cout << "\n[Accion] Generando Tabla de Posiciones...\n" << endl;
-            system("pause");
-            break;
-        case 2:
-            cout << "\n[Accion] Buscando Goleadores...\n" << endl;
-            system("pause");
-            break;
-        case 3:
-            cout << "\n[Accion] Buscando Racha (Ultimos 5 Partidos)... \n" << endl;
-            system("pause");
-            break;
-        case 0:
-            break;
-        default:
-            cout << "\nOpción incorrecta. Intente de nuevo.\n" << endl;
-            system("pause");
-            break;
-        }
-
-    }
-    while (op != 0);
-}
-
-
 

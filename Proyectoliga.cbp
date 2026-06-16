@@ -36,14 +36,20 @@
 		<Unit filename="Accion.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="AccionArchivo.cpp" />
+		<Unit filename="AccionArchivo.h" />
 		<Unit filename="Club.cpp" />
 		<Unit filename="Club.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="ClubArchivo.cpp" />
+		<Unit filename="ClubArchivo.h" />
 		<Unit filename="Entrenador.cpp" />
 		<Unit filename="Entrenador.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="EntrenadorArchivo.cpp" />
+		<Unit filename="EntrenadorArchivo.h" />
 		<Unit filename="Fecha.cpp" />
 		<Unit filename="Fecha.h">
 			<Option target="&lt;{~None~}&gt;" />
@@ -52,6 +58,8 @@
 		<Unit filename="Jugador.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="JugadorArchivo.cpp" />
+		<Unit filename="JugadorArchivo.h" />
 		<Unit filename="Main.cpp" />
 		<Unit filename="Menu.cpp" />
 		<Unit filename="Menu.h" />
@@ -59,6 +67,7 @@
 		<Unit filename="Persona.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="utils.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

@@ -13,17 +13,11 @@ private:
     bool _Positiva;
     bool _Activo;
 
-  
-
 public:
     Accion();
 
     void cargar();
     void mostrar();
-
-   
-
-    
 
     int get_idaccion();
     int get_idpartido();
