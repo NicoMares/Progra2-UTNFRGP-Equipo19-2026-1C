@@ -67,6 +67,7 @@
 		<Unit filename="Persona.h">
 			<Option target="&lt;{~None~}&gt;" />
 		</Unit>
+		<Unit filename="Utils.cpp" />
 		<Unit filename="utils.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />

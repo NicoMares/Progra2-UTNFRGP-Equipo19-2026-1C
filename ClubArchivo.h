@@ -5,7 +5,7 @@ class ClubArchivo
 public:
 
 
-
+    ClubArchivo();
     bool grabarEnDisco();
     bool leerDeDisco(int posicion);
     bool modificarEnDisco(int posicion);
@@ -16,7 +16,7 @@ public:
 
 private:
 
-   
+
 
 };
 

@@ -2,7 +2,7 @@
 #include "Entrenador.h"
 #include "Club.h"
 #include <iostream>
-
+#include "ClubArchivo.h"
 EntrenadorArchivo::EntrenadorArchivo()
 {
 }
@@ -97,11 +97,12 @@ void EntrenadorArchivo::EliminarEntrenador() {
             std::cout << "Ingrese el ID del club que desea eliminar: ";
             std::cin >> idBuscado;
 
+            ClubArchivo Archivo;
             Club equipo;
             int pos = 0;
             bool encontrado = false;
 
-            while (equipo.leerDeDisco(pos))
+            while (Archivo.leerDeDisco(pos))
             {
                 if (equipo.get_idclub() == idBuscado && equipo.get_activo() == true)
                 {
@@ -111,7 +112,7 @@ void EntrenadorArchivo::EliminarEntrenador() {
                     equipo.set_activo(false);
 
 
-                    if (equipo.modificarEnDisco(pos))
+                    if (Archivo.modificarEnDisco(pos))
                     {
                         std::cout << "\n El club '" << equipo.get_nombre() << "' fue eliminado con éxito." << std::endl;
                     }
