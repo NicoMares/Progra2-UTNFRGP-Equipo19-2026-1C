@@ -49,7 +49,8 @@ void Club::cargar()
     std::cout << "ID CLUB ASIGNADO Al Club: " << _IdClub << std::endl;
 
     std::cout << "INGRESE NOMBRE DEL CLUB: ";
-    
+   
+    std::cin.ignore();
     cargarCadena(nombre, 49);
    
 
