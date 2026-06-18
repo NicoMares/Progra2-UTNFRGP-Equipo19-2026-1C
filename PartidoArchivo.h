@@ -4,8 +4,8 @@
 class PartidoArchivo {
 public:
     bool grabarEnDisco(Partido partido);
-    bool leerDeDisco(int posicion, Partido &partido);
-    bool modificarEnDisco(int posicion, Partido partido);
+    Partido leerDeDisco(int posicion);
+    bool modificarEnDisco(Partido partido, int posicion);
     int contarRegistros();
 
     void listarPorJornada(int jornadaBuscada);

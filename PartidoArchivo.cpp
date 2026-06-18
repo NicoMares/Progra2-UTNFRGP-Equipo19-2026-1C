@@ -16,14 +16,35 @@ bool PartidoArchivo::grabarEnDisco(Partido partido) {
 }
 
 // 2. EL LEER (Tiene que llevar PartidoArchivo::)
-bool PartidoArchivo::leerDeDisco(int posicion, Partido &partido) {
+Partido PartidoArchivo::leerDeDisco(int posicion) {
+    Partido partido;
     FILE *pFile = fopen("partidos.dat", "rb");
+    if (pFile == NULL) return partido;
+
+    fseek(pFile, posicion * sizeof(Partido), SEEK_SET);
+    fread(&partido, sizeof(Partido), 1, pFile);
+    fclose(pFile);
+    return partido;
+}
+
+bool PartidoArchivo::modificarEnDisco(Partido partido, int posicion) {
+    FILE *pFile = fopen("partidos.dat", "rb+");
     if (pFile == NULL) return false;
 
     fseek(pFile, posicion * sizeof(Partido), SEEK_SET);
-    bool result = fread(&partido, sizeof(Partido), 1, pFile);
+    bool result = fwrite(&partido, sizeof(Partido), 1, pFile);
     fclose(pFile);
     return result;
+}
+
+int PartidoArchivo::contarRegistros() {
+    FILE *pFile = fopen("partidos.dat", "rb");
+    if (pFile == NULL) return 0;
+
+    fseek(pFile, 0, SEEK_END);
+    int bytes = ftell(pFile);
+    fclose(pFile);
+    return bytes / sizeof(Partido);
 }
 
 // 3. EL LISTAR POR JORNADA (Tiene que llevar PartidoArchivo::)
@@ -36,7 +57,8 @@ void PartidoArchivo::listarPorJornada(int jornadaBuscada) {
     std::cout << "         PARTIDOS DE LA JORNADA " << jornadaBuscada << std::endl;
     std::cout << "=========================================" << std::endl;
 
-    while (leerDeDisco(pos, partidoTemp)) {
+    while (pos < contarRegistros()) {
+        partidoTemp = leerDeDisco(pos);
         if (partidoTemp.get_jornada() == jornadaBuscada && partidoTemp.get_activo()) {
             partidoTemp.mostrar();
             cont++;
@@ -50,28 +72,17 @@ void PartidoArchivo::listarPorJornada(int jornadaBuscada) {
     std::cout << "=========================================" << std::endl;
 }
 
-// 4. FUNCIÓN AUXILIAR (Esta va suelta, NO lleva PartidoArchivo::)
-bool leerClubSeguro(int posicion, Club &clubDestino) {
-    FILE *pFile = fopen("clubes.dat", "rb");
-    if (pFile == NULL) return false;
-
-    fseek(pFile, posicion * sizeof(Club), SEEK_SET);
-    bool result = fread(&clubDestino, sizeof(Club), 1, pFile);
-    fclose(pFile);
-    return result;
-}
-
 // 5. TU GENERADOR DE FIXTURE (Tiene que llevar PartidoArchivo::)
 void PartidoArchivo::generarFixtureTorneo() {
     Club clubTemp;
+    ClubArchivo archivoClubes;
     std::vector<int> vIdsClubes;
-    int pos = 0;
 
-    while (leerClubSeguro(pos, clubTemp)) {
+    for (int pos = 0; pos < archivoClubes.contarRegistros(); pos++) {
+        clubTemp = archivoClubes.leerDeDisco(pos);
         if (clubTemp.get_activo()) {
             vIdsClubes.push_back(clubTemp.get_idclub());
         }
-        pos++;
     }
 
     const int NUM_EQUIPOS = vIdsClubes.size();
@@ -121,6 +132,6 @@ void PartidoArchivo::generarFixtureTorneo() {
         vIdsClubes[1] = ultimo;
     }
 
-    std::cout << "\n¡Fixture generado con exito!" << std::endl;
+    std::cout << "\nÂ¡Fixture generado con Ã©xito!" << std::endl;
     std::cout << "Se crearon " << (idPartidoContador - 1) << " partidos distribuidos en " << NUM_JORNADAS << " jornadas." << std::endl;
 }

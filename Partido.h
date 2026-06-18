@@ -34,6 +34,6 @@ public:
     void set_jugado(bool jugado);
     void set_activo(bool activo);
 
-    // Métodos de interfaz corta
+    // MÃ©todos de interfaz corta
     void mostrar();
 };

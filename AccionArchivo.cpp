@@ -3,7 +3,7 @@
 #include <cstring>
 
 #include "AccionArchivo.h"
-#include "Jugador.h"
+#include "JugadorArchivo.h"
 
 bool AccionArchivo::grabarEnDisco(Accion accion)
 {
@@ -24,24 +24,39 @@ bool AccionArchivo::grabarEnDisco(Accion accion)
     return result;
 }
 
-bool AccionArchivo::leerDeDisco(int posicion, Accion &accion)
+Accion AccionArchivo::leerDeDisco(int posicion)
 {
+    Accion accion;
     FILE *pFile;
-    bool result;
 
     pFile = fopen("acciones.dat", "rb");
 
     if (pFile == NULL)
     {
-        return false;
+        return accion;
     }
 
     fseek(pFile, posicion * sizeof(Accion), SEEK_SET);
-    result = fread(&accion, sizeof(Accion), 1, pFile);
+    fread(&accion, sizeof(Accion), 1, pFile);
 
     fclose(pFile);
 
-    return result;
+    return accion;
+}
+
+int AccionArchivo::contarRegistros()
+{
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile == NULL)
+    {
+        return 0;
+    }
+
+    fseek(pFile, 0, SEEK_END);
+    int bytes = ftell(pFile);
+    fclose(pFile);
+
+    return bytes / sizeof(Accion);
 }
 
 bool AccionArchivo::completarDatosAccion(Accion &accion)
@@ -67,31 +82,23 @@ bool AccionArchivo::completarDatosAccion(Accion &accion)
 
 bool AccionArchivo::obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador)
 {
-    FILE *pFile;
-    Jugador jugador;
-    bool encontrado = false;
-
-    pFile = fopen("jugadores.dat", "rb");
-
-    if (pFile == NULL)
+    JugadorArchivo archivo;
+    int posicion = archivo.buscarPorDNI(dniJugador);
+    if (posicion == -1)
     {
         return false;
     }
 
-    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1)
+    Jugador jugador = archivo.leerDeDisco(posicion);
+    if (!jugador.get_activo())
     {
-        if (jugador.get_dni() == dniJugador && jugador.get_activo() == true)
-        {
-            strcpy(posicionJugador, jugador.get_posicion());
-            idClubJugador = jugador.get_idclub();
-            encontrado = true;
-            break;
-        }
+        return false;
     }
 
-    fclose(pFile);
+    strcpy(posicionJugador, jugador.get_posicion());
+    idClubJugador = jugador.get_idclub();
 
-    return encontrado;
+    return true;
 }
 
 int AccionArchivo::calcularPuntaje(const char tipoAccion[], const char posicionJugador[])
@@ -178,19 +185,17 @@ int AccionArchivo::calcularPuntaje(const char tipoAccion[], const char posicionJ
 void AccionArchivo::listarTodas()
 {
     Accion accion;
-    int pos = 0;
     bool encontro = false;
 
-    while (leerDeDisco(pos, accion))
+    for (int pos = 0; pos < contarRegistros(); pos++)
     {
+        accion = leerDeDisco(pos);
         if (accion.get_activo() == true)
         {
             accion.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontro = true;
         }
-
-        pos++;
     }
 
     if (encontro == false)
@@ -203,22 +208,20 @@ void AccionArchivo::consultarPorJugador()
 {
     int dniBuscado;
     Accion accion;
-    int pos = 0;
     bool encontrado = false;
 
     std::cout << "INGRESE DNI DEL JUGADOR: ";
     std::cin >> dniBuscado;
 
-    while (leerDeDisco(pos, accion))
+    for (int pos = 0; pos < contarRegistros(); pos++)
     {
+        accion = leerDeDisco(pos);
         if (accion.get_dnijugador() == dniBuscado && accion.get_activo() == true)
         {
             accion.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
         }
-
-        pos++;
     }
 
     if (encontrado == false)
@@ -231,22 +234,20 @@ void AccionArchivo::consultarPorPartido()
 {
     int idPartidoBuscado;
     Accion accion;
-    int pos = 0;
     bool encontrado = false;
 
     std::cout << "INGRESE ID DEL PARTIDO: ";
     std::cin >> idPartidoBuscado;
 
-    while (leerDeDisco(pos, accion))
+    for (int pos = 0; pos < contarRegistros(); pos++)
     {
+        accion = leerDeDisco(pos);
         if (accion.get_idpartido() == idPartidoBuscado && accion.get_activo() == true)
         {
             accion.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
         }
-
-        pos++;
     }
 
     if (encontrado == false)

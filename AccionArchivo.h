@@ -6,7 +6,8 @@ class AccionArchivo
 {
 public:
     bool grabarEnDisco(Accion accion);
-    bool leerDeDisco(int posicion, Accion &accion);
+    Accion leerDeDisco(int posicion);
+    int contarRegistros();
 
     bool completarDatosAccion(Accion &accion);
 
