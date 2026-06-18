@@ -1,7 +1,6 @@
 #include <iostream>
 #include "Fecha.h"
 #include <cstdlib>
-#include <locale>
 
 Fecha::Fecha() {
     _Dia = 0 ;
@@ -10,9 +9,6 @@ Fecha::Fecha() {
 }
 
 void Fecha::cargar() {
-
-      setlocale(LC_ALL, "spanish");
-
     int dia,mes,anio;
     bool fechaCorrecta = false;
     do {
@@ -31,7 +27,7 @@ void Fecha::cargar() {
         if (esValida()) {
             fechaCorrecta = true;
         } else {
-            std::cout << "\n ERROR: La fecha ingresada es invalida. Intente nuevamente.\n" << std::endl;
+            std::cout << "\nERROR: La fecha ingresada es inválida. Intentá nuevamente.\n" << std::endl;
         }
 
     } while (!fechaCorrecta); /// Si no es false, termina el Do While - Leandro

@@ -21,58 +21,93 @@ bool ClubArchivo::grabarEnDisco(Club equipo) {
     return guardo;
 }
 
-bool ClubArchivo::leerDeDisco(int posicion)
+Club ClubArchivo::leerDeDisco(int posicion)
 {
+    Club equipo;
     FILE *pFile;
-    bool result;
 
     pFile = fopen("clubes.dat", "rb");
 
     if (pFile == NULL)
     {
-        return false;
+        return equipo;
     }
 
     fseek(pFile, posicion * sizeof(Club), SEEK_SET);
-    result = fread(this, sizeof(Club), 1, pFile);
+    fread(&equipo, sizeof(Club), 1, pFile);
 
     fclose(pFile);
 
-    return result;
+    return equipo;
+}
+
+int ClubArchivo::contarRegistros()
+{
+    FILE *pFile = fopen("clubes.dat", "rb");
+    if (pFile == NULL) return 0;
+
+    fseek(pFile, 0, SEEK_END);
+    int bytes = ftell(pFile);
+    fclose(pFile);
+
+    return bytes / sizeof(Club);
+}
+
+int ClubArchivo::buscarPorID(int idClub)
+{
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        Club equipo = leerDeDisco(i);
+        if (equipo.get_idclub() == idClub) return i;
+    }
+
+    return -1;
+}
+
+int ClubArchivo::obtenerProximoID()
+{
+    int maximoID = 0;
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        Club equipo = leerDeDisco(i);
+        if (equipo.get_idclub() > maximoID)
+        {
+            maximoID = equipo.get_idclub();
+        }
+    }
+
+    return maximoID + 1;
 }
 
 void ClubArchivo :: mostrarPorID()
 {
-std::cout << "ENTRE AL MOSTRAR POR ID" << std::endl;
-
     int idBuscado;
     std::cout << "Ingrese el ID del club que desea consultar: ";
     std::cin >> idBuscado;
 
-    Club clubTemp;
     ClubArchivo archivo;
+    int pos = archivo.buscarPorID(idBuscado);
 
-    int pos = 0;
-    bool encontrado = false;
-
-    while (archivo.leerDeDisco(pos))
+    if (pos == -1)
     {
-        if (clubTemp.get_idclub() == idBuscado)
-        {
-            clubTemp.mostrar();
-            encontrado = true;
-            break;
-        }
-        pos++;
+        std::cout << "No se encontró un club con el ID: " << idBuscado << std::endl;
+        return;
     }
 
-    if (!encontrado)
+    Club clubTemp = archivo.leerDeDisco(pos);
+    if (!clubTemp.get_activo())
     {
-        std::cout << "No se encontro un club con el ID: " << idBuscado << std::endl;
+        std::cout << "No se encontró un club activo con el ID: " << idBuscado << std::endl;
+        return;
     }
+    clubTemp.mostrar();
 }
 
-bool ClubArchivo::modificarEnDisco(int posicion)
+bool ClubArchivo::modificarEnDisco(Club equipo, int posicion)
 {
 
     FILE *pFile = fopen("clubes.dat", "rb+");
@@ -87,7 +122,7 @@ bool ClubArchivo::modificarEnDisco(int posicion)
     fseek(pFile, posicion * sizeof(Club), SEEK_SET);
 
 
-    bool seEscribio = fwrite(this, sizeof(Club), 1, pFile);
+    bool seEscribio = fwrite(&equipo, sizeof(Club), 1, pFile);
 
 
     fclose(pFile);
@@ -104,11 +139,12 @@ void ClubArchivo::eliminarDeDisco()
 
             Club equipo;
             ClubArchivo archivo;
-            int pos = 0;
+            int pos = archivo.buscarPorID(idBuscado);
             bool encontrado = false;
 
-            while (archivo.leerDeDisco(pos))
+            if (pos != -1)
             {
+                equipo = archivo.leerDeDisco(pos);
                 if (equipo.get_idclub() == idBuscado && equipo.get_activo() == true)
                 {
                     encontrado = true;
@@ -117,7 +153,7 @@ void ClubArchivo::eliminarDeDisco()
                     equipo.set_activo(false);
 
 
-                    if (archivo.modificarEnDisco(pos))
+                    if (archivo.modificarEnDisco(equipo, pos))
                     {
                         std::cout << "\n El club '" << equipo.get_nombre() << "' fue eliminado con éxito." << std::endl;
                     }
@@ -125,12 +161,9 @@ void ClubArchivo::eliminarDeDisco()
                     {
                         std::cout << "\n Error al intentar guardar en el archivo." << std::endl;
                     }
-                    break;
                 }
-                pos++;
             }
             if (!encontrado) std::cout << "No se encontró ningún club activo con el ID: " << idBuscado << std::endl;
-            system("pause");
         }
 
 void ClubArchivo::mostrarClubes() {
@@ -146,8 +179,10 @@ void ClubArchivo::mostrarClubes() {
     // Leemos registro por registro
     // Mientras fread devuelva 1, significa que leyó un objeto correctamente
     while (fread(&aux, sizeof(Club), 1, p) == 1) {
-        aux.mostrar();
-        std::cout << "--------------------------------" << std::endl;
+        if (aux.get_activo()) {
+            aux.mostrar();
+            std::cout << "--------------------------------" << std::endl;
+        }
     }
 
     fclose(p);

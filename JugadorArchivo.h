@@ -5,18 +5,20 @@
 class JugadorArchivo
 {
 public:
-
     JugadorArchivo();
-    bool grabarEnDisco();
-    bool leerDeDisco(int posicion); 
+    bool grabarEnDisco(Jugador jugador);
+    Jugador leerDeDisco(int posicion);
+    int buscarPorID(int idJugador);
+    int buscarPorDNI(int dni);
+    int contarRegistros();
+    int obtenerProximoID();
     void ConsultarPorDNI();
     void consultarPorPosicion();
     void TodosJugadores();
     void listarPorClub();
     void ListarDni();
     void EliminarJugador();
-    bool modificarEnDisco(int posicion);
-
+    bool modificarEnDisco(Jugador jugador, int posicion);
 private:
 
 };

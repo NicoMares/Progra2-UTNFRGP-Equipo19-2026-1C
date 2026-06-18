@@ -3,20 +3,19 @@
 class ClubArchivo
 {
 public:
-
-
     ClubArchivo();
     bool grabarEnDisco(Club equipo);
-    bool leerDeDisco(int posicion);
-    bool modificarEnDisco(int posicion);
+    Club leerDeDisco(int posicion);
+    bool modificarEnDisco(Club equipo, int posicion);
+    int buscarPorID(int idClub);
+    int contarRegistros();
+    int obtenerProximoID();
     void eliminarDeDisco();
     void mostrarPorID();
     void mostrarClubes();
     void mostrarCout();
 
 private:
-
-
 
 };
 

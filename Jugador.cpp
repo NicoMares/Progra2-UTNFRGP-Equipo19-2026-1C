@@ -2,27 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include "Jugador.h"
-
-namespace {
-int obtenerProximoIdJugador() {
-    FILE *pFile = fopen("jugadores.dat", "rb");
-    if (pFile == NULL) {
-        return 1;
-    }
-
-    Jugador jugador;
-    int maxId = 0;
-
-    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
-        if (jugador.get_idjugador() > maxId) {
-            maxId = jugador.get_idjugador();
-        }
-    }
-
-    fclose(pFile);
-    return maxId + 1;
-}
-}
+#include "JugadorArchivo.h"
 
 Jugador::Jugador() {
     _IdJugador = 0;
@@ -38,19 +18,21 @@ void Jugador::cargar() {
     char posicion[30];
     float valorMercado;
 
+    JugadorArchivo archivo;
+    set_idjugador(archivo.obtenerProximoID());
+    std::cout << "ID JUGADOR ASIGNADO: " << _IdJugador << std::endl;
     Persona::cargar();
-    set_idjugador(obtenerProximoIdJugador());
 
     // DEBERIA CHEQUEAR SI EXISTE ANTES DE CARGARLO
     std::cout << "Ingrese ID del club: ";
     std::cin >> idClub;
     set_idclub(idClub);
 
-    std::cout << "Ingrese numero de camiseta: ";
+    std::cout << "Ingrese número de camiseta: ";
     std::cin >> numeroCamiseta;
     set_numerocamiseta(numeroCamiseta);
 
-    std::cout << "Ingrese posicion: ";
+    std::cout << "Ingrese posición: ";
     std::cin >> posicion;
     set_posicion(posicion);
 
@@ -64,8 +46,8 @@ void Jugador::mostrar() {
 
     std::cout << "ID Jugador: " << _IdJugador << std::endl;
     std::cout << "ID Club: " << _IdClub << std::endl;
-    std::cout << "Numero de camiseta: " << _NumeroCamiseta << std::endl;
-    std::cout << "Posicion: " << _Posicion << std::endl;
+    std::cout << "Número de camiseta: " << _NumeroCamiseta << std::endl;
+    std::cout << "Posición: " << _Posicion << std::endl;
     std::cout << "Valor de mercado: $" << _ValorMercado << std::endl;
 }
 

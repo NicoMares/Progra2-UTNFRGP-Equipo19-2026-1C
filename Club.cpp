@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cstdio>
 #include "Club.h"
+#include "ClubArchivo.h"
 #include "utils.h"
 
 Club::Club()
@@ -21,6 +22,10 @@ Club::Club()
 
 void Club::cargar()
 {
+    ClubArchivo archivo;
+    set_idclub(archivo.obtenerProximoID());
+    std::cout << "ID CLUB ASIGNADO: " << _IdClub << std::endl;
+
     std::cin.ignore();
 
     std::cout << "INGRESE NOMBRE DEL CLUB: ";
@@ -29,21 +34,10 @@ void Club::cargar()
     std::cout << "INGRESE NOMBRE DEL PRESIDENTE: ";
     std::cin.getline(_Presidente, 50);
 
-    int d, m, a;
-    std::cout << "INGRESE FECHA DE FUNDACION: "<<std::endl;
-    std::cout <<"Dia: "<<std::endl;
-    std::cin >> d;
-    std::cout <<"Mes: "<<std::endl;
-    std::cin >> m;
-    std::cout <<"Año: "<<std::endl;
-    std::cin >> a;
+    std::cout << "INGRESE FECHA DE FUNDACIÓN: "<<std::endl;
 
     Fecha f;
-
-    f.set_Dia(d);
-    f.set_Mes(m);
-    f.set_Anio(a);
-
+    f.cargar();
     set_fechafundacion(f);
 
 
@@ -62,17 +56,17 @@ void Club::mostrar()
     std::cout << "NOMBRE: " << _Nombre << std::endl;
     std::cout << "PRESIDENTE: " << _Presidente << std::endl;
 
-    std::cout << "FECHA DE FUNDACION: ";
+    std::cout << "FECHA DE FUNDACIÓN: ";
     _FechaFundacion.mostrar();
 
     std::cout << "CANTIDAD DE TROFEOS: " << _CantidadTrofeos << std::endl;
     std::cout << "CANTIDAD DE DESCENSOS: " << _CantidadDescensos << std::endl;
 
-    std::cout << "RACHA (ULTIMOS 5 PARTIDOS): ";
+    std::cout << "RACHA (ÚLTIMOS 5 PARTIDOS): ";
 
     int contadorMostrados = 0;
 
-    /// Recorremos el vector al revez as� podemos utilizar las ultimas jornadas - Leandro
+    /// Recorremos el vector al revés así podemos utilizar las últimas jornadas - Leandro
     for (int i = 15; i >= 0; i--)
     {
         int resultado = get_racha(i);

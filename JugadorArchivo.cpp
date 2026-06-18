@@ -9,7 +9,7 @@ JugadorArchivo::JugadorArchivo()
  
 }
 
-bool JugadorArchivo::grabarEnDisco() {
+bool JugadorArchivo::grabarEnDisco(Jugador jugador) {
     FILE *pFile;
     bool result;
 
@@ -19,29 +19,76 @@ bool JugadorArchivo::grabarEnDisco() {
         return false;
     }
 
-    result = fwrite(this, sizeof(Jugador), 1, pFile);
+    result = fwrite(&jugador, sizeof(Jugador), 1, pFile);
 
     fclose(pFile);
 
     return result;
 }
 
-bool JugadorArchivo::leerDeDisco(int posicion) {
+Jugador JugadorArchivo::leerDeDisco(int posicion) {
+    Jugador jugador;
     FILE *pFile;
-    bool result;
 
     pFile = fopen("jugadores.dat", "rb");
 
     if (pFile == NULL) {
-        return false;
+        return jugador;
     }
 
     fseek(pFile, posicion * sizeof(Jugador), SEEK_SET);
-    result = fread(this, sizeof(Jugador), 1, pFile);
+    fread(&jugador, sizeof(Jugador), 1, pFile);
 
     fclose(pFile);
 
-    return result;
+    return jugador;
+}
+
+int JugadorArchivo::contarRegistros() {
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return 0;
+
+    fseek(pFile, 0, SEEK_END);
+    int bytes = ftell(pFile);
+    fclose(pFile);
+
+    return bytes / sizeof(Jugador);
+}
+
+int JugadorArchivo::buscarPorID(int idJugador) {
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+        Jugador jugador = leerDeDisco(i);
+        if (jugador.get_idjugador() == idJugador) return i;
+    }
+
+    return -1;
+}
+
+int JugadorArchivo::buscarPorDNI(int dni) {
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+        Jugador jugador = leerDeDisco(i);
+        if (jugador.get_dni() == dni) return i;
+    }
+
+    return -1;
+}
+
+int JugadorArchivo::obtenerProximoID() {
+    int maximoID = 0;
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+        Jugador jugador = leerDeDisco(i);
+        if (jugador.get_idjugador() > maximoID) {
+            maximoID = jugador.get_idjugador();
+        }
+    }
+
+    return maximoID + 1;
 }
 
 void JugadorArchivo::ConsultarPorDNI() {
@@ -50,23 +97,19 @@ void JugadorArchivo::ConsultarPorDNI() {
     std::cin >> dniBuscado;
 
     JugadorArchivo ArchivoTemp;
-    Jugador JugadorTemp;
+    int pos = ArchivoTemp.buscarPorDNI(dniBuscado);
 
-    int pos = 0;
-    bool encontrado = false;
-
-    while (ArchivoTemp.leerDeDisco(pos)) {
-        if (JugadorTemp.get_dni() == dniBuscado) {
-            JugadorTemp.mostrar();
-            encontrado = true;
-            break;
-        }
-        pos++;
+    if (pos == -1) {
+        std::cout << "No se encontró un jugador con el DNI: " << dniBuscado << std::endl;
+        return;
     }
 
-    if (!encontrado) {
-        std::cout << "No se encontro un jugador con el DNI: " << dniBuscado << std::endl;
+    Jugador JugadorTemp = ArchivoTemp.leerDeDisco(pos);
+    if (!JugadorTemp.get_activo()) {
+        std::cout << "No se encontró un jugador activo con el DNI: " << dniBuscado << std::endl;
+        return;
     }
+    JugadorTemp.mostrar();
 }
 
 void JugadorArchivo ::consultarPorPosicion() {
@@ -81,8 +124,9 @@ void JugadorArchivo ::consultarPorPosicion() {
     int pos = 0;
     bool encontrado = false;
 
-    while (ArchivoTemp.leerDeDisco(pos)) {
-        if (strcmp(JugadorTemp.get_posicion(), posicionBuscada) == 0) {
+    while (pos < ArchivoTemp.contarRegistros()) {
+        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
+        if (JugadorTemp.get_activo() && strcmp(JugadorTemp.get_posicion(), posicionBuscada) == 0) {
             JugadorTemp.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
@@ -91,41 +135,40 @@ void JugadorArchivo ::consultarPorPosicion() {
     }
 
     if (!encontrado) {
-        std::cout << "No se encontraron jugadores con la posicion: " << posicionBuscada << std::endl;
+        std::cout << "No se encontraron jugadores activos con la posición: " << posicionBuscada << std::endl;
     }
 }
 
 void JugadorArchivo::ListarDni() {
-
-    
-
     JugadorArchivo ArchivoTemp;
     Jugador JugadorTemp;
   
     int pos = 0;
 
 
- while (ArchivoTemp.leerDeDisco(pos))
-            {
-                JugadorTemp.mostrar();
-             
-                pos++;
-            }
-
+    while (pos < ArchivoTemp.contarRegistros())
+    {
+        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
+        if (JugadorTemp.get_activo()) {
+            JugadorTemp.mostrar();
+            std::cout << "-----------------------------" << std::endl;
+        }
+        pos++;
+    }
 }
 
 void JugadorArchivo::TodosJugadores() {
-   
- JugadorArchivo ArchivoTemp;
-Jugador JugadorTemp;
-
-
+    JugadorArchivo ArchivoTemp;
+    Jugador JugadorTemp;
 
     int pos = 0;
 
-    while (ArchivoTemp.leerDeDisco(pos)) {
-        JugadorTemp.mostrar();
-        std::cout << "-----------------------------" << std::endl;
+    while (pos < ArchivoTemp.contarRegistros()) {
+        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
+        if (JugadorTemp.get_activo()) {
+            JugadorTemp.mostrar();
+            std::cout << "-----------------------------" << std::endl;
+        }
         pos++;
     }
 }
@@ -137,16 +180,15 @@ void JugadorArchivo::listarPorClub() {
 
     std::cout<<  "------------------------------" << std::endl;
 
-    
- JugadorArchivo ArchivoTemp;
-Jugador JugadorTemp;
-
+    JugadorArchivo ArchivoTemp;
+    Jugador JugadorTemp;
 
     int pos = 0;
     bool encontrado = false;
 
-    while (ArchivoTemp.leerDeDisco(pos)) {
-        if (JugadorTemp.get_idclub() == idClubBuscado) {
+    while (pos < ArchivoTemp.contarRegistros()) {
+        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
+        if (JugadorTemp.get_activo() && JugadorTemp.get_idclub() == idClubBuscado) {
             JugadorTemp.mostrar();
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
@@ -159,7 +201,7 @@ Jugador JugadorTemp;
     }
 }
 
-bool JugadorArchivo::modificarEnDisco(int posicion)
+bool JugadorArchivo::modificarEnDisco(Jugador jugador, int posicion)
 {
     FILE *pFile = fopen("jugadores.dat", "rb+"); 
     if (pFile == NULL)
@@ -168,41 +210,36 @@ bool JugadorArchivo::modificarEnDisco(int posicion)
     }
 
     fseek(pFile, posicion * sizeof(Jugador), SEEK_SET); 
-    bool seEscribio = fwrite(this, sizeof(Jugador), 1, pFile); 
+    bool seEscribio = fwrite(&jugador, sizeof(Jugador), 1, pFile);
     fclose(pFile); 
     return seEscribio; 
 }
 
 void JugadorArchivo::EliminarJugador() {
-   
-            int idBuscado;
-            std::cout << "Ingrese el ID o DNI del jugador a eliminar: ";
-            std::cin >> idBuscado;
+    int idBuscado;
+    std::cout << "Ingrese el ID del jugador a eliminar: ";
+    std::cin >> idBuscado;
 
-         
-            JugadorArchivo ArchivoTemp;
-            Jugador JugadorTemp;
+    JugadorArchivo ArchivoTemp;
+    int pos = ArchivoTemp.buscarPorID(idBuscado);
 
+    if (pos == -1) {
+        std::cout << "No se encontró ningún jugador con el ID ingresado." << std::endl;
+        return;
+    }
 
-            int pos = 0;
-            bool encontrado = false;
+    Jugador JugadorTemp = ArchivoTemp.leerDeDisco(pos);
 
-            while (ArchivoTemp.leerDeDisco(pos)) 
-            {
-                if (JugadorTemp.get_idjugador() == idBuscado && JugadorTemp.get_activo() == true) 
-                {
-                    encontrado = true;
-                    
-                    JugadorTemp.set_activo(false); 
-                    
-                    if (ArchivoTemp.modificarEnDisco(pos)) { 
-                        std::cout << "\n  El jugador fue eliminado con éxito del sistema." << std::endl;
-                    } else {
-                        std::cout << "\n  Error al intentar guardar en el archivo." << std::endl;
-                    }
-                    break; 
-                }
-                pos++;
-            }
-            if (!encontrado) std::cout << "No se encontró ningún jugador activo con el ID/DNI ingresado." << std::endl;
+    if (JugadorTemp.get_activo() == false) {
+        std::cout << "El jugador ya se encuentra inactivo." << std::endl;
+        return;
+    }
+
+    JugadorTemp.set_activo(false);
+
+    if (ArchivoTemp.modificarEnDisco(JugadorTemp, pos)) {
+        std::cout << "\nEl jugador fue eliminado con éxito del sistema." << std::endl;
+    } else {
+        std::cout << "\nError al intentar guardar en el archivo." << std::endl;
+    }
 }

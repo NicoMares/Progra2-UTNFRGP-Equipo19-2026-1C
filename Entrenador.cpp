@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "Entrenador.h"
+#include "EntrenadorArchivo.h"
 
 Entrenador::Entrenador() {
     _IdClub = -1;
@@ -9,23 +10,8 @@ Entrenador::Entrenador() {
 // LEE Y ASIGNA ID AUTOINCREMENTAL  EN LA CARGA
 void Entrenador::cargar() {
     int idclub;
-    int siguienteId = 1;
-
-    FILE *pFile = fopen("entrenadores.dat", "rb");
-
-    if (pFile != NULL) {
-        Entrenador entrenadorTemp;
-
-        while (fread(&entrenadorTemp, sizeof(Entrenador), 1, pFile) == 1) {
-            if (entrenadorTemp.get_IdEntrenador() >= siguienteId) {
-                siguienteId = entrenadorTemp.get_IdEntrenador() + 1;
-            }
-        }
-
-        fclose(pFile);
-    }
-
-    set_idEntrenador(siguienteId);
+    EntrenadorArchivo archivo;
+    set_idEntrenador(archivo.obtenerProximoID());
     std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
 
     Persona::cargar();
