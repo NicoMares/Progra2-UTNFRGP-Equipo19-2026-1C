@@ -264,8 +264,8 @@ void Menu::menuJugadores()
             cout << "\n[Acción] Listar Jugadores ordenados por DNI...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
 
-              JugadorArchivo archivo;
-            archivo.ListarDni();
+            JugadorArchivo archivo;
+            archivo.listarPorDNI();
 
 
 

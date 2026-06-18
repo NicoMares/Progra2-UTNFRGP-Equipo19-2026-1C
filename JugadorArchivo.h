@@ -17,7 +17,7 @@ public:
     void listarActivos();
     void listar();
     void listarPorClub();
-    void ListarDni();
+    void listarPorDNI();
     void EliminarJugador();
     bool modificarEnDisco(Jugador jugador, int posicion);
 private:

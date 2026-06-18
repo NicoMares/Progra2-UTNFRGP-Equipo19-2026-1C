@@ -139,22 +139,34 @@ void JugadorArchivo ::consultarPorPosicion() {
     }
 }
 
-void JugadorArchivo::ListarDni() {
-    JugadorArchivo ArchivoTemp;
-    Jugador JugadorTemp;
-  
+void JugadorArchivo::listarPorDNI() {
+    int cantidadRegistros = contarRegistros();
+    Jugador *jugadores = new Jugador[cantidadRegistros];
+
     int pos = 0;
-
-
-    while (pos < ArchivoTemp.contarRegistros())
-    {
-        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
-        if (JugadorTemp.get_activo()) {
-            JugadorTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-        }
+    while (pos < cantidadRegistros) {
+        jugadores[pos] = leerDeDisco(pos);
         pos++;
     }
+
+    for (int i = 0; i < cantidadRegistros - 1; i++) {
+        for (int j = 0; j < cantidadRegistros - 1 - i; j++) {
+            if (jugadores[j].get_dni() > jugadores[j + 1].get_dni()) {
+                Jugador auxiliar = jugadores[j];
+                jugadores[j] = jugadores[j + 1];
+                jugadores[j + 1] = auxiliar;
+            }
+        }
+    }
+
+    for (int i = 0; i < cantidadRegistros; i++) {
+        if (jugadores[i].get_activo()) {
+            jugadores[i].mostrar();
+            std::cout << "--------------------------------" << std::endl;
+        }
+    }
+
+    delete [] jugadores;
 }
 
 void JugadorArchivo::listarActivos() {
