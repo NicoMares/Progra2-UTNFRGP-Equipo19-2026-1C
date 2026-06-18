@@ -9,6 +9,5 @@ public:
     int contarRegistros();
 
     void listarPorJornada(int jornadaBuscada);
-
     void generarFixtureTorneo();
 };

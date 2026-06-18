@@ -71,9 +71,13 @@ void Fecha::set_Anio(int anio ){
 
 ///Nos sirve para validar los dias, meses y años. -Leandro
 bool Fecha::esValida() {
-    if (_Anio <= 0 || _Mes < 1 || _Mes > 12) {
-        return false;
-    }
+    if (_Anio < 1800 || _Anio > 2026) {
+    return false;
+}
+
+if (_Mes < 1 || _Mes > 12) {
+    return false;
+}
 
     ///Le asignamos los dias a los Doce meses del año - Leandro
     int diasPorMes[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
