@@ -1,1 +1,13 @@
+# Datos generados localmente
 *.dat
+
+# Binarios y objetos de compilación
+bin/
+obj/
+
+*.exe
+*.o
+*.obj
+
+*.depend
+*.layout
