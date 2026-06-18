@@ -495,8 +495,8 @@ void Menu::menuAcciones()
         cout << "| 1. Cargar Accion                                       |" << endl;
         cout << "| 2. Consultar Acciones por Jugador                      |" << endl;
         cout << "| 3. Consultar Acciones por Partido                      |" << endl;
-        cout << "| 4. Listar Todas las Acciones                           |" << endl;
-        cout << "|                                                        |" << endl;
+        cout << "| 4. Listar Acciones Activas                             |" << endl;
+        cout << "| 5. Listar Todas las Acciones                           |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << "Selecciona una opcion: ";
@@ -565,11 +565,24 @@ void Menu::menuAcciones()
             case 4:
             {
                 cout << endl;
+                cout << "[Accion] Listar Acciones Activas..." << endl;
+                cout << endl;
+
+                AccionArchivo archivo;
+                archivo.listarActivos();
+
+                system("pause");
+            }
+            break;
+
+            case 5:
+            {
+                cout << endl;
                 cout << "[Accion] Listar Todas las Acciones..." << endl;
                 cout << endl;
 
                 AccionArchivo archivo;
-                archivo.listarTodas();
+                archivo.listar();
 
                 system("pause");
             }

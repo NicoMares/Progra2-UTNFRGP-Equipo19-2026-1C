@@ -182,7 +182,7 @@ int AccionArchivo::calcularPuntaje(const char tipoAccion[], const char posicionJ
     return 0;
 }
 
-void AccionArchivo::listarTodas()
+void AccionArchivo::listarActivos()
 {
     Accion accion;
     bool encontro = false;
@@ -193,9 +193,28 @@ void AccionArchivo::listarTodas()
         if (accion.get_activo() == true)
         {
             accion.mostrar();
-            std::cout << "-----------------------------" << std::endl;
+            std::cout << "--------------------------------" << std::endl;
             encontro = true;
         }
+    }
+
+    if (encontro == false)
+    {
+        std::cout << "No hay acciones activas cargadas." << std::endl;
+    }
+}
+
+void AccionArchivo::listar()
+{
+    Accion accion;
+    bool encontro = false;
+
+    for (int pos = 0; pos < contarRegistros(); pos++)
+    {
+        accion = leerDeDisco(pos);
+        accion.mostrar();
+        std::cout << "--------------------------------" << std::endl;
+        encontro = true;
     }
 
     if (encontro == false)

@@ -11,7 +11,8 @@ public:
 
     bool completarDatosAccion(Accion &accion);
 
-    void listarTodas();
+    void listarActivos();
+    void listar();
     void consultarPorJugador();
     void consultarPorPartido();
 
