@@ -14,7 +14,6 @@ public:
     void mostrarPorID();
     void listarActivos();
     void listar();
-    void mostrarCout();
 
 private:
 

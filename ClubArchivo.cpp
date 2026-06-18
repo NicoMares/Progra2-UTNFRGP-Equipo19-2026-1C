@@ -204,19 +204,3 @@ void ClubArchivo::listar() {
 
     fclose(p);
 }
-
-void ClubArchivo::mostrarCout(){
-
-    ClubArchivo archivo;
-    Club aux;
- if (archivo.grabarEnDisco(aux))
-            {
-                std::cout << "Accion guardada correctamente." << std::endl;
-            }
-            else
-            {
-               std::cout << "No se pudo guardar la accion." << std::endl;
-            }
-
-
-}
