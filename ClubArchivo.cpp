@@ -166,7 +166,7 @@ void ClubArchivo::eliminarDeDisco()
             if (!encontrado) std::cout << "No se encontró ningún club activo con el ID: " << idBuscado << std::endl;
         }
 
-void ClubArchivo::mostrarClubes() {
+void ClubArchivo::listarActivos() {
     Club aux;
     // Abrimos en modo lectura binaria ("rb")
     FILE *p = fopen("clubes.dat", "rb");
@@ -183,6 +183,23 @@ void ClubArchivo::mostrarClubes() {
             aux.mostrar();
             std::cout << "--------------------------------" << std::endl;
         }
+    }
+
+    fclose(p);
+}
+
+void ClubArchivo::listar() {
+    Club aux;
+    FILE *p = fopen("clubes.dat", "rb");
+
+    if (p == NULL) {
+        std::cout << "No hay clubes cargados en el sistema." << std::endl;
+        return;
+    }
+
+    while (fread(&aux, sizeof(Club), 1, p) == 1) {
+        aux.mostrar();
+        std::cout << "--------------------------------" << std::endl;
     }
 
     fclose(p);

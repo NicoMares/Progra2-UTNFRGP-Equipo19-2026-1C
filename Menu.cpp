@@ -73,23 +73,23 @@ void  Menu :: Mostrar()
 {
     cout<<"======================================"<<endl;
 
-    cout<<"|    SISTEMA DE LIGA DE FÚTBOL  |"<<endl;
+    cout<<"|     SISTEMA DE LIGA DE FÚTBOL      |"<<endl;
 
     cout<<"======================================"<<endl;
 
     cout<<"Menú Principal "<<endl;
 
-    cout<<"--------------------------------"<<endl;
+    cout<<"--------------------------------------"<<endl;
 
-    cout <<"|     1. Gestión de Equipos        |"<<endl;
-    cout <<"|     2. Gestión de Jugadores      |"<<endl;
-    cout <<"|     3. Gestión de Entrenadores   |"<<endl;
-    cout <<"|     4. Gestión de Partidos       |"<<endl;
-    cout <<"|     5. Gestión de Acciones       |"<<endl;
-    cout <<"|     6. Mostrar Tabla             |"<<endl;
-    cout <<"|     0. Salir                     |"<<endl;
+    cout <<"|     1. Gestión de Equipos          |"<<endl;
+    cout <<"|     2. Gestión de Jugadores        |"<<endl;
+    cout <<"|     3. Gestión de Entrenadores     |"<<endl;
+    cout <<"|     4. Gestión de Partidos         |"<<endl;
+    cout <<"|     5. Gestión de Acciones         |"<<endl;
+    cout <<"|     6. Mostrar Tabla               |"<<endl;
+    cout <<"|     0. Salir                       |"<<endl;
 
-    cout<<"--------------------------------"<<endl;
+    cout<<"--------------------------------------"<<endl;
 
 }
 
@@ -106,9 +106,10 @@ void Menu::menuEquipos()
         cout << "=======================================" << endl;
         cout << "| 1. Cargar Equipo                    |" << endl;
         cout << "| 2. Consulta por ID de Club          |" << endl;
-        cout << "| 3. Listado de Clubes                |" << endl;
-        cout << "| 4. Eliminar Club                    |" << endl;
+        cout << "| 3. Listado de Clubes Activos        |" << endl;
+        cout << "| 4. Listado de Clubes                |" << endl;
         cout << "| 5. Modificar Club                   |" << endl;
+        cout << "| 6. Eliminar Club                    |" << endl;
         cout << "| 0. Volver al Menú Principal         |" << endl;
         cout << "=======================================" << endl;
         cout << "Ingresá una opción: " << endl;
@@ -143,7 +144,7 @@ break;
         case 3:
         {
     ClubArchivo archivo;
-    archivo.mostrarClubes();
+    archivo.listarActivos();
 
     std::cout << "\nPresioná Enter para volver al menú...";
     std::cin.ignore(); // Limpia el buffer
@@ -152,13 +153,12 @@ break;
 break;
         case 4:
         {
-            cout << "\n[Acción] Eliminando Equipo... \n" << endl;
-            cout<< "-------------------------------------------------------------"<<endl;
-
             ClubArchivo archivo;
-            archivo.eliminarDeDisco();
+            archivo.listar();
 
-            system("pause");
+            std::cout << "\nPresioná Enter para volver al menú...";
+            std::cin.ignore();
+            std::cin.get();
         }
             break;
 
@@ -166,6 +166,17 @@ break;
         {
             cout << "\n[Acción] Modificando Equipo... \n" << endl;
             modificarClub();
+            system("pause");
+        }
+            break;
+        case 6:
+        {
+            cout << "\n[Acción] Eliminando Equipo... \n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
+
+            ClubArchivo archivo;
+            archivo.eliminarDeDisco();
+
             system("pause");
         }
             break;
@@ -198,9 +209,10 @@ void Menu::menuJugadores()
         cout << "| 3. Consulta por Posición                               |" << endl;
         cout << "| 4. Listar Jugadores ordenados por DNI                  |" << endl;
         cout << "| 5. Listar Jugadores agrupados por Club                 |" << endl;
-        cout << "| 6. Mostrar Todos Los Jugadores De La Liga              |" << endl;
-        cout << "| 7. Eliminar Jugador                                    |" << endl;
+        cout << "| 6. Mostrar Jugadores Activos De La Liga                |" << endl;
+        cout << "| 7. Mostrar Todos Los Jugadores De La Liga              |" << endl;
         cout << "| 8. Modificar Jugador                                   |" << endl;
+        cout << "| 9. Eliminar Jugador                                    |" << endl;
         cout << "| 0. Volver al Menú Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << " Seleccioná una opción: ";
@@ -278,7 +290,7 @@ void Menu::menuJugadores()
             cout<< "-------------------------------------------------------------"<<endl;
 
             JugadorArchivo archivo;
-            archivo.TodosJugadores();
+            archivo.listarActivos();
 
             system("pause");
         }
@@ -286,20 +298,13 @@ void Menu::menuJugadores()
 
         case 7:
         {
+            cout << "\n[Acción] Mostrar todos los jugadores de la liga...\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
 
-         cout << "\n[Acción] Eliminar Jugador... \n" << endl;
-         cout<< "-------------------------------------------------------------"<<endl;
+            JugadorArchivo archivo;
+            archivo.listar();
 
-
-        JugadorArchivo Archivo;
-
-        Archivo.EliminarJugador();
-
-
-
-         system("pause");
-
-
+            system("pause");
         }
         break;
         case 8:
@@ -309,6 +314,17 @@ void Menu::menuJugadores()
          modificarJugador();
          system("pause");
 
+        }
+        break;
+        case 9:
+        {
+         cout << "\n[Acción] Eliminar Jugador... \n" << endl;
+         cout<< "-------------------------------------------------------------"<<endl;
+
+         JugadorArchivo archivo;
+         archivo.EliminarJugador();
+
+         system("pause");
         }
         break;
             case 0:
@@ -337,9 +353,10 @@ void Menu::menuEntrenadores()
         cout << "==========================================================" << endl;
         cout << "| 1. Cargar Entrenador                                   |" << endl;
         cout << "| 2. Consulta por ID de Entrenador                       |" << endl;
-        cout << "| 3. Listar todos los Entrenadores                       |" << endl;
-        cout << "| 4. Eliminar Entrenador                                 |" << endl;
+        cout << "| 3. Listar Entrenadores Activos                         |" << endl;
+        cout << "| 4. Listar Todos los Entrenadores                       |" << endl;
         cout << "| 5. Modificar Entrenador                                |" << endl;
+        cout << "| 6. Eliminar Entrenador                                 |" << endl;
         cout << "| 0. Volver al Menú Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << " Seleccioná una opción: ";
@@ -379,7 +396,7 @@ void Menu::menuEntrenadores()
 
             EntrenadorArchivo archivo;
 
-                archivo.MostrarTodos();
+                archivo.listarActivos();
 
             system("pause");
         }
@@ -387,10 +404,11 @@ void Menu::menuEntrenadores()
 
         case 4:
         {
-            cout << "\n[Acción] Eliminar Entrenador... \n" << endl;
+            cout << "\n[Acción] Listar todos los entrenadores...\n" << endl;
+            cout<< "-------------------------------------------------------------"<<endl;
 
             EntrenadorArchivo archivo;
-            archivo.EliminarEntrenador();
+            archivo.listar();
             system("pause");
         }
         break;
@@ -399,6 +417,16 @@ void Menu::menuEntrenadores()
         {
             cout << "\n[Acción] Modificar Entrenador... \n" << endl;
             modificarEntrenador();
+            system("pause");
+        }
+        break;
+
+        case 6:
+        {
+            cout << "\n[Acción] Eliminar Entrenador... \n" << endl;
+
+            EntrenadorArchivo archivo;
+            archivo.EliminarEntrenador();
             system("pause");
         }
         break;

@@ -14,7 +14,8 @@ public:
     int obtenerProximoID();
     void ConsultarPorDNI();
     void consultarPorPosicion();
-    void TodosJugadores();
+    void listarActivos();
+    void listar();
     void listarPorClub();
     void ListarDni();
     void EliminarJugador();

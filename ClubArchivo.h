@@ -12,7 +12,8 @@ public:
     int obtenerProximoID();
     void eliminarDeDisco();
     void mostrarPorID();
-    void mostrarClubes();
+    void listarActivos();
+    void listar();
     void mostrarCout();
 
 private:

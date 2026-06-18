@@ -114,7 +114,7 @@ void EntrenadorArchivo::mostrarDTPorID() {
     std::cout << "-----------------------------" << std::endl;
 }
 
-void EntrenadorArchivo::MostrarTodos() {
+void EntrenadorArchivo::listarActivos() {
 
 int pos = 0;
 
@@ -126,12 +126,27 @@ EntrenadorArchivo archivo;
                 entrenador = archivo.leerDisco(pos);
                 if (entrenador.get_activo()) {
                     entrenador.mostrar();
-                    std::cout << "-----------------------------" << std::endl;
+                    std::cout << "--------------------------------" << std::endl;
                 }
                 pos++;
             }
 
 
+}
+
+void EntrenadorArchivo::listar() {
+    int pos = 0;
+
+    Entrenador entrenador;
+    EntrenadorArchivo archivo;
+
+    while (pos < archivo.contarRegistros())
+    {
+        entrenador = archivo.leerDisco(pos);
+        entrenador.mostrar();
+        std::cout << "--------------------------------" << std::endl;
+        pos++;
+    }
 }
 
 void EntrenadorArchivo::EliminarEntrenador() {

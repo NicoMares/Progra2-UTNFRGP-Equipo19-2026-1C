@@ -157,7 +157,7 @@ void JugadorArchivo::ListarDni() {
     }
 }
 
-void JugadorArchivo::TodosJugadores() {
+void JugadorArchivo::listarActivos() {
     JugadorArchivo ArchivoTemp;
     Jugador JugadorTemp;
 
@@ -167,8 +167,22 @@ void JugadorArchivo::TodosJugadores() {
         JugadorTemp = ArchivoTemp.leerDeDisco(pos);
         if (JugadorTemp.get_activo()) {
             JugadorTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
+            std::cout << "--------------------------------" << std::endl;
         }
+        pos++;
+    }
+}
+
+void JugadorArchivo::listar() {
+    JugadorArchivo archivo;
+    Jugador jugador;
+
+    int pos = 0;
+
+    while (pos < archivo.contarRegistros()) {
+        jugador = archivo.leerDeDisco(pos);
+        jugador.mostrar();
+        std::cout << "--------------------------------" << std::endl;
         pos++;
     }
 }
