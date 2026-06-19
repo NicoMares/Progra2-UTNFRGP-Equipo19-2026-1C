@@ -450,9 +450,11 @@ void Menu::menuPartidos() {
     do {
         system("cls");
         cout << "==== MENU PARTIDOS ====" << endl;
+        cout << "---------------------------------------------"<< endl;
         cout << "1 - Generar Fixture Completo (15 Jornadas)" << endl;
         cout << "2 - Ver partidos de una Jornada Especifica" << endl;
         cout << "0 - Volver al Menu Principal" << endl;
+        cout << "---------------------------------------------"<< endl;
         cout << "Ingrese opcion: ";
         cin >> op;
 

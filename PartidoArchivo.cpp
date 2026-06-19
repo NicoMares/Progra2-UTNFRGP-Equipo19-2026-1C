@@ -57,6 +57,7 @@ int PartidoArchivo::contarRegistros()
 void PartidoArchivo::listarPorJornada(int jornadaBuscada)
 {
     int cantidad = contarRegistros();
+    ClubArchivo archivoClub;
 
     for (int i = 0; i < cantidad; i++)
     {
@@ -65,9 +66,15 @@ void PartidoArchivo::listarPorJornada(int jornadaBuscada)
         if (partido.get_activo() &&
             partido.get_jornada() == jornadaBuscada)
         {
+            int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+            int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
+
+            Club clubLocal = archivoClub.leerDeDisco(posLocal);
+            Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
             std::cout << "ID Partido: " << partido.get_idpartido() << std::endl;
-            std::cout << "Local: " << partido.get_idclublocal() << std::endl;
-            std::cout << "Visitante: " << partido.get_idclubvisitante() << std::endl;
+            std::cout << "Local: " << clubLocal.get_nombre() << std::endl;
+            std::cout << "Visitante: " << clubVisitante.get_nombre() << std::endl;
             std::cout << "Goles Local: " << partido.get_goleslocal() << std::endl;
             std::cout << "Goles Visitante: " << partido.get_golesvisitante() << std::endl;
             std::cout << "Jugado: " << (partido.get_jugado() ? "Si" : "No") << std::endl;
