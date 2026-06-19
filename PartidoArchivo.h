@@ -10,4 +10,6 @@ public:
 
     void listarPorJornada(int jornadaBuscada);
     void generarFixtureTorneo();
+    void VerJornada();
+    void VerPartidos();
 };

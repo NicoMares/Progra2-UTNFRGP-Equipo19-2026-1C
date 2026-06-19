@@ -453,6 +453,7 @@ void Menu::menuPartidos() {
         cout << "---------------------------------------------"<< endl;
         cout << "1 - Generar Fixture Completo (15 Jornadas)" << endl;
         cout << "2 - Ver partidos de una Jornada Especifica" << endl;
+        cout << "3 - Ver Todos Los Partidos "<< endl;
         cout << "0 - Volver al Menu Principal" << endl;
         cout << "---------------------------------------------"<< endl;
         cout << "Ingrese opcion: ";
@@ -460,24 +461,39 @@ void Menu::menuPartidos() {
 
         switch(op) {
             case 1:
+{
                 cout << "\nGenerando fixture del campeonato..." << endl;
                 archivoPartidos.generarFixtureTorneo();
+
                 system("pause");
+
                 break;
-
+        }
             case 2: {
-                int nroJornada;
-                cout << "\nIngrese el numero de Jornada que desea ver (1 a 15): ";
-                cin >> nroJornada;
-
-                if (nroJornada >= 1 && nroJornada <= 15) {
-                    archivoPartidos.listarPorJornada(nroJornada);
-                } else {
-                    cout << "Número de jornada invalido." << endl;
-                }
+                PartidoArchivo archivo;
+            cout << "\nMostrando Jornadas...." << endl;
+                
+            archivo.VerJornada();
+  
                 system("pause");
                 break;
             }
+
+        case 3:
+{
+
+    PartidoArchivo archivo;
+    cout<< "\n Mostrando todos Los Partidos..."<<endl;
+    
+    
+    archivo.VerPartidos();
+
+
+
+
+}
+
+
         }
 
     } while(op != 0);

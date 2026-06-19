@@ -148,3 +148,29 @@ void PartidoArchivo::generarFixtureTorneo() {
 
     std::cout << "¡Fixture de 15 jornadas generado con éxito!" << std::endl;
 }
+
+void PartidoArchivo:: VerJornada(){
+
+    PartidoArchivo archivo;
+ int nroJornada;
+                std::cout << "\nIngrese el numero de Jornada que desea ver (1 a 15): "<< std::endl;
+                std::cout << "-------------------------------------------------------"<< std::endl;
+               std::cin >> nroJornada;
+
+                system ("cls");
+
+                if (nroJornada >= 1 && nroJornada <= 15) {
+                    archivo.listarPorJornada(nroJornada);
+                } else {
+                    std::cout << "Número de jornada invalido." <<std:: endl;
+                }
+
+
+
+}
+
+void PartidoArchivo:: VerPartidos(){
+
+
+    
+}
