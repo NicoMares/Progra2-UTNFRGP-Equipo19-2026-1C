@@ -9,50 +9,23 @@ JugadorArchivo::JugadorArchivo()
  
 }
 
+const char* JugadorArchivo::getNombreArchivo() const
+{
+    return "jugadores.dat";
+}
+
 bool JugadorArchivo::grabarEnDisco(Jugador jugador) {
-    FILE *pFile;
-    bool result;
-
-    pFile = fopen("jugadores.dat", "ab");
-
-    if (pFile == NULL) {
-        return false;
-    }
-
-    result = fwrite(&jugador, sizeof(Jugador), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
+    return grabarRegistro(&jugador, sizeof(Jugador));
 }
 
 Jugador JugadorArchivo::leerDeDisco(int posicion) {
     Jugador jugador;
-    FILE *pFile;
-
-    pFile = fopen("jugadores.dat", "rb");
-
-    if (pFile == NULL) {
-        return jugador;
-    }
-
-    fseek(pFile, posicion * sizeof(Jugador), SEEK_SET);
-    fread(&jugador, sizeof(Jugador), 1, pFile);
-
-    fclose(pFile);
-
+    leerRegistro(&jugador, sizeof(Jugador), posicion);
     return jugador;
 }
 
 int JugadorArchivo::contarRegistros() {
-    FILE *pFile = fopen("jugadores.dat", "rb");
-    if (pFile == NULL) return 0;
-
-    fseek(pFile, 0, SEEK_END);
-    int bytes = ftell(pFile);
-    fclose(pFile);
-
-    return bytes / sizeof(Jugador);
+    return Archivo::contarRegistros(sizeof(Jugador));
 }
 
 int JugadorArchivo::buscarPorID(int idJugador) {
@@ -229,16 +202,7 @@ void JugadorArchivo::listarPorClub() {
 
 bool JugadorArchivo::modificarEnDisco(Jugador jugador, int posicion)
 {
-    FILE *pFile = fopen("jugadores.dat", "rb+"); 
-    if (pFile == NULL)
-    {
-        return false;
-    }
-
-    fseek(pFile, posicion * sizeof(Jugador), SEEK_SET); 
-    bool seEscribio = fwrite(&jugador, sizeof(Jugador), 1, pFile);
-    fclose(pFile); 
-    return seEscribio; 
+    return modificarRegistro(&jugador, sizeof(Jugador), posicion);
 }
 
 void JugadorArchivo::EliminarJugador() {

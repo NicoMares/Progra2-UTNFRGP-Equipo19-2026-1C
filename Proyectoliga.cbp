@@ -38,6 +38,8 @@
 		</Unit>
 		<Unit filename="AccionArchivo.cpp" />
 		<Unit filename="AccionArchivo.h" />
+		<Unit filename="Archivo.cpp" />
+		<Unit filename="Archivo.h" />
 		<Unit filename="Club.cpp" />
 		<Unit filename="Club.h">
 			<Option target="&lt;{~None~}&gt;" />

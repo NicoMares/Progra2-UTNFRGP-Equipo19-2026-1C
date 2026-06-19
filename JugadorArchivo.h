@@ -1,8 +1,9 @@
 #pragma once
+#include "Archivo.h"
 #include "Jugador.h"
 
 
-class JugadorArchivo
+class JugadorArchivo : public Archivo
 {
 public:
     JugadorArchivo();
@@ -21,6 +22,7 @@ public:
     void EliminarJugador();
     bool modificarEnDisco(Jugador jugador, int posicion);
 private:
+    const char* getNombreArchivo() const;
 
 };
 

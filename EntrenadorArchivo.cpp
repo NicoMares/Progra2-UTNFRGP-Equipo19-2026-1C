@@ -5,65 +5,27 @@ EntrenadorArchivo::EntrenadorArchivo()
 {
 }
 
+const char* EntrenadorArchivo::getNombreArchivo() const
+{
+    return "entrenadores.dat";
+}
+
 Entrenador EntrenadorArchivo::leerDisco(int posicion) {
     Entrenador entrenador;
-    FILE *pFile;
-
-    pFile = fopen("entrenadores.dat", "rb");
-
-    if (pFile == NULL) {
-        return entrenador;
-    }
-
-    fseek(pFile, posicion * sizeof(Entrenador), SEEK_SET);
-    fread(&entrenador, sizeof(Entrenador), 1, pFile);
-
-    fclose(pFile);
-
+    leerRegistro(&entrenador, sizeof(Entrenador), posicion);
     return entrenador;
 }
 
 bool EntrenadorArchivo::grabarEnDisco(Entrenador entrenador){
-
-    FILE *pFile;
-    bool result;
-
-    pFile = fopen("entrenadores.dat", "ab");
-
-    if (pFile == NULL) {
-        return false;
-    }
-
-    result = fwrite(&entrenador, sizeof(Entrenador), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
+    return grabarRegistro(&entrenador, sizeof(Entrenador));
 }
 
 bool EntrenadorArchivo::modificarEnDisco(Entrenador entrenador, int posicion) {
-    FILE *pFile = fopen("entrenadores.dat", "rb+");
-
-    if (pFile == NULL) {
-        return false;
-    }
-
-    fseek(pFile, posicion * sizeof(Entrenador), SEEK_SET);
-    bool result = fwrite(&entrenador, sizeof(Entrenador), 1, pFile);
-
-    fclose(pFile);
-    return result;
+    return modificarRegistro(&entrenador, sizeof(Entrenador), posicion);
 }
 
 int EntrenadorArchivo::contarRegistros() {
-    FILE *pFile = fopen("entrenadores.dat", "rb");
-    if (pFile == NULL) return 0;
-
-    fseek(pFile, 0, SEEK_END);
-    int bytes = ftell(pFile);
-    fclose(pFile);
-
-    return bytes / sizeof(Entrenador);
+    return Archivo::contarRegistros(sizeof(Entrenador));
 }
 
 int EntrenadorArchivo::buscarPorID(int idEntrenador) {

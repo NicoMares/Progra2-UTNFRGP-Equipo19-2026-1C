@@ -5,58 +5,26 @@
 #include "AccionArchivo.h"
 #include "JugadorArchivo.h"
 
+const char* AccionArchivo::getNombreArchivo() const
+{
+    return "acciones.dat";
+}
+
 bool AccionArchivo::grabarEnDisco(Accion accion)
 {
-    FILE *pFile;
-    bool result;
-
-    pFile = fopen("acciones.dat", "ab");
-
-    if (pFile == NULL)
-    {
-        return false;
-    }
-
-    result = fwrite(&accion, sizeof(Accion), 1, pFile);
-
-    fclose(pFile);
-
-    return result;
+    return grabarRegistro(&accion, sizeof(Accion));
 }
 
 Accion AccionArchivo::leerDeDisco(int posicion)
 {
     Accion accion;
-    FILE *pFile;
-
-    pFile = fopen("acciones.dat", "rb");
-
-    if (pFile == NULL)
-    {
-        return accion;
-    }
-
-    fseek(pFile, posicion * sizeof(Accion), SEEK_SET);
-    fread(&accion, sizeof(Accion), 1, pFile);
-
-    fclose(pFile);
-
+    leerRegistro(&accion, sizeof(Accion), posicion);
     return accion;
 }
 
 int AccionArchivo::contarRegistros()
 {
-    FILE *pFile = fopen("acciones.dat", "rb");
-    if (pFile == NULL)
-    {
-        return 0;
-    }
-
-    fseek(pFile, 0, SEEK_END);
-    int bytes = ftell(pFile);
-    fclose(pFile);
-
-    return bytes / sizeof(Accion);
+    return Archivo::contarRegistros(sizeof(Accion));
 }
 
 bool AccionArchivo::completarDatosAccion(Accion &accion)

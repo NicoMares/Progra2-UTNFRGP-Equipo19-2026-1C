@@ -1,7 +1,8 @@
 #pragma once
+#include "Archivo.h"
 #include "Entrenador.h"
 
-class EntrenadorArchivo
+class EntrenadorArchivo : public Archivo
 {
 public:
     EntrenadorArchivo();
@@ -16,6 +17,7 @@ public:
      int contarRegistros();
      int obtenerProximoID();
 private:
+     const char* getNombreArchivo() const;
 
 };
 

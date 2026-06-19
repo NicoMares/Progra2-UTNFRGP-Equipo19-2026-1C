@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Archivo.h"
 #include "Accion.h"
 
-class AccionArchivo
+class AccionArchivo : public Archivo
 {
 public:
     bool grabarEnDisco(Accion accion);
@@ -17,6 +18,7 @@ public:
     void consultarPorPartido();
 
 private:
+    const char* getNombreArchivo() const;
     bool obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador);
     int calcularPuntaje(const char tipoAccion[], const char posicionJugador[]);
 };

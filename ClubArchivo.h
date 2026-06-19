@@ -1,6 +1,7 @@
 #pragma once
+#include "Archivo.h"
 #include "Club.h"
-class ClubArchivo
+class ClubArchivo : public Archivo
 {
 public:
     ClubArchivo();
@@ -16,6 +17,7 @@ public:
     void listar();
 
 private:
+    const char* getNombreArchivo() const;
 
 };
 

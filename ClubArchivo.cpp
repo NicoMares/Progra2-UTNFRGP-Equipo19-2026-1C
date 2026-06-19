@@ -11,46 +11,25 @@ ClubArchivo::ClubArchivo()
 
 }
 
+const char* ClubArchivo::getNombreArchivo() const
+{
+    return "clubes.dat";
+}
+
 bool ClubArchivo::grabarEnDisco(Club equipo) {
-    FILE *p = fopen("clubes.dat", "ab"); // "ab" abre para agregar al final
-    if (p == NULL) return false;
-
-
-    bool guardo = fwrite(&equipo, sizeof(Club), 1, p);
-    fclose(p);
-    return guardo;
+    return grabarRegistro(&equipo, sizeof(Club));
 }
 
 Club ClubArchivo::leerDeDisco(int posicion)
 {
     Club equipo;
-    FILE *pFile;
-
-    pFile = fopen("clubes.dat", "rb");
-
-    if (pFile == NULL)
-    {
-        return equipo;
-    }
-
-    fseek(pFile, posicion * sizeof(Club), SEEK_SET);
-    fread(&equipo, sizeof(Club), 1, pFile);
-
-    fclose(pFile);
-
+    leerRegistro(&equipo, sizeof(Club), posicion);
     return equipo;
 }
 
 int ClubArchivo::contarRegistros()
 {
-    FILE *pFile = fopen("clubes.dat", "rb");
-    if (pFile == NULL) return 0;
-
-    fseek(pFile, 0, SEEK_END);
-    int bytes = ftell(pFile);
-    fclose(pFile);
-
-    return bytes / sizeof(Club);
+    return Archivo::contarRegistros(sizeof(Club));
 }
 
 int ClubArchivo::buscarPorID(int idClub)
@@ -109,26 +88,7 @@ void ClubArchivo :: mostrarPorID()
 
 bool ClubArchivo::modificarEnDisco(Club equipo, int posicion)
 {
-
-    FILE *pFile = fopen("clubes.dat", "rb+");
-
-
-    if (pFile == NULL)
-    {
-        return false;
-    }
-
-
-    fseek(pFile, posicion * sizeof(Club), SEEK_SET);
-
-
-    bool seEscribio = fwrite(&equipo, sizeof(Club), 1, pFile);
-
-
-    fclose(pFile);
-
-
-    return seEscribio;
+    return modificarRegistro(&equipo, sizeof(Club), posicion);
 }
 
 void ClubArchivo::eliminarDeDisco()
@@ -167,40 +127,31 @@ void ClubArchivo::eliminarDeDisco()
         }
 
 void ClubArchivo::listarActivos() {
-    Club aux;
-    // Abrimos en modo lectura binaria ("rb")
-    FILE *p = fopen("clubes.dat", "rb");
-
-    if (p == NULL) {
+    int cantidad = contarRegistros();
+    if (cantidad == 0) {
         std::cout << "No hay clubes cargados en el sistema." << std::endl;
         return;
     }
 
-    // Leemos registro por registro
-    // Mientras fread devuelva 1, significa que leyó un objeto correctamente
-    while (fread(&aux, sizeof(Club), 1, p) == 1) {
+    for (int pos = 0; pos < cantidad; pos++) {
+        Club aux = leerDeDisco(pos);
         if (aux.get_activo()) {
             aux.mostrar();
             std::cout << "--------------------------------" << std::endl;
         }
     }
-
-    fclose(p);
 }
 
 void ClubArchivo::listar() {
-    Club aux;
-    FILE *p = fopen("clubes.dat", "rb");
-
-    if (p == NULL) {
+    int cantidad = contarRegistros();
+    if (cantidad == 0) {
         std::cout << "No hay clubes cargados en el sistema." << std::endl;
         return;
     }
 
-    while (fread(&aux, sizeof(Club), 1, p) == 1) {
+    for (int pos = 0; pos < cantidad; pos++) {
+        Club aux = leerDeDisco(pos);
         aux.mostrar();
         std::cout << "--------------------------------" << std::endl;
     }
-
-    fclose(p);
 }

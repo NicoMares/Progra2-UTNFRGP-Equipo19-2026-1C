@@ -5,54 +5,29 @@
 #include <cstdio>
 
 
+const char* PartidoArchivo::getNombreArchivo() const
+{
+    return "partidos.dat";
+}
+
 bool PartidoArchivo::grabarEnDisco(Partido partido)
 {
-    FILE *pFile = fopen("partidos.dat", "ab");
-    if (pFile == NULL) return false;
-
-    bool ok = fwrite(&partido, sizeof(Partido), 1, pFile);
-
-    fclose(pFile);
-    return ok;
+    return grabarRegistro(&partido, sizeof(Partido));
 }
 
 Partido PartidoArchivo::leerDeDisco(int posicion)
 {
     Partido partido;
-
-    FILE *pFile = fopen("partidos.dat", "rb");
-    if (pFile == NULL) return partido;
-
-    fseek(pFile, sizeof(Partido) * posicion, SEEK_SET);
-    fread(&partido, sizeof(Partido), 1, pFile);
-
-    fclose(pFile);
-
+    leerRegistro(&partido, sizeof(Partido), posicion);
     return partido;
 }
 bool PartidoArchivo::modificarEnDisco(Partido partido, int posicion)
 {
-    FILE *pFile = fopen("partidos.dat", "rb+");
-    if (pFile == NULL) return false;
-
-    fseek(pFile, sizeof(Partido) * posicion, SEEK_SET);
-    bool ok = fwrite(&partido, sizeof(Partido), 1, pFile);
-
-    fclose(pFile);
-
-    return ok;
+    return modificarRegistro(&partido, sizeof(Partido), posicion);
 }
 int PartidoArchivo::contarRegistros()
 {
-    FILE *pFile = fopen("partidos.dat", "rb");
-    if (pFile == NULL) return 0;
-
-    fseek(pFile, 0, SEEK_END);
-    int cantidad = ftell(pFile) / sizeof(Partido);
-
-    fclose(pFile);
-
-    return cantidad;
+    return Archivo::contarRegistros(sizeof(Partido));
 }
 void PartidoArchivo::listarPorJornada(int jornadaBuscada)
 {
@@ -98,8 +73,7 @@ void PartidoArchivo::generarFixtureTorneo() {
         return;
     }
 
-    FILE *pFile = fopen("partidos.dat", "wb");
-    if (pFile != NULL) fclose(pFile);
+    vaciarArchivo();
 
     int idPartidoContador = 1;
     const int NUM_JORNADAS = 15;
