@@ -444,59 +444,58 @@ void Menu::menuEntrenadores()
 }
 
 void Menu::menuPartidos() {
-    int op;
     PartidoArchivo archivoPartidos;
+    int opcion;
 
     do {
         system("cls");
-        cout << "==== MENU PARTIDOS ====" << endl;
-        cout << "---------------------------------------------"<< endl;
-        cout << "1 - Generar Fixture Completo (15 Jornadas)" << endl;
-        cout << "2 - Ver partidos de una Jornada Especifica" << endl;
-        cout << "3 - Ver Todos Los Partidos "<< endl;
-        cout << "0 - Volver al Menu Principal" << endl;
-        cout << "---------------------------------------------"<< endl;
-        cout << "Ingrese opcion: ";
-        cin >> op;
 
-        switch(op) {
+        // 👈 ESTO ES LO CRUCIAL: Se calcula en cada repetición del menú
+        int proximaFecha = archivoPartidos.obtenerSiguienteJornadaAJugarse();
+
+        cout << "========================================" << endl;
+        cout << "            MENU DE PARTIDOS            " << endl;
+        cout << "========================================" << endl;
+        cout << "1. Generar Fixture del Torneo" << endl;
+        cout << "2. Ver Partidos de una Jornada" << endl;
+        cout << "3. Ver Todos los Partidos" << endl;
+
+        // El menú cambia visualmente solo según los datos reales del archivo binario
+        if (proximaFecha != -1) {
+            cout << "4. Simular Jornada " << proximaFecha << endl; // Muestra "Simular Jornada 1", "Simular Jornada 2", etc.
+        } else {
+            cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
+        }
+
+        cout << "0. Volver al Menu Principal" << endl;
+        cout << "========================================" << endl;
+        cout << "Ingresá una opción: ";
+        cin >> opcion;
+
+        switch (opcion) {
             case 1:
-{
-                cout << "\nGenerando fixture del campeonato..." << endl;
                 archivoPartidos.generarFixtureTorneo();
-
-                system("pause");
-
                 break;
-        }
-            case 2: {
-                PartidoArchivo archivo;
-            cout << "\nMostrando Jornadas...." << endl;
-                
-            archivo.VerJornada();
-  
-                system("pause");
+            case 2:
+                archivoPartidos.VerJornada();
                 break;
-            }
-
-        case 3:
-{
-
-    PartidoArchivo archivo;
-    cout<< "\n Mostrando todos Los Partidos..."<<endl;
-    
-    
-    archivo.VerPartidos();
-
-
-
-
-}
-
-
+            case 3:
+                archivoPartidos.VerPartidos();
+                break;
+            case 4:
+                // Llama a la función que simula todos los partidos de esa fecha juntos
+                archivoPartidos.simularSiguienteJornada();
+                break;
+            case 0:
+                break;
+            default:
+                cout << "Opción inválida." << endl;
         }
 
-    } while(op != 0);
+        cout << endl;
+        system("pause");
+
+    } while (opcion != 0);
 }
 
 void Menu::menuAcciones()

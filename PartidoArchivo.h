@@ -12,4 +12,6 @@ public:
     void generarFixtureTorneo();
     void VerJornada();
     void VerPartidos();
+    void simularSiguienteJornada();
+    int obtenerSiguienteJornadaAJugarse();
 };

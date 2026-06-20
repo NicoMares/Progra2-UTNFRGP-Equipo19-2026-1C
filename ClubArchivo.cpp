@@ -104,9 +104,11 @@ void ClubArchivo :: mostrarPorID()
         std::cout << "No se encontró un club activo con el ID: " << idBuscado << std::endl;
         return;
     }
-    clubTemp.mostrar();
-}
 
+    clubTemp.mostrar();
+    clubTemp.mostrarRacha();
+
+}
 bool ClubArchivo::modificarEnDisco(Club equipo, int posicion)
 {
 
@@ -177,10 +179,13 @@ void ClubArchivo::listarActivos() {
     }
 
     // Leemos registro por registro
-    // Mientras fread devuelva 1, significa que leyó un objeto correctamente
     while (fread(&aux, sizeof(Club), 1, p) == 1) {
         if (aux.get_activo()) {
             aux.mostrar();
+
+            // 👈 AGREGAMOS LA LLAMADA A LA RACHA AQUÍ
+            aux.mostrarRacha();
+
             std::cout << "--------------------------------" << std::endl;
         }
     }

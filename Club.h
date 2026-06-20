@@ -18,7 +18,7 @@ public:
 
     void mostrar();
     void cargar();
-    
+    void mostrarRacha();
 
     int get_idclub();
     const char* get_nombre();

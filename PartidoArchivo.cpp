@@ -3,6 +3,8 @@
 #include "Club.h"
 #include <iostream>
 #include <cstdio>
+#include <cstdlib>
+#include <ctime>
 
 
 bool PartidoArchivo::grabarEnDisco(Partido partido)
@@ -30,18 +32,17 @@ Partido PartidoArchivo::leerDeDisco(int posicion)
 
     return partido;
 }
-bool PartidoArchivo::modificarEnDisco(Partido partido, int posicion)
-{
-    FILE *pFile = fopen("partidos.dat", "rb+");
-    if (pFile == NULL) return false;
-
-    fseek(pFile, sizeof(Partido) * posicion, SEEK_SET);
-    bool ok = fwrite(&partido, sizeof(Partido), 1, pFile);
-
-    fclose(pFile);
-
-    return ok;
+bool PartidoArchivo::modificarEnDisco(Partido reg, int pos) {
+    FILE* p = fopen("partidos.dat", "rb+");
+    if (p == NULL) {
+        return false;
+    }
+    fseek(p, pos * sizeof(Partido), SEEK_SET);
+    bool escribio = fwrite(&reg, sizeof(Partido), 1, p);
+    fclose(p);
+    return escribio;
 }
+
 int PartidoArchivo::contarRegistros()
 {
     FILE *pFile = fopen("partidos.dat", "rb");
@@ -84,41 +85,41 @@ void PartidoArchivo::listarPorJornada(int jornadaBuscada)
 }
 
 void PartidoArchivo::generarFixtureTorneo() {
+    srand(time(NULL));
+
     ClubArchivo archivoClub;
-    int totalClubes = archivoClub.contarRegistros();
+    int cantidadClubes = archivoClub.contarRegistros();
 
-    int vIdsClubes[16];
-    int cantidadActivos = 0;
-
-    for (int i = 0; i < totalClubes; i++) {
-        Club equipo = archivoClub.leerDeDisco(i); //
-        if (equipo.get_activo()) {
-            vIdsClubes[cantidadActivos] = equipo.get_idclub();
-            cantidadActivos++;
-
-            if (cantidadActivos == 16) break;
-        }
-    }
-
-    if (cantidadActivos < 16) {
-        std::cout << "ERROR: Se necesitan exactamente 16 equipos activos para generar el fixture." << std::endl;
+    if (cantidadClubes < 16) {
+        std::cout << "Error: Se necesitan al menos 16 clubes cargados para generar el fixture." << std::endl;
         return;
     }
 
-    FILE *pFile = fopen("partidos.dat", "wb");
-    if (pFile != NULL) fclose(pFile);
+    // Ponemos en 0 todas las rachas de los clubes antes de arrancar
+    for (int i = 0; i < cantidadClubes; i++) {
+        Club c = archivoClub.leerDeDisco(i);
+        for (int j = 0; j < 16; j++) {
+            c.set_racha(j, 0);
+        }
+        archivoClub.modificarEnDisco(c, i);
+    }
+
+    int vIdsClubes[16];
+    for (int i = 0; i < 16; i++) {
+        Club c = archivoClub.leerDeDisco(i);
+        vIdsClubes[i] = c.get_idclub();
+    }
 
     int idPartidoContador = 1;
-    const int NUM_JORNADAS = 15;
-    const int PARTIDOS_POR_FECHA = 8;
 
-    for (int jornada = 1; jornada <= NUM_JORNADAS; jornada++) {
-        for (int i = 0; i < PARTIDOS_POR_FECHA; i++) {
-            int localIndex = i;
-            int visitanteIndex = 15 - i;
+    // Vaciamos el archivo de partidos anterior para crear el nuevo fixture vacío
+    FILE *pLimpiar = fopen("partidos.dat", "wb");
+    if (pLimpiar != NULL) fclose(pLimpiar);
 
-            int idLocal = vIdsClubes[localIndex];
-            int idVisitante = vIdsClubes[visitanteIndex];
+    for (int jornada = 1; jornada <= 15; jornada++) {
+        for (int i = 0; i < 8; i++) {
+            int idLocal = vIdsClubes[i];
+            int idVisitante = vIdsClubes[15 - i];
 
             if (jornada % 2 == 0) {
                 int aux = idLocal;
@@ -131,6 +132,8 @@ void PartidoArchivo::generarFixtureTorneo() {
             nuevoPartido.set_idclublocal(idLocal);
             nuevoPartido.set_idclubvisitante(idVisitante);
             nuevoPartido.set_jornada(jornada);
+
+            // 👈 CORRECCIÓN: Nacen sin goles y en FALSE (no jugados todavía)
             nuevoPartido.set_goleslocal(0);
             nuevoPartido.set_golesvisitante(0);
             nuevoPartido.set_jugado(false);
@@ -146,7 +149,117 @@ void PartidoArchivo::generarFixtureTorneo() {
         vIdsClubes[1] = ultimo;
     }
 
-    std::cout << "¡Fixture de 15 jornadas generado con éxito!" << std::endl;
+    std::cout << "¡Fixture de 15 jornadas generado con éxito! Listo para simular progresivamente." << std::endl;
+}
+
+int PartidoArchivo::obtenerSiguienteJornadaAJugarse()
+{
+    int cantPartidos = contarRegistros();
+
+    if (cantPartidos <= 0) {
+        return 1; // Si no hay registros (o da error), asumimos que arranca en la Jornada 1
+    }
+
+    bool hayPartidosSinJugar = false;
+
+    for (int i = 0; i < cantPartidos; i++) {
+        Partido p = leerDeDisco(i);
+        if (p.get_activo() && !p.get_jugado()) {
+            return p.get_jornada(); // Retorna la primera jornada que encuentre colgada
+        }
+    }
+
+    return -1; // Solo si recorrió absolutamente TODO y todo está en true, devuelve -1
+}
+
+void PartidoArchivo::VerPartidos()
+{
+    system("cls");
+    std::cout << "========================================" << std::endl;
+    std::cout << "        LISTADO TOTAL DE PARTIDOS       " << std::endl;
+    std::cout << "========================================" << std::endl;
+
+    // Recorremos las 15 jornadas y reutilizamos tu lógica de listado
+    for (int j = 1; j <= 15; j++)
+    {
+        std::cout << "\n>>> JORNADA " << j << " <<<" << std::endl;
+        std::cout << "----------------------------------------" << std::endl;
+        listarPorJornada(j);
+    }
+
+    std::cout << "\nSe han listado los 120 partidos del torneo." << std::endl;
+    system("pause");
+}
+
+void PartidoArchivo::simularSiguienteJornada()
+{
+    int jornadaAIntervenir = obtenerSiguienteJornadaAJugarse();
+
+    if (jornadaAIntervenir == -1) {
+        std::cout << "\n[!] El torneo ya finalizo. No hay mas jornadas para simular." << std::endl;
+        return;
+    }
+
+    std::cout << "\n=======================================================" << std::endl;
+    std::cout << "          SIMULANDO AUTOMATICAMENTE JORNADA " << jornadaAIntervenir << std::endl;
+    std::cout << "=======================================================" << std::endl;
+
+    srand(time(NULL));
+    int cantPartidos = contarRegistros();
+    ClubArchivo archivoClub;
+
+    for (int i = 0; i < cantPartidos; i++) {
+        Partido partido = leerDeDisco(i);
+
+        if (partido.get_jornada() == jornadaAIntervenir && !partido.get_jugado() && partido.get_activo()) {
+
+            int golesL = rand() % 5;
+            int golesV = rand() % 5;
+
+            partido.set_goleslocal(golesL);
+            partido.set_golesvisitante(golesV);
+            partido.set_jugado(true);
+
+            // 1. Guardamos el partido modificado en partidos.dat
+            bool guardoPartido = modificarEnDisco(partido, i);
+
+            if (!guardoPartido) {
+                std::cout << "[ERROR] No se pudo guardar el resultado en el archivo binario." << std::endl;
+                continue;
+            }
+
+            // 2. Buscamos los clubes para impactar sus vectores de racha en clubes.dat
+            int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+            int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
+
+            if (posLocal != -1 && posVisitante != -1) {
+                Club clubLocal = archivoClub.leerDeDisco(posLocal);
+                Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+                if (golesL > golesV) {
+                    clubLocal.set_racha(jornadaAIntervenir, 1);     // [V]
+                    clubVisitante.set_racha(jornadaAIntervenir, 3); // [D]
+                }
+                else if (golesL < golesV) {
+                    clubLocal.set_racha(jornadaAIntervenir, 3);     // [D]
+                    clubVisitante.set_racha(jornadaAIntervenir, 1); // [V]
+                }
+                else {
+                    clubLocal.set_racha(jornadaAIntervenir, 2);     // [E]
+                    clubVisitante.set_racha(jornadaAIntervenir, 2); // [E]
+                }
+
+                // 👈 CORRECCIÓN: Guardamos AMBOS clubes modificados en el disco
+                archivoClub.modificarEnDisco(clubLocal, posLocal);
+                archivoClub.modificarEnDisco(clubVisitante, posVisitante);
+
+                std::cout << " -> " << clubLocal.get_nombre() << " " << golesL
+                          << " - " << golesV << " " << clubVisitante.get_nombre() << " [OK]" << std::endl;
+            }
+        }
+    }
+    std::cout << "=======================================================" << std::endl;
+    std::cout << "[OK] Jornada " << jornadaAIntervenir << " procesada con exito." << std::endl;
 }
 
 void PartidoArchivo:: VerJornada(){
@@ -167,10 +280,4 @@ void PartidoArchivo:: VerJornada(){
 
 
 
-}
-
-void PartidoArchivo:: VerPartidos(){
-
-
-    
 }

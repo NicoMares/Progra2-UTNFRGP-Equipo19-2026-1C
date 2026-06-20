@@ -62,43 +62,6 @@ void Club::mostrar()
     std::cout << "CANTIDAD DE TROFEOS: " << _CantidadTrofeos << std::endl;
     std::cout << "CANTIDAD DE DESCENSOS: " << _CantidadDescensos << std::endl;
 
-    std::cout << "RACHA (ÚLTIMOS 5 PARTIDOS): ";
-
-    int contadorMostrados = 0;
-
-    /// Recorremos el vector al revés así podemos utilizar las últimas jornadas - Leandro
-    for (int i = 15; i >= 0; i--)
-    {
-        int resultado = get_racha(i);
-
-        if (resultado == 0 || resultado == 1 || resultado == 2 || resultado == 3)
-        {
-            switch (resultado)
-            {
-                case 0:
-                    std::cout << "[-] "; /// Jornada no jugada o sin resultado registrado
-                    break;
-                case 1:
-                    std::cout << "[V] "; /// Victoria
-                    break;
-                case 2:
-                    std::cout << "[E] "; /// Empate
-                    break;
-                case 3:
-                    std::cout << "[D] "; /// Derrota
-                    break;
-            }
-            contadorMostrados++;
-        }
-
-        /// Contador en 5, nos permite ver sus ultimos partidos, recordar que vamos del elemento 15 al 0
-        /// Cortandolo en 5, nos permite ver los ultimos 5 partidos - leandro
-        if (contadorMostrados == 5) {
-            break;
-        }
-    }
-    std::cout << std::endl;
-
     std::cout << "ACTIVO: ";
     if (_Activo == true)
     {
@@ -108,6 +71,44 @@ void Club::mostrar()
     {
         std::cout << "NO" << std::endl;
     }
+}
+
+void Club::mostrarRacha()
+{
+    std::cout << "RACHA (ÚLTIMOS 5 PARTIDOS): ";
+
+    int encontrados = 0;
+    int resultadosEncontrados[5] = {0, 0, 0, 0, 0};
+
+    for (int j = 15; j >= 1; j--)
+    {
+        int res = get_racha(j);
+        if (res == 1 || res == 2 || res == 3)
+        {
+            resultadosEncontrados[encontrados] = res;
+            encontrados++;
+        }
+        if (encontrados == 5) break;
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        if (i < encontrados)
+        {
+            switch (resultadosEncontrados[i])
+            {
+                case 1: std::cout << "[V] "; break;
+                case 2: std::cout << "[E] "; break;
+                case 3: std::cout << "[D] "; break;
+            }
+        }
+        else
+        {
+            // Si ya no hay más partidos encontrados, llenamos con guiones
+            std::cout << "[-] ";
+        }
+    }
+    std::cout << std::endl;
 }
 
 int Club::get_idclub()
