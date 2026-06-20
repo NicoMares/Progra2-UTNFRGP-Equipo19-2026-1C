@@ -1,11 +1,112 @@
 #include "PartidoArchivo.h"
 #include "ClubArchivo.h"
 #include "Club.h"
+#include <cstring>
 #include <iostream>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 
+struct RegistroTabla
+{
+    Club club;
+    int posicionArchivo;
+    int golesFavor;
+    int golesContra;
+    int diferenciaGol;
+    int puntos;
+};
+
+bool estaIncluido(int idsClubes[], int cantidad, int idClub)
+{
+    for (int i = 0; i < cantidad; i++)
+    {
+        if (idsClubes[i] == idClub)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool debeIrAntes(RegistroTabla club1, RegistroTabla club2)
+{
+    if (club1.puntos != club2.puntos)
+    {
+        return club1.puntos > club2.puntos;
+    }
+
+    if (club1.diferenciaGol != club2.diferenciaGol)
+    {
+        return club1.diferenciaGol > club2.diferenciaGol;
+    }
+
+    if (club1.golesFavor != club2.golesFavor)
+    {
+        return club1.golesFavor > club2.golesFavor;
+    }
+
+    return strcmp(club1.club.get_nombre(), club2.club.get_nombre()) < 0;
+}
+
+int cargarTabla(RegistroTabla tabla[])
+{
+    PartidoArchivo archivoPartidos;
+    ClubArchivo archivoClubes;
+    int cantidadPartidos = archivoPartidos.contarRegistros();
+
+    int idsClubes[16];
+    int cantidadClubes = 0;
+
+    for (int i = 0; i < cantidadPartidos; i++)
+    {
+        Partido partido = archivoPartidos.leerDeDisco(i);
+
+        if (!estaIncluido(idsClubes, cantidadClubes, partido.get_idclublocal()))
+        {
+            idsClubes[cantidadClubes] = partido.get_idclublocal();
+            cantidadClubes++;
+        }
+
+        if (!estaIncluido(idsClubes, cantidadClubes, partido.get_idclubvisitante()))
+        {
+            idsClubes[cantidadClubes] = partido.get_idclubvisitante();
+            cantidadClubes++;
+        }
+    }
+
+    int cantidadRegistros = 0;
+
+    for (int i = 0; i < cantidadClubes; i++)
+    {
+        int posicionClub = archivoClubes.buscarPorID(idsClubes[i]);
+        Club club = archivoClubes.leerDeDisco(posicionClub);
+
+        tabla[cantidadRegistros].club = club;
+        tabla[cantidadRegistros].posicionArchivo = posicionClub;
+        tabla[cantidadRegistros].golesFavor = archivoPartidos.calcularGolesFavor(idsClubes[i]);
+        tabla[cantidadRegistros].golesContra = archivoPartidos.calcularGolesContra(idsClubes[i]);
+        tabla[cantidadRegistros].diferenciaGol = archivoPartidos.calcularDiferenciaGol(idsClubes[i]);
+        tabla[cantidadRegistros].puntos = club.calcularPuntos();
+        cantidadRegistros++;
+    }
+
+    for (int i = 0; i < cantidadRegistros - 1; i++)
+    {
+        for (int j = 0; j < cantidadRegistros - 1 - i; j++)
+        {
+            if (debeIrAntes(tabla[j + 1], tabla[j]))
+            {
+                RegistroTabla auxiliar = tabla[j];
+                tabla[j] = tabla[j + 1];
+                tabla[j + 1] = auxiliar;
+            }
+        }
+    }
+
+    return cantidadRegistros;
+}
 
 bool PartidoArchivo::grabarEnDisco(Partido partido)
 {
@@ -135,7 +236,7 @@ void PartidoArchivo::generarFixtureTorneo() {
             nuevoPartido.set_idclubvisitante(idVisitante);
             nuevoPartido.set_jornada(jornada);
 
-            // 👈 CORRECCIÓN: Nacen sin goles y en FALSE (no jugados todavía)
+            // Nacen sin goles y en FALSE (no jugados todavía)
             nuevoPartido.set_goleslocal(0);
             nuevoPartido.set_golesvisitante(0);
             nuevoPartido.set_jugado(false);
@@ -161,8 +262,6 @@ int PartidoArchivo::obtenerSiguienteJornadaAJugarse()
     if (cantPartidos <= 0) {
         return 1; // Si no hay registros (o da error), asumimos que arranca en la Jornada 1
     }
-
-    bool hayPartidosSinJugar = false;
 
     for (int i = 0; i < cantPartidos; i++) {
         Partido p = leerDeDisco(i);
@@ -263,6 +362,11 @@ void PartidoArchivo::simularSiguienteJornada()
     }
     std::cout << "=======================================================" << std::endl;
     std::cout << "[OK] Jornada " << jornadaAIntervenir << " procesada con exito." << std::endl;
+
+    if (obtenerSiguienteJornadaAJugarse() == -1)
+    {
+        aplicarResultadosFinales();
+    }
 }
 
 int PartidoArchivo::calcularGolesFavor(int idClub)
@@ -325,6 +429,83 @@ int PartidoArchivo::calcularGolesContra(int idClub)
 int PartidoArchivo::calcularDiferenciaGol(int idClub)
 {
     return calcularGolesFavor(idClub) - calcularGolesContra(idClub);
+}
+
+void PartidoArchivo::listarTablaPosiciones()
+{
+    int cantidadPartidos = contarRegistros();
+
+    if (cantidadPartidos == 0)
+    {
+        std::cout << "No hay un fixture generado, generarlo antes de mostrar la tabla." << std::endl;
+        return;
+    }
+
+    RegistroTabla tabla[16];
+    int cantidadRegistros = cargarTabla(tabla);
+    bool torneoFinalizado = obtenerSiguienteJornadaAJugarse() == -1;
+
+    std::cout << "==============================================================================" << std::endl;
+    std::cout << "                             TABLA DE POSICIONES" << std::endl;
+    std::cout << "==============================================================================" << std::endl;
+    std::cout << "POS\tCLUB                    GF\tGC\tDG\tPTS\tCONDICION" << std::endl;
+    std::cout << "------------------------------------------------------------------------------" << std::endl;
+
+    for (int i = 0; i < cantidadRegistros; i++)
+    {
+        const char *nombreClub = tabla[i].club.get_nombre();
+        const char *estado = "";
+
+        if (torneoFinalizado && i == 0)
+        {
+            estado = "CAMPEON";
+        }
+        else if (torneoFinalizado && i >= cantidadRegistros - 3)
+        {
+            estado = "DESCENSO";
+        }
+
+        std::cout << i + 1 << "\t"
+                  << nombreClub;
+
+        for (int j = strlen(nombreClub); j < 24; j++)
+        {
+            std::cout << " ";
+        }
+
+        std::cout << tabla[i].golesFavor << "\t"
+                  << tabla[i].golesContra << "\t"
+                  << tabla[i].diferenciaGol << "\t"
+                  << tabla[i].puntos << "\t"
+                  << estado << std::endl;
+    }
+
+    std::cout << "==============================================================================" << std::endl;
+    std::cout << "GF: Goles a favor | GC: Goles en contra | DG: Diferencia de gol | PTS: Puntos" << std::endl;
+}
+
+void PartidoArchivo::aplicarResultadosFinales()
+{
+    RegistroTabla tabla[16];
+    int cantidadRegistros = cargarTabla(tabla);
+
+    ClubArchivo archivoClubes;
+
+    Club campeon = tabla[0].club;
+
+    // Se aumenta en 1 la cantidad de trofeos del campeón
+    campeon.set_cantidadtrofeos(campeon.get_cantidadtrofeos() + 1);
+    archivoClubes.modificarEnDisco(campeon, tabla[0].posicionArchivo);
+
+    // Se aumenta en 1 la cantidad de descensos de los últimos 3 clubes
+    for (int i = cantidadRegistros - 3; i < cantidadRegistros; i++)
+    {
+        Club descendido = tabla[i].club;
+        descendido.set_cantidaddescensos(descendido.get_cantidaddescensos() + 1);
+        archivoClubes.modificarEnDisco(descendido, tabla[i].posicionArchivo);
+    }
+
+    std::cout << "Campeon y descensos registrados en los clubes." << std::endl;
 }
 
 void PartidoArchivo:: VerJornada(){

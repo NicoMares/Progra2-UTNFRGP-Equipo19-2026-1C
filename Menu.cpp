@@ -52,7 +52,7 @@ void  Menu :: run()
             menuAcciones();
             break;
         case 6:
-         /// menuTabla();
+            menuTabla();
             break;
         case 0:
             cout<<"Saliendo del programa..."<<endl;
@@ -616,6 +616,14 @@ void Menu::menuAcciones()
         }
 
     } while (op != 0);
+}
+
+void Menu::menuTabla()
+{
+    system("cls");
+
+    PartidoArchivo archivo;
+    archivo.listarTablaPosiciones();
 }
 
 void modificarClub()
