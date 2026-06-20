@@ -19,6 +19,7 @@ public:
     void mostrar();
     void cargar();
     void mostrarRacha();
+    void CalcularPuntos();
 
     int get_idclub();
     const char* get_nombre();

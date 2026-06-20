@@ -136,3 +136,140 @@
 	"utils.h"
 	<iostream>
 
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\accion.cpp
+	<iostream>
+	<cstring>
+	"Accion.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\accion.h
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\accionarchivo.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	"AccionArchivo.h"
+	"JugadorArchivo.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\accionarchivo.h
+	"Accion.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\jugadorarchivo.h
+	"Jugador.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\jugador.h
+	"Persona.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\persona.h
+	"Fecha.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\fecha.h
+
+1781983077 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\club.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Club.h"
+	"ClubArchivo.h"
+	"utils.h"
+
+1781982573 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\club.h
+	"Fecha.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\clubarchivo.h
+	"Club.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\utils.h
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\clubarchivo.cpp
+	"ClubArchivo.h"
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Club.h"
+	"utils.h"
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\entrenador.cpp
+	<iostream>
+	<cstdio>
+	"Entrenador.h"
+	"EntrenadorArchivo.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\entrenador.h
+	"Persona.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\entrenadorarchivo.h
+	"Entrenador.h"
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\entrenadorarchivo.cpp
+	"EntrenadorArchivo.h"
+	"Entrenador.h"
+	<iostream>
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\fecha.cpp
+	<iostream>
+	"Fecha.h"
+	<cstdlib>
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\jugador.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Jugador.h"
+	"JugadorArchivo.h"
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\jugadorarchivo.cpp
+	"JugadorArchivo.h"
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Jugador.h"
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\main.cpp
+	<iostream>
+	"Menu.h"
+	<locale.h>
+	<windows.h>
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\menu.h
+
+1781983155 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\menu.cpp
+	"Menu.h"
+	<iostream>
+	"Club.h"
+	"Jugador.h"
+	"Entrenador.h"
+	"Accion.h"
+	"ClubArchivo.h"
+	"JugadorArchivo.h"
+	"EntrenadorArchivo.h"
+	"AccionArchivo.h"
+	"PartidoArchivo.h"
+	"Partido.h"
+
+1781982448 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\partidoarchivo.h
+	"Partido.h"
+
+1781979908 f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\partido.h
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\partido.cpp
+	"Partido.h"
+	<iostream>
+
+1781982443 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\partidoarchivo.cpp
+	"PartidoArchivo.h"
+	"ClubArchivo.h"
+	"Club.h"
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<ctime>
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\persona.cpp
+	<iostream>
+	<cstring>
+	"Persona.h"
+
+1781979908 source:f:\github\facultad\progra 2\progra 2, futbol\progra2-utnfrgp-equipo19-2026-1c\utils.cpp
+	"utils.h"
+	<iostream>
+

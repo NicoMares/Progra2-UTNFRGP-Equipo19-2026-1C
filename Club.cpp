@@ -52,6 +52,8 @@ void Club::cargar()
 
 void Club::mostrar()
 {
+
+    std::cout<<std::endl;
     std::cout << "ID CLUB: " << _IdClub << std::endl;
     std::cout << "NOMBRE: " << _Nombre << std::endl;
     std::cout << "PRESIDENTE: " << _Presidente << std::endl;
@@ -110,6 +112,21 @@ void Club::mostrarRacha()
     }
     std::cout << std::endl;
 }
+
+void Club::CalcularPuntos(){
+    int puntos = 0;
+
+    for (int j = 1; j <= 15; j++) {
+        int resultado = _Racha[j];
+        if (resultado == 1)      puntos += 3; // Victoria
+        else if (resultado == 2) puntos += 1; // Empate
+        
+    }
+
+    std::cout << "Puntos de " << _Nombre << ": " << puntos << std::endl;
+}
+
+
 
 int Club::get_idclub()
 {

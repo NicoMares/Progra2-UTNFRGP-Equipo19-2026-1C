@@ -14,4 +14,8 @@ public:
     void VerPartidos();
     void simularSiguienteJornada();
     int obtenerSiguienteJornadaAJugarse();
+
+    int calcularGolesFavor(int idClub);
+    int calcularGolesContra(int idClub);
+    int calcularDiferenciaGol(int idClub);
 };

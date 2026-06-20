@@ -32,6 +32,7 @@ Partido PartidoArchivo::leerDeDisco(int posicion)
 
     return partido;
 }
+
 bool PartidoArchivo::modificarEnDisco(Partido reg, int pos) {
     FILE* p = fopen("partidos.dat", "rb+");
     if (p == NULL) {
@@ -55,6 +56,7 @@ int PartidoArchivo::contarRegistros()
 
     return cantidad;
 }
+
 void PartidoArchivo::listarPorJornada(int jornadaBuscada)
 {
     int cantidad = contarRegistros();
@@ -219,6 +221,7 @@ void PartidoArchivo::simularSiguienteJornada()
             partido.set_goleslocal(golesL);
             partido.set_golesvisitante(golesV);
             partido.set_jugado(true);
+           
 
             // 1. Guardamos el partido modificado en partidos.dat
             bool guardoPartido = modificarEnDisco(partido, i);
@@ -249,7 +252,7 @@ void PartidoArchivo::simularSiguienteJornada()
                     clubVisitante.set_racha(jornadaAIntervenir, 2); // [E]
                 }
 
-                // 👈 CORRECCIÓN: Guardamos AMBOS clubes modificados en el disco
+
                 archivoClub.modificarEnDisco(clubLocal, posLocal);
                 archivoClub.modificarEnDisco(clubVisitante, posVisitante);
 
@@ -262,10 +265,73 @@ void PartidoArchivo::simularSiguienteJornada()
     std::cout << "[OK] Jornada " << jornadaAIntervenir << " procesada con exito." << std::endl;
 }
 
+int PartidoArchivo::calcularGolesFavor(int idClub)
+{
+    int total = 0;
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+
+        Partido partidoJugado = leerDeDisco(i);
+
+
+        if (partidoJugado.get_activo() && partidoJugado.get_jugado()) {
+
+            if (partidoJugado.get_idclublocal() == idClub)
+            {
+                total += partidoJugado.get_goleslocal();
+
+            }
+            
+            else if (partidoJugado.get_idclubvisitante() == idClub)
+            {
+                total += partidoJugado.get_golesvisitante();
+
+            }
+        }
+    }
+    return total;
+}
+
+int PartidoArchivo::calcularGolesContra(int idClub)
+{
+    int total = 0;
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+
+        Partido partidoJugado = leerDeDisco(i);
+
+        if (partidoJugado.get_activo() && partidoJugado.get_jugado()) 
+        {
+
+            if (partidoJugado.get_idclublocal() == idClub)
+            {
+                total += partidoJugado.get_golesvisitante();
+
+            }
+
+            else if (partidoJugado.get_idclubvisitante() == idClub)
+        {
+            total += partidoJugado.get_goleslocal();
+
+        }
+        
+        }
+    }
+    return total;
+}
+
+int PartidoArchivo::calcularDiferenciaGol(int idClub)
+{
+    return calcularGolesFavor(idClub) - calcularGolesContra(idClub);
+}
+
 void PartidoArchivo:: VerJornada(){
 
     PartidoArchivo archivo;
  int nroJornada;
+
                 std::cout << "\nIngrese el numero de Jornada que desea ver (1 a 15): "<< std::endl;
                 std::cout << "-------------------------------------------------------"<< std::endl;
                std::cin >> nroJornada;
@@ -281,3 +347,6 @@ void PartidoArchivo:: VerJornada(){
 
 
 }
+
+
+
