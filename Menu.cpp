@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+#include <cstdio>
 
 #include "Club.h"
 #include "Jugador.h"
@@ -18,6 +19,7 @@ using namespace std;
 void modificarClub();
 void modificarJugador();
 void modificarEntrenador();
+void cargarDatosDePrueba();
 
 Menu::Menu()
 {
@@ -54,6 +56,9 @@ void  Menu :: run()
         case 6:
             menuTabla();
             break;
+        case 7:
+            cargarDatosDePrueba();
+            break;
         case 0:
             cout<<"Saliendo del programa..."<<endl;
             break;
@@ -87,6 +92,7 @@ void  Menu :: Mostrar()
     cout <<"|     4. Gestión de Partidos         |"<<endl;
     cout <<"|     5. Gestión de Acciones         |"<<endl;
     cout <<"|     6. Mostrar Tabla               |"<<endl;
+    cout <<"|     7. Cargar Datos de Prueba      |"<<endl;
     cout <<"|     0. Salir                       |"<<endl;
 
     cout<<"--------------------------------------"<<endl;
@@ -509,11 +515,11 @@ void Menu::menuAcciones()
         cout << "==========================================================" << endl;
         cout << "|                    GESTION DE ACCIONES                 |" << endl;
         cout << "==========================================================" << endl;
-        cout << "| 1. Cargar Accion                                       |" << endl;
-        cout << "| 2. Consultar Acciones por Jugador                      |" << endl;
-        cout << "| 3. Consultar Acciones por Partido                      |" << endl;
-        cout << "| 4. Listar Acciones Activas                             |" << endl;
-        cout << "| 5. Listar Todas las Acciones                           |" << endl;
+        /* LAS ACCIONES SE GENERAN AL SIMULAR PARTIDOS */
+        cout << "| 1. Consultar Acciones por Jugador                      |" << endl;
+        cout << "| 2. Consultar Acciones por Partido                      |" << endl;
+        cout << "| 3. Listar Acciones Activas                             |" << endl;
+        cout << "| 4. Listar Todas las Acciones                           |" << endl;
         cout << "| 0. Volver al Menu Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << "Selecciona una opcion: ";
@@ -522,38 +528,6 @@ void Menu::menuAcciones()
         switch (op)
         {
             case 1:
-            {
-                cout << endl;
-                cout << "[Accion] Cargar Accion..." << endl;
-                cout << endl;
-
-                Accion accion;
-                AccionArchivo archivo;
-
-                accion.cargar();
-
-                if (archivo.completarDatosAccion(accion))
-                {
-                    if (archivo.grabarEnDisco(accion))
-                    {
-                        cout << "Accion guardada correctamente." << endl;
-                    }
-                    else
-                    {
-                        cout << "No se pudo guardar la accion." << endl;
-                    }
-                }
-                else
-                {
-                    cout << "No se pudo completar la accion." << endl;
-                    cout << "Verifique que el DNI del jugador exista." << endl;
-                }
-
-                system("pause");
-            }
-            break;
-
-            case 2:
             {
                 cout << endl;
                 cout << "[Accion] Consultar Acciones por Jugador..." << endl;
@@ -566,7 +540,7 @@ void Menu::menuAcciones()
             }
             break;
 
-            case 3:
+            case 2:
             {
                 cout << endl;
                 cout << "[Accion] Consultar Acciones por Partido..." << endl;
@@ -579,7 +553,7 @@ void Menu::menuAcciones()
             }
             break;
 
-            case 4:
+            case 3:
             {
                 cout << endl;
                 cout << "[Accion] Listar Acciones Activas..." << endl;
@@ -592,7 +566,7 @@ void Menu::menuAcciones()
             }
             break;
 
-            case 5:
+            case 4:
             {
                 cout << endl;
                 cout << "[Accion] Listar Todas las Acciones..." << endl;
@@ -620,10 +594,205 @@ void Menu::menuAcciones()
 
 void Menu::menuTabla()
 {
-    system("cls");
+    int op;
 
-    PartidoArchivo archivo;
-    archivo.listarTablaPosiciones();
+    do
+    {
+        system("cls");
+
+        cout << "==========================================================" << endl;
+        cout << "|                    MENU DE TABLAS                      |" << endl;
+        cout << "==========================================================" << endl;
+        cout << "| 1. Tabla de posiciones de clubes                       |" << endl;
+        cout << "| 2. Rendimiento de jugadores                            |" << endl;
+        cout << "| 3. Rachas de clubes                                    |" << endl;
+        cout << "| 0. Volver al Menu Principal                            |" << endl;
+        cout << "==========================================================" << endl;
+        cout << "Selecciona una opcion: ";
+        cin >> op;
+
+        switch (op)
+        {
+            case 1:
+            {
+                PartidoArchivo archivo;
+                archivo.listarTablaPosiciones();
+                system("pause");
+            }
+            break;
+
+            case 2:
+            {
+                /* El rendimiento no se carga a mano.
+                   Sale de sumar los puntajes de acciones.dat por jugador.
+                   Si no se simulo ninguna jornada, todavia no hay acciones. */
+                AccionArchivo archivo;
+                archivo.listarRendimientoJugadores();
+                system("pause");
+            }
+            break;
+
+            case 3:
+            {
+                PartidoArchivo archivo;
+                archivo.listarRachasClubesOrdenadas();
+                system("pause");
+            }
+            break;
+
+            case 0:
+                break;
+
+            default:
+                cout << "Opcion incorrecta. Intente de nuevo." << endl;
+                system("pause");
+                break;
+        }
+
+    } while (op != 0);
+}
+
+/* DATOS DE PRUEBA PARA SIMULAR
+   Carga clubes y jugadores para no tener que ingresarlos a mano.
+   Tambien genera el fixture, asi la tabla ya tiene partidos.
+   Despues hay que simular jornadas para que existan resultados y acciones. */
+void cargarDatosDePrueba()
+{
+    FILE *p;
+
+    p = fopen("clubes.dat", "wb");
+    if (p != NULL) fclose(p);
+
+    p = fopen("jugadores.dat", "wb");
+    if (p != NULL) fclose(p);
+
+    p = fopen("partidos.dat", "wb");
+    if (p != NULL) fclose(p);
+
+    p = fopen("acciones.dat", "wb");
+    if (p != NULL) fclose(p);
+
+    ClubArchivo archivoClubes;
+    JugadorArchivo archivoJugadores;
+
+    const char *clubes[16] = {
+        "Boca Juniors",
+        "River Plate",
+        "Racing Club",
+        "Independiente",
+        "San Lorenzo",
+        "Velez Sarsfield",
+        "Estudiantes LP",
+        "Gimnasia LP",
+        "Rosario Central",
+        "Newells Old Boys",
+        "Lanus",
+        "Banfield",
+        "Huracan",
+        "Argentinos Juniors",
+        "Talleres",
+        "Belgrano"
+    };
+
+    const char *presidentes[16] = {
+        "Presidente Boca",
+        "Presidente River",
+        "Presidente Racing",
+        "Presidente Independiente",
+        "Presidente San Lorenzo",
+        "Presidente Velez",
+        "Presidente Estudiantes",
+        "Presidente Gimnasia",
+        "Presidente Rosario",
+        "Presidente Newells",
+        "Presidente Lanus",
+        "Presidente Banfield",
+        "Presidente Huracan",
+        "Presidente Argentinos",
+        "Presidente Talleres",
+        "Presidente Belgrano"
+    };
+
+    int aniosFundacion[16] = {
+        1905, 1901, 1903, 1905, 1908, 1910, 1905, 1887,
+        1889, 1903, 1915, 1896, 1908, 1904, 1913, 1905
+    };
+
+    const char *nombres[12] = {
+        "Juan", "Pedro", "Lucas", "Mateo", "Tomas", "Nicolas",
+        "Diego", "Martin", "Santiago", "Facundo", "Bruno", "Ezequiel"
+    };
+
+    const char *apellidos[12] = {
+        "Garcia", "Lopez", "Martinez", "Rodriguez", "Gonzalez", "Perez",
+        "Sanchez", "Romero", "Diaz", "Fernandez", "Acosta", "Silva"
+    };
+
+    const char *posiciones[12] = {
+        "Arquero",
+        "Defensor", "Defensor", "Defensor", "Defensor",
+        "Mediocampo", "Mediocampo", "Mediocampo", "Mediocampo",
+        "Delantero", "Delantero", "Delantero"
+    };
+
+    int idJugador = 1;
+
+    for (int i = 0; i < 16; i++)
+    {
+        Fecha fechaClub;
+        fechaClub.set_Dia(1);
+        fechaClub.set_Mes(1);
+        fechaClub.set_Anio(aniosFundacion[i]);
+
+        Club club;
+        club.set_idclub(i + 1);
+        club.set_nombre(clubes[i]);
+        club.set_presidente(presidentes[i]);
+        club.set_fechafundacion(fechaClub);
+        club.set_cantidadtrofeos(0);
+        club.set_cantidaddescensos(0);
+        club.set_activo(true);
+
+        for (int j = 0; j < 16; j++)
+        {
+            club.set_racha(j, 0);
+        }
+
+        archivoClubes.grabarEnDisco(club);
+
+        for (int j = 0; j < 12; j++)
+        {
+            Fecha fechaJugador;
+            fechaJugador.set_Dia(1 + (j % 28));
+            fechaJugador.set_Mes(1 + (j % 12));
+            fechaJugador.set_Anio(1990 + (j % 10));
+
+            Jugador jugador;
+            jugador.set_idjugador(idJugador);
+            jugador.set_nombre(nombres[j]);
+            jugador.set_apellido(apellidos[j]);
+            jugador.set_dni(30000000 + (i * 100) + j);
+            jugador.set_fechanacimiento(fechaJugador);
+            jugador.set_activo(true);
+            jugador.set_idclub(i + 1);
+            jugador.set_numerocamiseta(j + 1);
+            jugador.set_posicion(posiciones[j]);
+            jugador.set_valormercado(1000000 + (j * 100000));
+
+            archivoJugadores.grabarEnDisco(jugador);
+            idJugador++;
+        }
+    }
+
+    /* SE GENERA EL FIXTURE PARA QUE LA TABLA YA TENGA PARTIDOS */
+    PartidoArchivo archivoPartidos;
+    archivoPartidos.generarFixtureTorneo();
+
+    cout << "Datos de prueba cargados correctamente." << endl;
+    cout << "Clubes cargados: 16" << endl;
+    cout << "Jugadores cargados: 192" << endl;
+    cout << "Fixture generado: 120 partidos" << endl;
+    cout << "Ahora podes simular jornadas." << endl;
 }
 
 void modificarClub()

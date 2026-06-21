@@ -1,6 +1,8 @@
 #include "PartidoArchivo.h"
+#include "AccionArchivo.h"
 #include "ClubArchivo.h"
 #include "Club.h"
+#include "JugadorArchivo.h"
 #include <cstring>
 #include <iostream>
 #include <cstdio>
@@ -219,6 +221,13 @@ void PartidoArchivo::generarFixtureTorneo() {
     FILE *pLimpiar = fopen("partidos.dat", "wb");
     if (pLimpiar != NULL) fclose(pLimpiar);
 
+    /* AL GENERAR FIXTURE NUEVO SE BORRAN LAS ACCIONES ANTERIORES
+       Antes solo se limpiaban los partidos.
+       Ahora tambien se limpian acciones porque esas acciones pertenecian
+       al fixture anterior. */
+    AccionArchivo archivoAcciones;
+    archivoAcciones.vaciarArchivo();
+
     for (int jornada = 1; jornada <= 15; jornada++) {
         for (int i = 0; i < 8; i++) {
             int idLocal = vIdsClubes[i];
@@ -308,19 +317,67 @@ void PartidoArchivo::simularSiguienteJornada()
     srand(time(NULL));
     int cantPartidos = contarRegistros();
     ClubArchivo archivoClub;
+    JugadorArchivo archivoJugadores;
+    AccionArchivo archivoAcciones;
 
     for (int i = 0; i < cantPartidos; i++) {
         Partido partido = leerDeDisco(i);
 
         if (partido.get_jornada() == jornadaAIntervenir && !partido.get_jugado() && partido.get_activo()) {
 
-            int golesL = rand() % 5;
-            int golesV = rand() % 5;
+            int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+            int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
 
+            if (posLocal == -1 || posVisitante == -1) {
+                std::cout << "[ERROR] No se encontraron los clubes del partido ID "
+                          << partido.get_idpartido() << "." << std::endl;
+                continue;
+            }
+
+            Club clubLocal = archivoClub.leerDeDisco(posLocal);
+            Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+            /* VALIDACION DE 11 JUGADORES POR CLUB
+               No se simula el partido si un club no tiene al menos 11
+               jugadores activos, porque las acciones necesitan jugadores reales. */
+            int jugadoresLocal = archivoJugadores.contarJugadoresActivosPorClub(partido.get_idclublocal());
+            int jugadoresVisitante = archivoJugadores.contarJugadoresActivosPorClub(partido.get_idclubvisitante());
+
+            if (jugadoresLocal < 11 || jugadoresVisitante < 11) {
+                std::cout << "No se puede simular el partido ID " << partido.get_idpartido() << "." << std::endl;
+
+                if (jugadoresLocal < 11) {
+                    std::cout << "Club local " << clubLocal.get_nombre()
+                              << " tiene " << jugadoresLocal
+                              << " jugadores activos. Faltan " << 11 - jugadoresLocal << "." << std::endl;
+                }
+
+                if (jugadoresVisitante < 11) {
+                    std::cout << "Club visitante " << clubVisitante.get_nombre()
+                              << " tiene " << jugadoresVisitante
+                              << " jugadores activos. Faltan " << 11 - jugadoresVisitante << "." << std::endl;
+                }
+
+                continue;
+            }
+
+            /* LAS ACCIONES GENERAN EL RESULTADO DEL PARTIDO
+               Antes se hacia:
+                   golesL = rand() % 5;
+                   golesV = rand() % 5;
+               Eso daba un resultado sin jugadores.
+               Ahora AccionArchivo genera acciones y PartidoArchivo cuenta
+               cuantos goles hizo cada club segun acciones.dat. */
+            archivoAcciones.simularAccionesDePartido(partido);
+
+            int golesL = archivoAcciones.contarGolesPorPartidoYClub(partido.get_idpartido(), partido.get_idclublocal());
+            int golesV = archivoAcciones.contarGolesPorPartidoYClub(partido.get_idpartido(), partido.get_idclubvisitante());
+
+            /* El partido guarda el resultado como resumen.
+               La base del resultado fueron las acciones tipo Gol. */
             partido.set_goleslocal(golesL);
             partido.set_golesvisitante(golesV);
             partido.set_jugado(true);
-           
 
             // 1. Guardamos el partido modificado en partidos.dat
             bool guardoPartido = modificarEnDisco(partido, i);
@@ -330,14 +387,7 @@ void PartidoArchivo::simularSiguienteJornada()
                 continue;
             }
 
-            // 2. Buscamos los clubes para impactar sus vectores de racha en clubes.dat
-            int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
-            int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
-
             if (posLocal != -1 && posVisitante != -1) {
-                Club clubLocal = archivoClub.leerDeDisco(posLocal);
-                Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
-
                 if (golesL > golesV) {
                     clubLocal.set_racha(jornadaAIntervenir, 1);     // [V]
                     clubVisitante.set_racha(jornadaAIntervenir, 3); // [D]
@@ -482,6 +532,34 @@ void PartidoArchivo::listarTablaPosiciones()
 
     std::cout << "==============================================================================" << std::endl;
     std::cout << "GF: Goles a favor | GC: Goles en contra | DG: Diferencia de gol | PTS: Puntos" << std::endl;
+}
+
+/* RACHAS ORDENADAS DEL MEJOR AL PEOR RENDIMIENTO */
+void PartidoArchivo::listarRachasClubesOrdenadas()
+{
+    int cantidadPartidos = contarRegistros();
+
+    if (cantidadPartidos == 0)
+    {
+        std::cout << "No hay un fixture generado, generarlo antes de mostrar las rachas." << std::endl;
+        return;
+    }
+
+    RegistroTabla tabla[16];
+    int cantidadRegistros = cargarTabla(tabla);
+
+    std::cout << "==========================================================" << std::endl;
+    std::cout << "              RACHAS DE CLUBES" << std::endl;
+    std::cout << "==========================================================" << std::endl;
+
+    for (int i = 0; i < cantidadRegistros; i++)
+    {
+        std::cout << i + 1 << ". " << tabla[i].club.get_nombre()
+                  << " | PTS: " << tabla[i].puntos
+                  << " | DG: " << tabla[i].diferenciaGol << std::endl;
+        tabla[i].club.mostrarRacha();
+        std::cout << "----------------------------------------------------------" << std::endl;
+    }
 }
 
 void PartidoArchivo::aplicarResultadosFinales()

@@ -20,6 +20,9 @@ public:
     void listarPorDNI();
     void EliminarJugador();
     bool modificarEnDisco(Jugador jugador, int posicion);
+    /* FUNCIONES PARA SIMULAR ACCIONES */
+    int contarJugadoresActivosPorClub(int idClub);
+    Jugador obtenerJugadorRandomPorClub(int idClub);
 private:
 
 };

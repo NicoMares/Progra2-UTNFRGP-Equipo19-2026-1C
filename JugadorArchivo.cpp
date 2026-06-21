@@ -2,6 +2,7 @@
 #include <iostream>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 #include "Jugador.h"
 
 JugadorArchivo::JugadorArchivo()
@@ -239,6 +240,56 @@ bool JugadorArchivo::modificarEnDisco(Jugador jugador, int posicion)
     bool seEscribio = fwrite(&jugador, sizeof(Jugador), 1, pFile);
     fclose(pFile); 
     return seEscribio; 
+}
+
+/* FUNCIONES PARA SIMULAR ACCIONES
+   Se usan para validar que el club tenga 11 jugadores activos
+   y para elegir un jugador real cuando se genera una accion. */
+int JugadorArchivo::contarJugadoresActivosPorClub(int idClub)
+{
+    int cantidad = contarRegistros();
+    int total = 0;
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        Jugador jugador = leerDeDisco(i);
+        if (jugador.get_activo() && jugador.get_idclub() == idClub)
+        {
+            total++;
+        }
+    }
+
+    return total;
+}
+
+Jugador JugadorArchivo::obtenerJugadorRandomPorClub(int idClub)
+{
+    Jugador jugador;
+    int cantidadJugadores = contarJugadoresActivosPorClub(idClub);
+
+    if (cantidadJugadores == 0)
+    {
+        return jugador;
+    }
+
+    int elegido = rand() % cantidadJugadores;
+    int encontrados = 0;
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        jugador = leerDeDisco(i);
+        if (jugador.get_activo() && jugador.get_idclub() == idClub)
+        {
+            if (encontrados == elegido)
+            {
+                return jugador;
+            }
+            encontrados++;
+        }
+    }
+
+    return Jugador();
 }
 
 void JugadorArchivo::EliminarJugador() {

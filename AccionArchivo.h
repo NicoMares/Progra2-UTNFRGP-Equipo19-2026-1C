@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Accion.h"
+#include "Partido.h"
 
 class AccionArchivo
 {
@@ -10,13 +11,22 @@ public:
     int contarRegistros();
 
     bool completarDatosAccion(Accion &accion);
+    /* RANDOMIZADOR DE ACCIONES */
+    void simularAccionesDePartido(Partido partido);
+    int contarGolesPorPartidoYClub(int idPartido, int idClub);
+    void vaciarArchivo();
 
     void listarActivos();
     void listar();
     void consultarPorJugador();
     void consultarPorPartido();
+    /* TABLA DE RENDIMIENTO DE JUGADORES */
+    int calcularPuntajeTotalJugador(int dniJugador);
+    void listarRendimientoJugadores();
 
 private:
     bool obtenerDatosJugador(int dniJugador, char posicionJugador[], int &idClubJugador);
-    int calcularPuntaje(const char tipoAccion[], const char posicionJugador[]);
+    int calcularPuntaje(int idAccion, const char posicionJugador[]);
+    int obtenerTipoAccionRandom();
+    void configurarTipoAccion(Accion &accion, int idAccion);
 };
