@@ -77,6 +77,17 @@ int EntrenadorArchivo::buscarPorID(int idEntrenador) {
     return -1;
 }
 
+int EntrenadorArchivo::buscarPorIdClub(int idClub) {
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++) {
+        Entrenador entrenador = leerDisco(i);
+        if (entrenador.get_IdClub() == idClub && entrenador.get_activo()) return i;
+    }
+
+    return -1;
+}
+
 int EntrenadorArchivo::obtenerProximoID() {
     int maximoID = 0;
     int cantidad = contarRegistros();

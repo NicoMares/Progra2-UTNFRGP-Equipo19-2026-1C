@@ -10,21 +10,24 @@ Entrenador::Entrenador() {
     _IdEntrenador = 0;
 }
 
-void Entrenador::cargar() {
+void Entrenador::cargar(int idClub) {
     int idclub;
     EntrenadorArchivo archivo;
     set_idEntrenador(archivo.obtenerProximoID());
     std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
 
-    // VALIDACIÓN DEL CLUB
-    std::cout << "INGRESE ID DEL CLUB: ";
-    std::cin >> idclub;
+    if (idClub != -1) {
+        idclub = idClub;
+    } else {
+        std::cout << "Ingrese el ID del club al que pertenece: ";
+        std::cin >> idclub;
+    }
 
     ClubArchivo archClub;
     int pos = archClub.buscarPorID(idclub);
 
     if (pos == -1) {
-        std::cout << "ERROR: El club con ID " << idclub << " no existe en el sistema." << std::endl;
+        std::cout << "ERROR: No existe un club con ese ID." << std::endl;
         return;
     }
 
@@ -36,6 +39,9 @@ void Entrenador::cargar() {
     }
 
     set_idclub(idclub);
+
+    std::cout << "Cargando Datos del Tecnico:" << std::endl;
+    std::cout << "-----------------------------" << std::endl;
 
     Persona::cargar();
 }

@@ -130,6 +130,15 @@ void Menu::menuEquipos()
 
     equipo.cargar();
     archivo.grabarEnDisco(equipo);
+
+    cout << endl;
+    cout << "DATOS DEL DIRECTOR TECNICO: " << endl;
+    cout << "--------------------------------" << endl;
+    Entrenador dt;
+    EntrenadorArchivo archDT;
+    dt.cargar(equipo.get_idclub());
+    archDT.grabarEnDisco(dt);
+
     system("pause");
 }
 break;
@@ -362,12 +371,11 @@ void Menu::menuEntrenadores()
         cout << "==========================================================" << endl;
         cout << "|                  GESTIÓN DE ENTRENADORES               |" << endl;
         cout << "==========================================================" << endl;
-        cout << "| 1. Cargar Entrenador                                   |" << endl;
-        cout << "| 2. Consulta por ID de Entrenador                       |" << endl;
-        cout << "| 3. Listar Entrenadores Activos                         |" << endl;
-        cout << "| 4. Listar Todos los Entrenadores                       |" << endl;
-        cout << "| 5. Modificar Entrenador                                |" << endl;
-        cout << "| 6. Eliminar Entrenador                                 |" << endl;
+        cout << "| 1. Consulta por ID de Entrenador                       |" << endl;
+        cout << "| 2. Listar Entrenadores Activos                         |" << endl;
+        cout << "| 3. Listar Todos los Entrenadores                       |" << endl;
+        cout << "| 4. Modificar Entrenador                                |" << endl;
+        cout << "| 5. Eliminar Entrenador                                 |" << endl;
         cout << "| 0. Volver al Menú Principal                            |" << endl;
         cout << "==========================================================" << endl;
         cout << " Seleccioná una opción: ";
@@ -375,25 +383,8 @@ void Menu::menuEntrenadores()
 
         switch (op)
         {
+        
         case 1:
-        {
-            cout << "\n[Acción] Cargar Entrenador...\n" << endl;
-
-            Entrenador entrenador;
-            EntrenadorArchivo archivo;
-
-
-            entrenador.cargar();
-            if (entrenador.get_IdClub() != -1) {
-                archivo.grabarEnDisco(entrenador);
-                cout << "Entrenador guardado con exito." << endl;
-            } else {
-                cout << "Carga cancelada. No se guardo en el archivo." << endl;
-            }
-            system("pause");
-        }
-        break;
-        case 2:
             {
             cout << "\n[Acción] Consulta por ID de Entrenador...\n" << endl;
                cout<< "-------------------------------------------------------------"<<endl;
@@ -403,9 +394,10 @@ void Menu::menuEntrenadores()
             archivo.mostrarDTPorID();
 
             system("pause");
+            
             }
             break;
-        case 3:
+        case 2:
         {
             cout << "\n[Acción] Listar todos los entrenadores...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
@@ -418,7 +410,7 @@ void Menu::menuEntrenadores()
         }
         break;
 
-        case 4:
+        case 3:
         {
             cout << "\n[Acción] Listar todos los entrenadores...\n" << endl;
             cout<< "-------------------------------------------------------------"<<endl;
@@ -429,7 +421,7 @@ void Menu::menuEntrenadores()
         }
         break;
 
-        case 5:
+        case 4:
         {
             cout << "\n[Acción] Modificar Entrenador... \n" << endl;
             modificarEntrenador();
@@ -437,7 +429,7 @@ void Menu::menuEntrenadores()
         }
         break;
 
-        case 6:
+        case 5:
         {
             cout << "\n[Acción] Eliminar Entrenador... \n" << endl;
 
@@ -757,7 +749,9 @@ void cargarDatosDePrueba()
         Club club;
         club.set_idclub(i + 1);
         club.set_nombre(clubes[i]);
-        club.set_presidente(presidentes[i]);
+        Persona pres;
+        pres.set_nombre(presidentes[i]);
+        club.set_presidente(pres);
         club.set_fechafundacion(fechaClub);
         club.set_cantidadtrofeos(0);
         club.set_cantidaddescensos(0);
@@ -845,10 +839,9 @@ void modificarClub()
     }
     else if (opcion == 2)
     {
-        char presidente[50];
-        cout << "Ingrese el nuevo presidente: ";
-        cin >> ws;
-        cin.getline(presidente, 50);
+        Persona presidente;
+        cout << "Ingrese los datos del nuevo presidente: " << endl;
+        presidente.cargar();
         club.set_presidente(presidente);
     }
     else if (opcion == 3)

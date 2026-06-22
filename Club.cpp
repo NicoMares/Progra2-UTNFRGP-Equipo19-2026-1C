@@ -4,12 +4,13 @@
 #include "Club.h"
 #include "ClubArchivo.h"
 #include "utils.h"
+#include "Entrenador.h"
+#include "EntrenadorArchivo.h"
 
 Club::Club()
 {
     _IdClub = 0;
     strcpy(_Nombre, "");
-    strcpy(_Presidente, "");
     _CantidadTrofeos = 0;
     _CantidadDescensos = 0;
     _Activo = true;
@@ -28,18 +29,16 @@ void Club::cargar()
 
     std::cin.ignore();
 
+    std::cout << "Datos Del Club: " << std::endl;
+    std::cout << "--------------------------------" << std::endl;
+
     std::cout << "INGRESE NOMBRE DEL CLUB: ";
     std::cin.getline(_Nombre, 50);
 
-    std::cout << "INGRESE NOMBRE DEL PRESIDENTE: ";
-    std::cin.getline(_Presidente, 50);
-
-    std::cout << "INGRESE FECHA DE FUNDACIÓN: "<<std::endl;
-
+    std::cout << "INGRESE FECHA DE FUNDACIÓN: " << std::endl;
     Fecha f;
     f.cargar();
     set_fechafundacion(f);
-
 
     std::cout << "INGRESE CANTIDAD DE TROFEOS: ";
     std::cin >> _CantidadTrofeos;
@@ -48,18 +47,36 @@ void Club::cargar()
     std::cin >> _CantidadDescensos;
 
     _Activo = true;
+
+    std::cout << std::endl;
+    std::cin.ignore();
+
+    std::cout << "DATOS DEL PRESIDENTE: " << std::endl;
+    std::cout << "--------------------------------" << std::endl;
+    _Presidente.cargar();
+
+    std::cout << std::endl;
 }
 
 void Club::mostrar()
 {
-
-    std::cout<<std::endl;
+    std::cout << std::endl;
     std::cout << "ID CLUB: " << _IdClub << std::endl;
     std::cout << "NOMBRE: " << _Nombre << std::endl;
-    std::cout << "PRESIDENTE: " << _Presidente << std::endl;
+
+    std::cout << "PRESIDENTE: " << _Presidente.get_nombre() << " " << _Presidente.get_apellido() << std::endl;
 
     std::cout << "FECHA DE FUNDACIÓN: ";
     _FechaFundacion.mostrar();
+
+    EntrenadorArchivo entArch;
+    int posDT = entArch.buscarPorIdClub(_IdClub);
+    if (posDT != -1) {
+        Entrenador dt = entArch.leerDisco(posDT);
+        std::cout << "TECNICO: " << dt.get_nombre() << " " << dt.get_apellido() << std::endl;
+    } else {
+        std::cout << "TECNICO: Sin asignar" << std::endl;
+    }
 
     std::cout << "CANTIDAD DE TROFEOS: " << _CantidadTrofeos << std::endl;
     std::cout << "CANTIDAD DE DESCENSOS: " << _CantidadDescensos << std::endl;
@@ -106,30 +123,28 @@ void Club::mostrarRacha()
         }
         else
         {
-            // Si ya no hay más partidos encontrados, llenamos con guiones
             std::cout << "[-] ";
         }
     }
     std::cout << std::endl;
 }
 
-int Club::calcularPuntos(){
+int Club::calcularPuntos()
+{
     int puntos = 0;
 
-    for (int j = 1; j <= 15; j++) {
+    for (int j = 1; j <= 15; j++)
+    {
         int resultado = _Racha[j];
-        if (resultado == 1)      puntos += 3; // Victoria
-        else if (resultado == 2) puntos += 1; // Empate
+        if (resultado == 1)      puntos += 3;
+        else if (resultado == 2) puntos += 1;
     }
 
     return puntos;
 }
 
-
-
 int Club::get_idclub()
 {
-
     return _IdClub;
 }
 
@@ -138,7 +153,7 @@ const char* Club::get_nombre()
     return _Nombre;
 }
 
-const char* Club::get_presidente()
+Persona Club::get_presidente()
 {
     return _Presidente;
 }
@@ -183,9 +198,9 @@ void Club::set_nombre(const char nombre[])
     strcpy(_Nombre, nombre);
 }
 
-void Club::set_presidente(const char presidente[])
+void Club::set_presidente(Persona presidente)
 {
-    strcpy(_Presidente, presidente);
+    _Presidente = presidente;
 }
 
 void Club::set_fechafundacion(Fecha fechaFundacion)

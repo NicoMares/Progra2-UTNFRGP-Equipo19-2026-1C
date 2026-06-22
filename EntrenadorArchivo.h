@@ -13,6 +13,7 @@ public:
      Entrenador leerDisco (int posicion);
      bool modificarEnDisco(Entrenador entrenador, int posicion);
      int buscarPorID(int idEntrenador);
+     int buscarPorIdClub(int idClub);
      int contarRegistros();
      int obtenerProximoID();
 private:

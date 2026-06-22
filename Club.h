@@ -1,12 +1,13 @@
 #pragma once
 #include "Fecha.h"
+#include "Persona.h"
 
 class Club {
 
 private:
     int _IdClub;
     char _Nombre[50];
-    char _Presidente[50];
+    Persona _Presidente;
     Fecha _FechaFundacion;
     int _CantidadTrofeos;
     int _CantidadDescensos;
@@ -23,7 +24,7 @@ public:
 
     int get_idclub();
     const char* get_nombre();
-    const char* get_presidente();
+    Persona get_presidente();
     Fecha get_fechafundacion();
     int get_cantidadtrofeos();
     int get_cantidaddescensos();
@@ -32,7 +33,7 @@ public:
 
     void set_idclub(int idClub);
     void set_nombre(const char nombre[]);
-    void set_presidente(const char presidente[]);
+    void set_presidente(Persona presidente);
     void set_fechafundacion(Fecha fechaFundacion);
     void set_cantidadtrofeos(int cantidadTrofeos);
     void set_cantidaddescensos(int cantidadDescensos);

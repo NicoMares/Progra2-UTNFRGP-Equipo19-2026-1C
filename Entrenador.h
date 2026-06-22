@@ -12,7 +12,7 @@ public :
 
      Entrenador ();
 
-     void cargar ();
+     void cargar (int idClub = -1);
      void mostrar ();
      
 
