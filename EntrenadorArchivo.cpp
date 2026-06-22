@@ -66,6 +66,23 @@ int EntrenadorArchivo::contarRegistros() {
     return bytes / sizeof(Entrenador);
 }
 
+int EntrenadorArchivo::buscarDNI(int dni) {
+    int pos = 0;
+    Entrenador e;
+    FILE* p = fopen("entrenadores.dat", "rb"); //
+    if (p == NULL) return -1;
+
+    while (fread(&e, sizeof(Entrenador), 1, p)) {
+        if (e.get_dni() == dni) {
+            fclose(p);
+            return pos;
+        }
+        pos++;
+    }
+    fclose(p);
+    return -1;
+}
+
 int EntrenadorArchivo::buscarPorID(int idEntrenador) {
     FILE *pFile = fopen("entrenadores.dat", "rb");
     if (pFile == NULL) return -1;

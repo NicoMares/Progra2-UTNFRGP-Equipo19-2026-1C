@@ -8,38 +8,6 @@ Fecha::Fecha() {
     _Anio = 0;
 }
 
-void Fecha::cargar() {
-    int dia,mes,anio;
-    bool fechaCorrecta = false;
-    do {
-        std::cout << "Ingrese el día: ";
-        std::cin >> dia;
-        set_Dia(dia);
-
-        std::cout << "Ingrese el mes: ";
-        std::cin >> mes;
-        set_Mes(mes);
-
-        std::cout << "Ingrese el año: ";
-        std::cin >> anio;
-        set_Anio(anio);
-
-        if (esValida()) {
-            fechaCorrecta = true;
-        } else {
-            std::cout << "\nERROR: La fecha ingresada es inválida. Intentá nuevamente.\n" << std::endl;
-        }
-
-    } while (!fechaCorrecta); /// Si no es false, termina el Do While - Leandro
-}
-
-
-void Fecha::mostrar(){
-    std::cout<<_Dia<< "/"<<_Mes << "/"<<_Anio<<std::endl;
-
-}
-
-
 int Fecha::get_Dia() {
     return _Dia;
 
@@ -69,25 +37,34 @@ void Fecha::set_Anio(int anio ){
     _Anio = anio;
 }
 
-///Nos sirve para validar los dias, meses y años. -Leandro
+
 bool Fecha::esValida() {
-    if (_Anio < 1800 || _Anio > 2026) {
-    return false;
-}
-
-if (_Mes < 1 || _Mes > 12) {
-    return false;
-}
-
-    ///Le asignamos los dias a los Doce meses del año - Leandro
-    int diasPorMes[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-    ///Consultar al profe si quiere validación por año biciesto - Leandro
-
-    ///Recordar poner -1 dado que si el usuario ingresa enero, mostrara febrero.
-    if (_Dia < 1 || _Dia > diasPorMes[_Mes - 1]) {
-        return false;
-    }
-
+    if (_Mes < 1 || _Mes > 12) return false;
+    int dias[] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    if (_Dia < 1 || _Dia > dias[_Mes]) return false;
+    if (_Anio < 1800 || _Anio > 2026) return false;
     return true;
+}
+
+void Fecha::cargar() {
+    bool esCorrecta = false;
+    do {
+        std::cout << "Dia: "; std::cin >> _Dia;
+        std::cout << "Mes: "; std::cin >> _Mes;
+        std::cout << "Año: "; std::cin >> _Anio;
+
+        //Validación
+        if (esValida()) {
+            esCorrecta = true;
+        } else {
+
+            std::cout << "\n¡ERROR EN LA CARGA DE DATOS! La fecha ingresada no es válida." << std::endl;
+            std::cout << "Por favor, ingrese los datos nuevamente.\n" << std::endl;
+        }
+    } while (!esCorrecta);
+}
+
+void Fecha::mostrar(){
+    std::cout<<_Dia<< "/"<<_Mes << "/"<<_Anio<<std::endl;
+
 }

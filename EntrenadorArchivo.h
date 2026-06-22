@@ -16,6 +16,7 @@ public:
      int buscarPorIdClub(int idClub);
      int contarRegistros();
      int obtenerProximoID();
+     int buscarDNI(int dni);
 private:
 
 };

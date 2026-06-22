@@ -21,7 +21,6 @@ public :
     void set_Anio (int anio);
     void set_Mes  (int mes);
 
-    ///Para validar la fecha -Leandro
     bool esValida();
 };
 

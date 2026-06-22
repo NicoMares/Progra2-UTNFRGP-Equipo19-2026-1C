@@ -7,7 +7,7 @@
 
 JugadorArchivo::JugadorArchivo()
 {
- 
+
 }
 
 bool JugadorArchivo::grabarEnDisco(Jugador jugador) {
@@ -154,6 +154,24 @@ void JugadorArchivo ::consultarPorPosicion() {
     }
 }
 
+int JugadorArchivo::buscarDNI(int dni) {
+    int pos = 0;
+    Jugador j;
+    // Abrimos el archivo y recorremos registro por registro
+    FILE* p = fopen("jugadores.dat", "rb");
+    if (p == NULL) return -1;
+
+    while (fread(&j, sizeof(Jugador), 1, p)) {
+        if (j.get_dni() == dni) {
+            fclose(p);
+            return pos; // Devuelve la posición si lo encuentra
+        }
+        pos++;
+    }
+    fclose(p);
+    return -1; // No se encontró
+}
+
 void JugadorArchivo::listarPorDNI() {
     int cantidadRegistros = contarRegistros();
     Jugador *jugadores = new Jugador[cantidadRegistros];
@@ -244,16 +262,16 @@ void JugadorArchivo::listarPorClub() {
 
 bool JugadorArchivo::modificarEnDisco(Jugador jugador, int posicion)
 {
-    FILE *pFile = fopen("jugadores.dat", "rb+"); 
+    FILE *pFile = fopen("jugadores.dat", "rb+");
     if (pFile == NULL)
     {
         return false;
     }
 
-    fseek(pFile, posicion * sizeof(Jugador), SEEK_SET); 
+    fseek(pFile, posicion * sizeof(Jugador), SEEK_SET);
     bool seEscribio = fwrite(&jugador, sizeof(Jugador), 1, pFile);
-    fclose(pFile); 
-    return seEscribio; 
+    fclose(pFile);
+    return seEscribio;
 }
 
 /* FUNCIONES PARA SIMULAR ACCIONES

@@ -4,6 +4,7 @@
 #include "EntrenadorArchivo.h"
 #include "ClubArchivo.h"
 #include "Club.h"
+#include "JugadorArchivo.h"
 
 Entrenador::Entrenador() {
     _IdClub = -1;
@@ -11,7 +12,9 @@ Entrenador::Entrenador() {
 }
 
 void Entrenador::cargar(int idClub) {
-    int idclub;
+    int idclub, dni;
+    char nombre[30], apellido[30];
+
     EntrenadorArchivo archivo;
     set_idEntrenador(archivo.obtenerProximoID());
     std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
@@ -25,25 +28,55 @@ void Entrenador::cargar(int idClub) {
 
     ClubArchivo archClub;
     int pos = archClub.buscarPorID(idclub);
-
     if (pos == -1) {
         std::cout << "ERROR: No existe un club con ese ID." << std::endl;
         return;
     }
-
     Club clubAsociado = archClub.leerDeDisco(pos);
-
-    if (clubAsociado.get_activo() == false) {
-        std::cout << "ERROR: El club se encuentra INACTIVO. No se puede contratar entrenador." << std::endl;
+    if (!clubAsociado.get_activo()) {
+        std::cout << "ERROR: Club INACTIVO. No se puede contratar entrenador." << std::endl;
         return;
     }
-
     set_idclub(idclub);
 
     std::cout << "Cargando Datos del Tecnico:" << std::endl;
     std::cout << "-----------------------------" << std::endl;
 
-    Persona::cargar();
+    std::cout << "Ingrese nombre: "; std::cin >> nombre; set_nombre(nombre);
+    std::cout << "Ingrese apellido: "; std::cin >> apellido; set_apellido(apellido);
+
+    //VALIDACIÓN DNI ÚNICO
+    JugadorArchivo archJ;
+    EntrenadorArchivo archE;
+    bool dniValido = false;
+    do {
+        std::cout << "Ingrese DNI: ";
+        std::cin >> dni;
+
+        if (archJ.buscarDNI(dni) != -1 || archE.buscarDNI(dni) != -1) {
+            std::cout << "ERROR: El DNI ya está registrado en el sistema. Intente de nuevo." << std::endl;
+        } else {
+            set_dni(dni);
+            dniValido = true;
+        }
+    } while (!dniValido);
+
+    //VALIDACIÓN DE FECHA (18-80 AÑOS)
+    Fecha f;
+    bool edadValida = false;
+    do {
+        std::cout << "Ingrese fecha de nacimiento: " << std::endl;
+        f.cargar();
+
+        int edad = 2026 - f.get_Anio();
+        if (edad >= 18 && edad <= 80) {
+            edadValida = true;
+        } else {
+            std::cout << "ERROR: El entrenador debe tener entre 18 y 80 años. Intente de nuevo.\n" << std::endl;
+        }
+    } while (!edadValida);
+    set_fechanacimiento(f);
+    set_activo(true);
 }
 
 void Entrenador::mostrar() {
@@ -52,7 +85,6 @@ void Entrenador::mostrar() {
     std::cout << "ID ENTRENADOR: " << _IdEntrenador << std::endl;
     std::cout << "ID CLUB: " << _IdClub << std::endl;
 }
-
 
 
 int Entrenador::get_IdClub ()  {

@@ -1,0 +1,162 @@
+# depslib dependency file v1.0
+1782156411 source:c:\users\topo\desktop\proyecto 09 06\accion.cpp
+	<iostream>
+	<cstring>
+	"Accion.h"
+
+1782156415 c:\users\topo\desktop\proyecto 09 06\accion.h
+
+1782156419 source:c:\users\topo\desktop\proyecto 09 06\accionarchivo.cpp
+	<iostream>
+	<cstdio>
+	<cstring>
+	<cstdlib>
+	"AccionArchivo.h"
+	"JugadorArchivo.h"
+
+1782156424 c:\users\topo\desktop\proyecto 09 06\accionarchivo.h
+	"Accion.h"
+	"Partido.h"
+
+1782156489 c:\users\topo\desktop\proyecto 09 06\partido.h
+
+1782161317 c:\users\topo\desktop\proyecto 09 06\jugadorarchivo.h
+	"Jugador.h"
+
+1782156468 c:\users\topo\desktop\proyecto 09 06\jugador.h
+	"Persona.h"
+
+1782156501 c:\users\topo\desktop\proyecto 09 06\persona.h
+	"Fecha.h"
+
+1782160625 c:\users\topo\desktop\proyecto 09 06\fecha.h
+
+1782156427 source:c:\users\topo\desktop\proyecto 09 06\club.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Club.h"
+	"ClubArchivo.h"
+	"utils.h"
+	"Entrenador.h"
+	"EntrenadorArchivo.h"
+
+1782156434 c:\users\topo\desktop\proyecto 09 06\club.h
+	"Fecha.h"
+	"Persona.h"
+
+1782156441 c:\users\topo\desktop\proyecto 09 06\clubarchivo.h
+	"Club.h"
+
+1782156516 c:\users\topo\desktop\proyecto 09 06\utils.h
+
+1782156448 c:\users\topo\desktop\proyecto 09 06\entrenador.h
+	"Persona.h"
+
+1782161519 c:\users\topo\desktop\proyecto 09 06\entrenadorarchivo.h
+	"Entrenador.h"
+
+1782156438 source:c:\users\topo\desktop\proyecto 09 06\clubarchivo.cpp
+	"ClubArchivo.h"
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Club.h"
+	"utils.h"
+
+1782161867 source:c:\users\topo\desktop\proyecto 09 06\entrenador.cpp
+	<iostream>
+	<cstdio>
+	"Entrenador.h"
+	"EntrenadorArchivo.h"
+	"ClubArchivo.h"
+	"Club.h"
+	"JugadorArchivo.h"
+
+1782161458 source:c:\users\topo\desktop\proyecto 09 06\entrenadorarchivo.cpp
+	"EntrenadorArchivo.h"
+	"Entrenador.h"
+	<iostream>
+
+1782160508 source:c:\users\topo\desktop\proyecto 09 06\fecha.cpp
+	<iostream>
+	"Fecha.h"
+	<cstdlib>
+
+1782161767 source:c:\users\topo\desktop\proyecto 09 06\jugador.cpp
+	<iostream>
+	<cstring>
+	<cstdio>
+	"Jugador.h"
+	"JugadorArchivo.h"
+	"ClubArchivo.h"
+	"Club.h"
+	"EntrenadorArchivo.h"
+
+1782161224 source:c:\users\topo\desktop\proyecto 09 06\jugadorarchivo.cpp
+	"JugadorArchivo.h"
+	<iostream>
+	<cstring>
+	<cstdio>
+	<cstdlib>
+	"Jugador.h"
+
+1782156477 source:c:\users\topo\desktop\proyecto 09 06\main.cpp
+	<iostream>
+	"Menu.h"
+	<locale.h>
+	<windows.h>
+
+1782156484 c:\users\topo\desktop\proyecto 09 06\menu.h
+
+1782156481 source:c:\users\topo\desktop\proyecto 09 06\menu.cpp
+	"Menu.h"
+	<iostream>
+	<cstdio>
+	"Club.h"
+	"Jugador.h"
+	"Entrenador.h"
+	"Accion.h"
+	"ClubArchivo.h"
+	"JugadorArchivo.h"
+	"EntrenadorArchivo.h"
+	"AccionArchivo.h"
+	"PartidoArchivo.h"
+	"Partido.h"
+
+1782156495 c:\users\topo\desktop\proyecto 09 06\partidoarchivo.h
+	"Partido.h"
+	"PosicionTabla.h"
+
+1782156507 c:\users\topo\desktop\proyecto 09 06\posiciontabla.h
+	"Club.h"
+
+1782156487 source:c:\users\topo\desktop\proyecto 09 06\partido.cpp
+	"Partido.h"
+	<iostream>
+
+1782156492 source:c:\users\topo\desktop\proyecto 09 06\partidoarchivo.cpp
+	"PartidoArchivo.h"
+	"AccionArchivo.h"
+	"ClubArchivo.h"
+	"Club.h"
+	"JugadorArchivo.h"
+	<cstring>
+	<iostream>
+	<cstdio>
+	<cstdlib>
+	<ctime>
+
+1782156498 source:c:\users\topo\desktop\proyecto 09 06\persona.cpp
+	<iostream>
+	<cstring>
+	"Persona.h"
+
+1782156505 source:c:\users\topo\desktop\proyecto 09 06\posiciontabla.cpp
+	"PosicionTabla.h"
+	<cstring>
+
+1782156513 source:c:\users\topo\desktop\proyecto 09 06\utils.cpp
+	"utils.h"
+	<iostream>
+
