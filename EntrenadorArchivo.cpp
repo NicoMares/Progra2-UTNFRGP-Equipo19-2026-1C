@@ -191,7 +191,7 @@ void EntrenadorArchivo::listar() {
 
 void EntrenadorArchivo::EliminarEntrenador() {
 
- int idBuscado;
+  int idBuscado;
             std::cout << "Ingrese el ID del entrenador que desea eliminar: ";
             std::cin >> idBuscado;
 
@@ -207,6 +207,14 @@ void EntrenadorArchivo::EliminarEntrenador() {
                 {
                     encontrado = true;
 
+                    char confirmacion;
+                    std::cout << "¿Estás seguro que querés eliminar al entrenador '" << entrenador.get_nombre() << " " << entrenador.get_apellido() << "'? (S/N): ";
+                    std::cin >> confirmacion;
+                    if (confirmacion != 'S' && confirmacion != 's')
+                    {
+                        std::cout << "Operación cancelada." << std::endl;
+                        return;
+                    }
 
                     entrenador.set_activo(false);
 
@@ -222,6 +230,15 @@ void EntrenadorArchivo::EliminarEntrenador() {
                 }
             }
             if (!encontrado) std::cout << "No se encontró ningún entrenador activo con el ID: " << idBuscado << std::endl;
+
+
+
+
+
+
+
+
+
 }
 
 void EntrenadorArchivo::modificarEntrenador()

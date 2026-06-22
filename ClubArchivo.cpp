@@ -136,6 +136,7 @@ bool ClubArchivo::modificarEnDisco(Club equipo, int posicion)
 
 void ClubArchivo::eliminarDeDisco()
 {
+            
             int idBuscado;
             std::cout << "Ingrese el ID del club que desea eliminar: ";
             std::cin >> idBuscado;
@@ -152,6 +153,14 @@ void ClubArchivo::eliminarDeDisco()
                 {
                     encontrado = true;
 
+                    char confirmacion;
+                    std::cout << "¿Estás seguro que querés eliminar el club '" << equipo.get_nombre() << "'? (S/N): ";
+                    std::cin >> confirmacion;
+                    if (confirmacion != 'S' && confirmacion != 's')
+                    {
+                        std::cout << "Operación cancelada." << std::endl;
+                        return;
+                    }
 
                     equipo.set_activo(false);
 
@@ -167,6 +176,10 @@ void ClubArchivo::eliminarDeDisco()
                 }
             }
             if (!encontrado) std::cout << "No se encontró ningún club activo con el ID: " << idBuscado << std::endl;
+
+
+
+
         }
 
 void ClubArchivo::listarActivos() {
@@ -265,7 +278,7 @@ void ClubArchivo::ModificarClub()
     {
         char nombre[50];
          std::cout << "Ingrese el nuevo nombre: ";
-         std::cin >>  std::ws;
+         std::cin >> std::ws;
          std::cin.getline(nombre, 50);
         club.set_nombre(nombre);
     }

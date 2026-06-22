@@ -332,7 +332,8 @@ Jugador JugadorArchivo::obtenerJugadorRandomPorClub(int idClub)
 }
 
 void JugadorArchivo::EliminarJugador() {
-    int idBuscado;
+ 
+ int idBuscado;
     std::cout << "Ingrese el ID del jugador a eliminar: ";
     std::cin >> idBuscado;
 
@@ -351,6 +352,14 @@ void JugadorArchivo::EliminarJugador() {
         return;
     }
 
+    char confirmacion;
+    std::cout << "¿Estás seguro que querés eliminar al jugador '" << JugadorTemp.get_nombre() << " " << JugadorTemp.get_apellido() << "'? (S/N): ";
+    std::cin >> confirmacion;
+    if (confirmacion != 'S' && confirmacion != 's') {
+        std::cout << "Operación cancelada." << std::endl;
+        return;
+    }
+
     JugadorTemp.set_activo(false);
 
     if (ArchivoTemp.modificarEnDisco(JugadorTemp, pos)) {
@@ -358,6 +367,22 @@ void JugadorArchivo::EliminarJugador() {
     } else {
         std::cout << "\nError al intentar guardar en el archivo." << std::endl;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 void JugadorArchivo::ModificarJugador()
