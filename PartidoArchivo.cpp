@@ -177,10 +177,20 @@ void PartidoArchivo::generarFixtureTorneo() {
         archivoClub.modificarEnDisco(c, i);
     }
 
+    // Solo participan clubes ACTIVOS: los eliminados (baja logica) no entran al fixture.
     int vIdsClubes[16];
-    for (int i = 0; i < 16; i++) {
+    int cantidadActivos = 0;
+    for (int i = 0; i < cantidadClubes && cantidadActivos < 16; i++) {
         Club c = archivoClub.leerDeDisco(i);
-        vIdsClubes[i] = c.get_idclub();
+        if (c.get_activo()) {
+            vIdsClubes[cantidadActivos] = c.get_idclub();
+            cantidadActivos++;
+        }
+    }
+
+    if (cantidadActivos < 16) {
+        std::cout << "Error: Se necesitan al menos 16 clubes ACTIVOS para generar el fixture." << std::endl;
+        return;
     }
 
     int idPartidoContador = 1;
