@@ -67,38 +67,54 @@ int EntrenadorArchivo::contarRegistros() {
 }
 
 int EntrenadorArchivo::buscarPorID(int idEntrenador) {
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+    if (pFile == NULL) return -1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Entrenador entrenador = leerDisco(i);
-        if (entrenador.get_IdEntrenador() == idEntrenador) return i;
+    Entrenador entrenador;
+    int pos = 0;
+    while (fread(&entrenador, sizeof(Entrenador), 1, pFile) == 1) {
+        if (entrenador.get_IdEntrenador() == idEntrenador) {
+            fclose(pFile);
+            return pos;
+        }
+        pos++;
     }
 
+    fclose(pFile);
     return -1;
 }
 
 int EntrenadorArchivo::buscarPorIdClub(int idClub) {
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+    if (pFile == NULL) return -1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Entrenador entrenador = leerDisco(i);
-        if (entrenador.get_IdClub() == idClub && entrenador.get_activo()) return i;
+    Entrenador entrenador;
+    int pos = 0;
+    while (fread(&entrenador, sizeof(Entrenador), 1, pFile) == 1) {
+        if (entrenador.get_IdClub() == idClub && entrenador.get_activo()) {
+            fclose(pFile);
+            return pos;
+        }
+        pos++;
     }
 
+    fclose(pFile);
     return -1;
 }
 
 int EntrenadorArchivo::obtenerProximoID() {
-    int maximoID = 0;
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+    if (pFile == NULL) return 1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Entrenador entrenador = leerDisco(i);
+    Entrenador entrenador;
+    int maximoID = 0;
+    while (fread(&entrenador, sizeof(Entrenador), 1, pFile) == 1) {
         if (entrenador.get_IdEntrenador() > maximoID) {
             maximoID = entrenador.get_IdEntrenador();
         }
     }
 
+    fclose(pFile);
     return maximoID + 1;
 }
 
@@ -126,38 +142,31 @@ void EntrenadorArchivo::mostrarDTPorID() {
 }
 
 void EntrenadorArchivo::listarActivos() {
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+    if (pFile == NULL) return;
 
-int pos = 0;
+    Entrenador entrenador;
+    while (fread(&entrenador, sizeof(Entrenador), 1, pFile) == 1) {
+        if (entrenador.get_activo()) {
+            entrenador.mostrar();
+            std::cout << "--------------------------------" << std::endl;
+        }
+    }
 
-Entrenador entrenador;
-EntrenadorArchivo archivo;
-
-            while (pos < archivo.contarRegistros())
-            {
-                entrenador = archivo.leerDisco(pos);
-                if (entrenador.get_activo()) {
-                    entrenador.mostrar();
-                    std::cout << "--------------------------------" << std::endl;
-                }
-                pos++;
-            }
-
-
+    fclose(pFile);
 }
 
 void EntrenadorArchivo::listar() {
-    int pos = 0;
+    FILE *pFile = fopen("entrenadores.dat", "rb");
+    if (pFile == NULL) return;
 
     Entrenador entrenador;
-    EntrenadorArchivo archivo;
-
-    while (pos < archivo.contarRegistros())
-    {
-        entrenador = archivo.leerDisco(pos);
+    while (fread(&entrenador, sizeof(Entrenador), 1, pFile) == 1) {
         entrenador.mostrar();
         std::cout << "--------------------------------" << std::endl;
-        pos++;
     }
+
+    fclose(pFile);
 }
 
 void EntrenadorArchivo::EliminarEntrenador() {

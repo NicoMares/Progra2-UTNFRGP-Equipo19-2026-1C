@@ -57,38 +57,54 @@ int JugadorArchivo::contarRegistros() {
 }
 
 int JugadorArchivo::buscarPorID(int idJugador) {
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return -1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Jugador jugador = leerDeDisco(i);
-        if (jugador.get_idjugador() == idJugador) return i;
+    Jugador jugador;
+    int pos = 0;
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
+        if (jugador.get_idjugador() == idJugador) {
+            fclose(pFile);
+            return pos;
+        }
+        pos++;
     }
 
+    fclose(pFile);
     return -1;
 }
 
 int JugadorArchivo::buscarPorDNI(int dni) {
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return -1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Jugador jugador = leerDeDisco(i);
-        if (jugador.get_dni() == dni) return i;
+    Jugador jugador;
+    int pos = 0;
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
+        if (jugador.get_dni() == dni) {
+            fclose(pFile);
+            return pos;
+        }
+        pos++;
     }
 
+    fclose(pFile);
     return -1;
 }
 
 int JugadorArchivo::obtenerProximoID() {
-    int maximoID = 0;
-    int cantidad = contarRegistros();
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return 1;
 
-    for (int i = 0; i < cantidad; i++) {
-        Jugador jugador = leerDeDisco(i);
+    Jugador jugador;
+    int maximoID = 0;
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
         if (jugador.get_idjugador() > maximoID) {
             maximoID = jugador.get_idjugador();
         }
     }
 
+    fclose(pFile);
     return maximoID + 1;
 }
 
@@ -118,21 +134,19 @@ void JugadorArchivo ::consultarPorPosicion() {
     std::cout << "Ingrese la posición del jugador que desea consultar: ";
     std::cin >> posicionBuscada;
 
-   JugadorArchivo ArchivoTemp;
-   Jugador JugadorTemp;
-
-
-    int pos = 0;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    Jugador jugador;
     bool encontrado = false;
 
-    while (pos < ArchivoTemp.contarRegistros()) {
-        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
-        if (JugadorTemp.get_activo() && strcmp(JugadorTemp.get_posicion(), posicionBuscada) == 0) {
-            JugadorTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
+    if (pFile != NULL) {
+        while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
+            if (jugador.get_activo() && strcmp(jugador.get_posicion(), posicionBuscada) == 0) {
+                jugador.mostrar();
+                std::cout << "-----------------------------" << std::endl;
+                encontrado = true;
+            }
         }
-        pos++;
+        fclose(pFile);
     }
 
     if (!encontrado) {
@@ -144,14 +158,17 @@ void JugadorArchivo::listarPorDNI() {
     int cantidadRegistros = contarRegistros();
     Jugador *jugadores = new Jugador[cantidadRegistros];
 
-    int pos = 0;
-    while (pos < cantidadRegistros) {
-        jugadores[pos] = leerDeDisco(pos);
-        pos++;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    int cargados = 0;
+    if (pFile != NULL) {
+        while (cargados < cantidadRegistros && fread(&jugadores[cargados], sizeof(Jugador), 1, pFile) == 1) {
+            cargados++;
+        }
+        fclose(pFile);
     }
 
-    for (int i = 0; i < cantidadRegistros - 1; i++) {
-        for (int j = 0; j < cantidadRegistros - 1 - i; j++) {
+    for (int i = 0; i < cargados - 1; i++) {
+        for (int j = 0; j < cargados - 1 - i; j++) {
             if (jugadores[j].get_dni() > jugadores[j + 1].get_dni()) {
                 Jugador auxiliar = jugadores[j];
                 jugadores[j] = jugadores[j + 1];
@@ -160,7 +177,7 @@ void JugadorArchivo::listarPorDNI() {
         }
     }
 
-    for (int i = 0; i < cantidadRegistros; i++) {
+    for (int i = 0; i < cargados; i++) {
         if (jugadores[i].get_activo()) {
             jugadores[i].mostrar();
             std::cout << "--------------------------------" << std::endl;
@@ -171,33 +188,31 @@ void JugadorArchivo::listarPorDNI() {
 }
 
 void JugadorArchivo::listarActivos() {
-    JugadorArchivo ArchivoTemp;
-    Jugador JugadorTemp;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return;
 
-    int pos = 0;
-
-    while (pos < ArchivoTemp.contarRegistros()) {
-        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
-        if (JugadorTemp.get_activo()) {
-            JugadorTemp.mostrar();
+    Jugador jugador;
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
+        if (jugador.get_activo()) {
+            jugador.mostrar();
             std::cout << "--------------------------------" << std::endl;
         }
-        pos++;
     }
+
+    fclose(pFile);
 }
 
 void JugadorArchivo::listar() {
-    JugadorArchivo archivo;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return;
+
     Jugador jugador;
-
-    int pos = 0;
-
-    while (pos < archivo.contarRegistros()) {
-        jugador = archivo.leerDeDisco(pos);
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
         jugador.mostrar();
         std::cout << "--------------------------------" << std::endl;
-        pos++;
     }
+
+    fclose(pFile);
 }
 
 void JugadorArchivo::listarPorClub() {
@@ -207,20 +222,19 @@ void JugadorArchivo::listarPorClub() {
 
     std::cout<<  "------------------------------" << std::endl;
 
-    JugadorArchivo ArchivoTemp;
-    Jugador JugadorTemp;
-
-    int pos = 0;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    Jugador jugador;
     bool encontrado = false;
 
-    while (pos < ArchivoTemp.contarRegistros()) {
-        JugadorTemp = ArchivoTemp.leerDeDisco(pos);
-        if (JugadorTemp.get_activo() && JugadorTemp.get_idclub() == idClubBuscado) {
-            JugadorTemp.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
+    if (pFile != NULL) {
+        while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1) {
+            if (jugador.get_activo() && jugador.get_idclub() == idClubBuscado) {
+                jugador.mostrar();
+                std::cout << "-----------------------------" << std::endl;
+                encontrado = true;
+            }
         }
-        pos++;
+        fclose(pFile);
     }
 
     if (!encontrado) {
@@ -247,18 +261,20 @@ bool JugadorArchivo::modificarEnDisco(Jugador jugador, int posicion)
    y para elegir un jugador real cuando se genera una accion. */
 int JugadorArchivo::contarJugadoresActivosPorClub(int idClub)
 {
-    int cantidad = contarRegistros();
-    int total = 0;
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return 0;
 
-    for (int i = 0; i < cantidad; i++)
+    Jugador jugador;
+    int total = 0;
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1)
     {
-        Jugador jugador = leerDeDisco(i);
         if (jugador.get_activo() && jugador.get_idclub() == idClub)
         {
             total++;
         }
     }
 
+    fclose(pFile);
     return total;
 }
 
@@ -274,21 +290,24 @@ Jugador JugadorArchivo::obtenerJugadorRandomPorClub(int idClub)
 
     int elegido = rand() % cantidadJugadores;
     int encontrados = 0;
-    int cantidad = contarRegistros();
 
-    for (int i = 0; i < cantidad; i++)
+    FILE *pFile = fopen("jugadores.dat", "rb");
+    if (pFile == NULL) return Jugador();
+
+    while (fread(&jugador, sizeof(Jugador), 1, pFile) == 1)
     {
-        jugador = leerDeDisco(i);
         if (jugador.get_activo() && jugador.get_idclub() == idClub)
         {
             if (encontrados == elegido)
             {
+                fclose(pFile);
                 return jugador;
             }
             encontrados++;
         }
     }
 
+    fclose(pFile);
     return Jugador();
 }
 

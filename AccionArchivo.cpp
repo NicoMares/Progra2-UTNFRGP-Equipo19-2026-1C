@@ -311,11 +311,13 @@ void AccionArchivo::simularAccionesDePartido(Partido partido)
 int AccionArchivo::contarGolesPorPartidoYClub(int idPartido, int idClub)
 {
     int goles = 0;
-    int cantidad = contarRegistros();
 
-    for (int i = 0; i < cantidad; i++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile == NULL) return 0;
+
+    Accion accion;
+    while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
     {
-        Accion accion = leerDeDisco(i);
         if (accion.get_activo() &&
             accion.get_idpartido() == idPartido &&
             accion.get_idclub() == idClub &&
@@ -325,6 +327,7 @@ int AccionArchivo::contarGolesPorPartidoYClub(int idPartido, int idClub)
         }
     }
 
+    fclose(pFile);
     return goles;
 }
 
@@ -334,17 +337,20 @@ int AccionArchivo::contarGolesPorPartidoYClub(int idPartido, int idClub)
 int AccionArchivo::calcularPuntajeTotalJugador(int dniJugador)
 {
     int total = 0;
-    int cantidad = contarRegistros();
 
-    for (int i = 0; i < cantidad; i++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile == NULL) return 0;
+
+    Accion accion;
+    while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
     {
-        Accion accion = leerDeDisco(i);
         if (accion.get_activo() && accion.get_dnijugador() == dniJugador)
         {
             total += accion.get_puntaje();
         }
     }
 
+    fclose(pFile);
     return total;
 }
 
@@ -420,15 +426,19 @@ void AccionArchivo::listarActivos()
     Accion accion;
     bool encontro = false;
 
-    for (int pos = 0; pos < contarRegistros(); pos++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile != NULL)
     {
-        accion = leerDeDisco(pos);
-        if (accion.get_activo() == true)
+        while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
         {
-            accion.mostrar();
-            std::cout << "--------------------------------" << std::endl;
-            encontro = true;
+            if (accion.get_activo() == true)
+            {
+                accion.mostrar();
+                std::cout << "--------------------------------" << std::endl;
+                encontro = true;
+            }
         }
+        fclose(pFile);
     }
 
     if (encontro == false)
@@ -442,12 +452,16 @@ void AccionArchivo::listar()
     Accion accion;
     bool encontro = false;
 
-    for (int pos = 0; pos < contarRegistros(); pos++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile != NULL)
     {
-        accion = leerDeDisco(pos);
-        accion.mostrar();
-        std::cout << "--------------------------------" << std::endl;
-        encontro = true;
+        while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
+        {
+            accion.mostrar();
+            std::cout << "--------------------------------" << std::endl;
+            encontro = true;
+        }
+        fclose(pFile);
     }
 
     if (encontro == false)
@@ -465,15 +479,19 @@ void AccionArchivo::consultarPorJugador()
     std::cout << "INGRESE DNI DEL JUGADOR: ";
     std::cin >> dniBuscado;
 
-    for (int pos = 0; pos < contarRegistros(); pos++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile != NULL)
     {
-        accion = leerDeDisco(pos);
-        if (accion.get_dnijugador() == dniBuscado && accion.get_activo() == true)
+        while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
         {
-            accion.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
+            if (accion.get_dnijugador() == dniBuscado && accion.get_activo() == true)
+            {
+                accion.mostrar();
+                std::cout << "-----------------------------" << std::endl;
+                encontrado = true;
+            }
         }
+        fclose(pFile);
     }
 
     if (encontrado == false)
@@ -491,15 +509,19 @@ void AccionArchivo::consultarPorPartido()
     std::cout << "INGRESE ID DEL PARTIDO: ";
     std::cin >> idPartidoBuscado;
 
-    for (int pos = 0; pos < contarRegistros(); pos++)
+    FILE *pFile = fopen("acciones.dat", "rb");
+    if (pFile != NULL)
     {
-        accion = leerDeDisco(pos);
-        if (accion.get_idpartido() == idPartidoBuscado && accion.get_activo() == true)
+        while (fread(&accion, sizeof(Accion), 1, pFile) == 1)
         {
-            accion.mostrar();
-            std::cout << "-----------------------------" << std::endl;
-            encontrado = true;
+            if (accion.get_idpartido() == idPartidoBuscado && accion.get_activo() == true)
+            {
+                accion.mostrar();
+                std::cout << "-----------------------------" << std::endl;
+                encontrado = true;
+            }
         }
+        fclose(pFile);
     }
 
     if (encontrado == false)
