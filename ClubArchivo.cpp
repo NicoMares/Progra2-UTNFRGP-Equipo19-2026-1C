@@ -1,5 +1,6 @@
 #include "ClubArchivo.h"
 #include <iostream>
+
 #include <cstring>
 #include <cstdio>
 #include "Club.h"
@@ -228,4 +229,86 @@ void ClubArchivo::sumarDescenso(int idClub)
     Club equipo = leerDeDisco(pos);
     equipo.set_cantidaddescensos(equipo.get_cantidaddescensos() + 1);
     modificarEnDisco(equipo, pos);
+}
+
+void ClubArchivo::ModificarClub()
+{
+    ClubArchivo archivo;
+    int idClub;
+    std::cout << "Ingrese el ID del club a modificar: ";
+    std:: cin >> idClub;
+
+    int pos = archivo.buscarPorID(idClub);
+    if (pos == -1)
+    {
+         std::cout << "No existe un club con ese ID." <<  std::endl;
+        return;
+    }
+
+    Club club = archivo.leerDeDisco(pos);
+    if (!club.get_activo())
+    {
+         std::cout << "No se puede modificar un club inactivo." <<  std::endl;
+        return;
+    }
+    int opcion;
+
+     std::cout << "1. Nombre" <<  std::endl;
+     std::cout << "2. Presidente" << std::endl;
+     std::cout << "3. Fecha de fundación" <<  std::endl;
+     std::cout << "4. Cantidad de trofeos" <<  std::endl;
+     std::cout << "5. Cantidad de descensos" <<  std::endl;
+     std::cout << "Seleccioná el campo a modificar: ";
+     std::cin >> opcion;
+
+    if (opcion == 1)
+    {
+        char nombre[50];
+         std::cout << "Ingrese el nuevo nombre: ";
+         std::cin >>  std::ws;
+         std::cin.getline(nombre, 50);
+        club.set_nombre(nombre);
+    }
+    else if (opcion == 2)
+    {
+        Persona presidente;
+         std::cout << "Ingrese los datos del nuevo presidente: " <<   std::endl;
+        presidente.cargar();
+        club.set_presidente(presidente);
+    }
+    else if (opcion == 3)
+    {
+        Fecha fecha;
+        std:: cout << "Ingrese la nueva fecha:" <<  std::endl;
+        fecha.cargar();
+        club.set_fechafundacion(fecha);
+    }
+    else if (opcion == 4)
+    {
+        int trofeos;
+         std::cout << "Ingrese la nueva cantidad de trofeos: ";
+         std::cin >> trofeos;
+        club.set_cantidadtrofeos(trofeos);
+    }
+    else if (opcion == 5)
+    {
+        int descensos;
+         std::cout << "Ingrese la nueva cantidad de descensos: ";
+         std::cin >> descensos;
+        club.set_cantidaddescensos(descensos);
+    }
+    else
+    {
+         std::cout << "Opción incorrecta." <<  std::endl;
+        return;
+    }
+
+    if (archivo.modificarEnDisco(club, pos))
+    {
+         std::cout << "Club modificado correctamente." <<  std::endl;
+    }
+    else
+    {
+         std::cout << "No se pudo modificar el club." <<  std::endl;
+    }
 }

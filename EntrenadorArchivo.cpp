@@ -1,6 +1,9 @@
 #include "EntrenadorArchivo.h"
 #include "Entrenador.h"
 #include <iostream>
+
+
+
 EntrenadorArchivo::EntrenadorArchivo()
 {
 }
@@ -219,4 +222,87 @@ void EntrenadorArchivo::EliminarEntrenador() {
                 }
             }
             if (!encontrado) std::cout << "No se encontró ningún entrenador activo con el ID: " << idBuscado << std::endl;
+}
+
+void EntrenadorArchivo::modificarEntrenador()
+{
+    EntrenadorArchivo archivo;
+    int idEntrenador;
+    std:: cout << "Ingrese el ID del entrenador a modificar: ";
+    std:: cin >> idEntrenador;
+
+    int pos = archivo.buscarPorID(idEntrenador);
+    if (pos == -1)
+    {
+         std::cout << "No existe un entrenador con ese ID." <<  std::endl;
+        return;
+    }
+
+    Entrenador entrenador = archivo.leerDisco(pos);
+    if (!entrenador.get_activo())
+    {
+         std::cout << "No se puede modificar un entrenador inactivo." << std:: endl;
+        return;
+    }
+    int opcion;
+
+     std::cout << "1. Nombre" << std:: endl;
+    std:: cout << "2. Apellido" <<  std::endl;
+    std:: cout << "3. DNI" <<  std::endl;
+    std:: cout << "4. Fecha de nacimiento" <<  std::endl;
+     std::cout << "5. Club" <<  std::endl;
+     std::cout << "Seleccioná el campo a modificar: ";
+     std::cin >> opcion;
+
+    if (opcion == 1)
+    {
+        char nombre[30];
+       std::  cout << "Ingrese el nuevo nombre: ";
+        std:: cin >>  std::ws;
+         std::cin.getline(nombre, 30);
+        entrenador.set_nombre(nombre);
+    }
+    else if (opcion == 2)
+    {
+        char apellido[30];
+        std:: cout << "Ingrese el nuevo apellido: ";
+        std:: cin >>  std::ws;
+        std:: cin.getline(apellido, 30);
+        entrenador.set_apellido(apellido);
+    }
+    else if (opcion == 3)
+    {
+        int dni;
+        std:: cout << "Ingrese el nuevo DNI: ";
+        std:: cin >> dni;
+        entrenador.set_dni(dni);
+    }
+    else if (opcion == 4)
+    {
+        Fecha fecha;
+        std:: cout << "Ingrese la nueva fecha:" << std:: endl;
+        fecha.cargar();
+        entrenador.set_fechanacimiento(fecha);
+    }
+    else if (opcion == 5)
+    {
+        int idClub;
+         std::cout << "Ingrese el nuevo ID de club: ";
+        std:: cin >> idClub;
+        entrenador.set_idclub(idClub);
+    }
+    else
+    {
+         std::cout << "Opción incorrecta." << std:: endl;
+        return;
+    }
+
+    if (archivo.modificarEnDisco(entrenador, pos))
+    {
+         std::cout << "Entrenador modificado correctamente." << std:: endl;
+    }
+    else
+    {
+        std:: cout << "No se pudo modificar el entrenador." <<  std::endl;
+    }
 }

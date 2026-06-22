@@ -16,7 +16,7 @@ public:
     void listar();
     void sumarTrofeo(int idClub);
     void sumarDescenso(int idClub);
-
+    void ModificarClub();
 private:
 
 };

@@ -21,6 +21,7 @@ public:
     void EliminarJugador();
     bool modificarEnDisco(Jugador jugador, int posicion);
     int buscarDNI(int dni);
+    void ModificarJugador();
     /* FUNCIONES PARA SIMULAR ACCIONES */
     int contarJugadoresActivosPorClub(int idClub);
     Jugador obtenerJugadorRandomPorClub(int idClub);

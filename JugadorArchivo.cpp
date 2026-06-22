@@ -1,9 +1,11 @@
 #include "JugadorArchivo.h"
 #include <iostream>
+
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
 #include "Jugador.h"
+
 
 JugadorArchivo::JugadorArchivo()
 {
@@ -355,5 +357,113 @@ void JugadorArchivo::EliminarJugador() {
         std::cout << "\nEl jugador fue eliminado con éxito del sistema." << std::endl;
     } else {
         std::cout << "\nError al intentar guardar en el archivo." << std::endl;
+    }
+}
+
+void JugadorArchivo::ModificarJugador()
+{
+    JugadorArchivo archivo;
+    int idJugador;
+     std::cout << "Ingrese el ID del jugador a modificar: ";
+     std::cin >> idJugador;
+
+    int pos = archivo.buscarPorID(idJugador);
+    if (pos == -1)
+    {
+         std::cout << "No existe un jugador con ese ID." <<  std::endl;
+        return;
+    }
+
+    Jugador jugador = archivo.leerDeDisco(pos);
+    if (!jugador.get_activo())
+    {
+         std::cout << "No se puede modificar un jugador inactivo." <<  std::endl;
+        return;
+    }
+    int opcion;
+
+     std::cout << "1. Nombre" <<  std::endl;
+     std::cout << "2. Apellido" <<  std::endl;
+     std::cout << "3. DNI" <<  std::endl;
+     std::cout << "4. Fecha de nacimiento" <<  std::endl;
+     std::cout << "5. Club" <<  std::endl;
+     std::cout << "6. Número de camiseta" <<  std::endl;
+     std::cout << "7. Posición" <<  std::endl;
+     std::cout << "8. Valor de mercado" <<  std::endl;
+     std::cout << "Seleccioná el campo a modificar: ";
+     std::cin >> opcion;
+
+    if (opcion == 1)
+    {
+        char nombre[30];
+         std::cout << "Ingrese el nuevo nombre: ";
+         std::cin >>  std::ws;
+         std::cin.getline(nombre, 30);
+        jugador.set_nombre(nombre);
+    }
+    else if (opcion == 2)
+    {
+        char apellido[30];
+         std::cout << "Ingrese el nuevo apellido: ";
+         std::cin >>  std::ws;
+         std::cin.getline(apellido, 30);
+        jugador.set_apellido(apellido);
+    }
+    else if (opcion == 3)
+    {
+        int dni;
+         std::cout << "Ingrese el nuevo DNI: ";
+         std::cin >> dni;
+        jugador.set_dni(dni);
+    }
+    else if (opcion == 4)
+    {
+        Fecha fecha;
+         std::cout << "Ingrese la nueva fecha:" <<  std::endl;
+        fecha.cargar();
+        jugador.set_fechanacimiento(fecha);
+    }
+    else if (opcion == 5)
+    {
+        int idClub;
+         std::cout << "Ingrese el nuevo ID de club: ";
+         std::cin >> idClub;
+        jugador.set_idclub(idClub);
+    }
+    else if (opcion == 6)
+    {
+        int camiseta;
+         std::cout << "Ingresá el nuevo número de camiseta: ";
+         std::cin >> camiseta;
+        jugador.set_numerocamiseta(camiseta);
+    }
+    else if (opcion == 7)
+    {
+        char posicion[50];
+         std::cout << "Ingresá la nueva posición: ";
+         std::cin >>  std::ws;
+         std::cin.getline(posicion, 50);
+        jugador.set_posicion(posicion);
+    }
+    else if (opcion == 8)
+    {
+        float valor;
+         std::cout << "Ingrese el nuevo valor de mercado: ";
+         std::cin >> valor;
+        jugador.set_valormercado(valor);
+    }
+    else
+    {
+        std:: cout << "Opción incorrecta." <<  std::endl;
+        return;
+    }
+
+    if (archivo.modificarEnDisco(jugador, pos))
+    {
+        std::cout << "Jugador modificado correctamente." <<  std::endl;
+    }
+    else
+    {
+         std::cout << "No se pudo modificar el jugador." <<  std::endl;
     }
 }

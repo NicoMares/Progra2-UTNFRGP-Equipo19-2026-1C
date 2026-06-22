@@ -9,6 +9,7 @@ public:
     void listarActivos();
     void listar();
     void EliminarEntrenador();
+    void modificarEntrenador();
      bool grabarEnDisco (Entrenador entrenador);
      Entrenador leerDisco (int posicion);
      bool modificarEnDisco(Entrenador entrenador, int posicion);
