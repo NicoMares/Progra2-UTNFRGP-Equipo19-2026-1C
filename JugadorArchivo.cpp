@@ -405,6 +405,15 @@ void JugadorArchivo::ModificarJugador()
          std::cout << "No se puede modificar un jugador inactivo." <<  std::endl;
         return;
     }
+
+    char confirmacion;
+    std::cout << "¿Estás seguro que querés modificar al jugador '" << jugador.get_nombre() << " " << jugador.get_apellido() << "'? (S/N): ";
+    std::cin >> confirmacion;
+    if (confirmacion != 'S' && confirmacion != 's') {
+        std::cout << "Operación cancelada." << std::endl;
+        return;
+    }
+
     int opcion;
 
      std::cout << "1. Nombre" <<  std::endl;

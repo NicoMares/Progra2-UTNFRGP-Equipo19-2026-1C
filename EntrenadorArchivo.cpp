@@ -261,6 +261,15 @@ void EntrenadorArchivo::modificarEntrenador()
          std::cout << "No se puede modificar un entrenador inactivo." << std:: endl;
         return;
     }
+
+    char confirmacion;
+    std::cout << "¿Estás seguro que querés modificar al entrenador '" << entrenador.get_nombre() << " " << entrenador.get_apellido() << "'? (S/N): ";
+    std::cin >> confirmacion;
+    if (confirmacion != 'S' && confirmacion != 's') {
+        std::cout << "Operación cancelada." << std::endl;
+        return;
+    }
+
     int opcion;
 
      std::cout << "1. Nombre" << std:: endl;

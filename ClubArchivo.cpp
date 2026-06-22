@@ -264,6 +264,15 @@ void ClubArchivo::ModificarClub()
          std::cout << "No se puede modificar un club inactivo." <<  std::endl;
         return;
     }
+
+    char confirmacion;
+    std::cout << "¿Estás seguro que querés modificar el club '" << club.get_nombre() << "'? (S/N): ";
+    std::cin >> confirmacion;
+    if (confirmacion != 'S' && confirmacion != 's') {
+        std::cout << "Operación cancelada." << std::endl;
+        return;
+    }
+
     int opcion;
 
      std::cout << "1. Nombre" <<  std::endl;
