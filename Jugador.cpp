@@ -88,7 +88,7 @@ void Jugador::mostrar() {
     std::cout << "ID Club: " << _IdClub << std::endl;
     std::cout << "Número de camiseta: " << _NumeroCamiseta << std::endl;
     std::cout << "Posición: " << _Posicion << std::endl;
-    std::cout << "Valor de mercado: $" << _ValorMercado << std::endl;
+    std::cout << "Valor de mercado: $" << (int)_ValorMercado << std::endl;
 }
 
 int Jugador::get_idjugador() {
