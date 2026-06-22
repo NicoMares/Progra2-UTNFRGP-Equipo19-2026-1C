@@ -209,3 +209,23 @@ void ClubArchivo::listar() {
 
     fclose(p);
 }
+
+void ClubArchivo::sumarTrofeo(int idClub)
+{
+    int pos = buscarPorID(idClub);
+    if (pos == -1) return;
+
+    Club equipo = leerDeDisco(pos);
+    equipo.set_cantidadtrofeos(equipo.get_cantidadtrofeos() + 1);
+    modificarEnDisco(equipo, pos);
+}
+
+void ClubArchivo::sumarDescenso(int idClub)
+{
+    int pos = buscarPorID(idClub);
+    if (pos == -1) return;
+
+    Club equipo = leerDeDisco(pos);
+    equipo.set_cantidaddescensos(equipo.get_cantidaddescensos() + 1);
+    modificarEnDisco(equipo, pos);
+}

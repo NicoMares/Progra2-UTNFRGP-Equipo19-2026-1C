@@ -73,6 +73,8 @@
 		</Unit>
 		<Unit filename="Utils.cpp" />
 		<Unit filename="utils.h" />
+		<Unit filename="PosicionTabla.cpp" />
+		<Unit filename="PosicionTabla.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

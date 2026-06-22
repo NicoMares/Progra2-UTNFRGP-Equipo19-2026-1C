@@ -1,5 +1,6 @@
 #pragma once
 #include "Partido.h"
+#include "PosicionTabla.h"
 
 class PartidoArchivo {
 public:
@@ -23,4 +24,6 @@ public:
 
 private:
     void aplicarResultadosFinales();
+    int cargarTabla(PosicionTabla filas[]);
+    bool existeClub(int idsClubes[], int cantidad, int idClub);
 };

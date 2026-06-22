@@ -14,6 +14,8 @@ public:
     void mostrarPorID();
     void listarActivos();
     void listar();
+    void sumarTrofeo(int idClub);
+    void sumarDescenso(int idClub);
 
 private:
 

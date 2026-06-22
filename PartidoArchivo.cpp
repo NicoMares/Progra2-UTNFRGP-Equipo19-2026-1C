@@ -9,17 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 
-struct RegistroTabla
-{
-    Club club;
-    int posicionArchivo;
-    int golesFavor;
-    int golesContra;
-    int diferenciaGol;
-    int puntos;
-};
-
-bool estaIncluido(int idsClubes[], int cantidad, int idClub)
+bool PartidoArchivo::existeClub(int idsClubes[], int cantidad, int idClub)
 {
     for (int i = 0; i < cantidad; i++)
     {
@@ -32,46 +22,25 @@ bool estaIncluido(int idsClubes[], int cantidad, int idClub)
     return false;
 }
 
-bool debeIrAntes(RegistroTabla club1, RegistroTabla club2)
+int PartidoArchivo::cargarTabla(PosicionTabla filas[])
 {
-    if (club1.puntos != club2.puntos)
-    {
-        return club1.puntos > club2.puntos;
-    }
-
-    if (club1.diferenciaGol != club2.diferenciaGol)
-    {
-        return club1.diferenciaGol > club2.diferenciaGol;
-    }
-
-    if (club1.golesFavor != club2.golesFavor)
-    {
-        return club1.golesFavor > club2.golesFavor;
-    }
-
-    return strcmp(club1.club.get_nombre(), club2.club.get_nombre()) < 0;
-}
-
-int cargarTabla(RegistroTabla tabla[])
-{
-    PartidoArchivo archivoPartidos;
     ClubArchivo archivoClubes;
-    int cantidadPartidos = archivoPartidos.contarRegistros();
+    int cantidadPartidos = contarRegistros();
 
     int idsClubes[16];
     int cantidadClubes = 0;
 
     for (int i = 0; i < cantidadPartidos; i++)
     {
-        Partido partido = archivoPartidos.leerDeDisco(i);
+        Partido partido = leerDeDisco(i);
 
-        if (!estaIncluido(idsClubes, cantidadClubes, partido.get_idclublocal()))
+        if (!existeClub(idsClubes, cantidadClubes, partido.get_idclublocal()))
         {
             idsClubes[cantidadClubes] = partido.get_idclublocal();
             cantidadClubes++;
         }
 
-        if (!estaIncluido(idsClubes, cantidadClubes, partido.get_idclubvisitante()))
+        if (!existeClub(idsClubes, cantidadClubes, partido.get_idclubvisitante()))
         {
             idsClubes[cantidadClubes] = partido.get_idclubvisitante();
             cantidadClubes++;
@@ -85,12 +54,11 @@ int cargarTabla(RegistroTabla tabla[])
         int posicionClub = archivoClubes.buscarPorID(idsClubes[i]);
         Club club = archivoClubes.leerDeDisco(posicionClub);
 
-        tabla[cantidadRegistros].club = club;
-        tabla[cantidadRegistros].posicionArchivo = posicionClub;
-        tabla[cantidadRegistros].golesFavor = archivoPartidos.calcularGolesFavor(idsClubes[i]);
-        tabla[cantidadRegistros].golesContra = archivoPartidos.calcularGolesContra(idsClubes[i]);
-        tabla[cantidadRegistros].diferenciaGol = archivoPartidos.calcularDiferenciaGol(idsClubes[i]);
-        tabla[cantidadRegistros].puntos = club.calcularPuntos();
+        filas[cantidadRegistros].setClub(club);
+        filas[cantidadRegistros].setGolesFavor(calcularGolesFavor(idsClubes[i]));
+        filas[cantidadRegistros].setGolesContra(calcularGolesContra(idsClubes[i]));
+        filas[cantidadRegistros].setDiferenciaGol(calcularDiferenciaGol(idsClubes[i]));
+        filas[cantidadRegistros].setPuntos(club.calcularPuntos());
         cantidadRegistros++;
     }
 
@@ -98,11 +66,11 @@ int cargarTabla(RegistroTabla tabla[])
     {
         for (int j = 0; j < cantidadRegistros - 1 - i; j++)
         {
-            if (debeIrAntes(tabla[j + 1], tabla[j]))
+            if (filas[j + 1].superaA(filas[j]))
             {
-                RegistroTabla auxiliar = tabla[j];
-                tabla[j] = tabla[j + 1];
-                tabla[j + 1] = auxiliar;
+                PosicionTabla auxiliar = filas[j];
+                filas[j] = filas[j + 1];
+                filas[j + 1] = auxiliar;
             }
         }
     }
@@ -491,7 +459,7 @@ void PartidoArchivo::listarTablaPosiciones()
         return;
     }
 
-    RegistroTabla tabla[16];
+    PosicionTabla tabla[16];
     int cantidadRegistros = cargarTabla(tabla);
     bool torneoFinalizado = obtenerSiguienteJornadaAJugarse() == -1;
 
@@ -503,7 +471,8 @@ void PartidoArchivo::listarTablaPosiciones()
 
     for (int i = 0; i < cantidadRegistros; i++)
     {
-        const char *nombreClub = tabla[i].club.get_nombre();
+        Club club = tabla[i].getClub();
+        const char *nombreClub = club.get_nombre();
         const char *estado = "";
 
         if (torneoFinalizado && i == 0)
@@ -523,10 +492,10 @@ void PartidoArchivo::listarTablaPosiciones()
             std::cout << " ";
         }
 
-        std::cout << tabla[i].golesFavor << "\t"
-                  << tabla[i].golesContra << "\t"
-                  << tabla[i].diferenciaGol << "\t"
-                  << tabla[i].puntos << "\t"
+        std::cout << tabla[i].getGolesFavor() << "\t"
+                  << tabla[i].getGolesContra() << "\t"
+                  << tabla[i].getDiferenciaGol() << "\t"
+                  << tabla[i].getPuntos() << "\t"
                   << estado << std::endl;
     }
 
@@ -545,7 +514,7 @@ void PartidoArchivo::listarRachasClubesOrdenadas()
         return;
     }
 
-    RegistroTabla tabla[16];
+    PosicionTabla tabla[16];
     int cantidadRegistros = cargarTabla(tabla);
 
     std::cout << "==========================================================" << std::endl;
@@ -554,33 +523,31 @@ void PartidoArchivo::listarRachasClubesOrdenadas()
 
     for (int i = 0; i < cantidadRegistros; i++)
     {
-        std::cout << i + 1 << ". " << tabla[i].club.get_nombre()
-                  << " | PTS: " << tabla[i].puntos
-                  << " | DG: " << tabla[i].diferenciaGol << std::endl;
-        tabla[i].club.mostrarRacha();
+        Club club = tabla[i].getClub();
+        std::cout << i + 1 << ". " << club.get_nombre()
+                  << " | PTS: " << tabla[i].getPuntos()
+                  << " | DG: " << tabla[i].getDiferenciaGol() << std::endl;
+        club.mostrarRacha();
         std::cout << "----------------------------------------------------------" << std::endl;
     }
 }
 
 void PartidoArchivo::aplicarResultadosFinales()
 {
-    RegistroTabla tabla[16];
+    PosicionTabla tabla[16];
     int cantidadRegistros = cargarTabla(tabla);
 
     ClubArchivo archivoClubes;
 
-    Club campeon = tabla[0].club;
+    // El campeon es el primero de la tabla ordenada.
+    Club campeon = tabla[0].getClub();
+    archivoClubes.sumarTrofeo(campeon.get_idclub());
 
-    // Se aumenta en 1 la cantidad de trofeos del campeón
-    campeon.set_cantidadtrofeos(campeon.get_cantidadtrofeos() + 1);
-    archivoClubes.modificarEnDisco(campeon, tabla[0].posicionArchivo);
-
-    // Se aumenta en 1 la cantidad de descensos de los últimos 3 clubes
+    // Los ultimos 3 de la tabla descienden.
     for (int i = cantidadRegistros - 3; i < cantidadRegistros; i++)
     {
-        Club descendido = tabla[i].club;
-        descendido.set_cantidaddescensos(descendido.get_cantidaddescensos() + 1);
-        archivoClubes.modificarEnDisco(descendido, tabla[i].posicionArchivo);
+        Club descendido = tabla[i].getClub();
+        archivoClubes.sumarDescenso(descendido.get_idclub());
     }
 
     std::cout << "Campeon y descensos registrados en los clubes." << std::endl;
