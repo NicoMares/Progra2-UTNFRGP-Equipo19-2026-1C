@@ -234,7 +234,12 @@ void Menu::menuJugadores()
             JugadorArchivo archivo;
 
             jugador.cargar();
-            archivo.grabarEnDisco(jugador);
+            if (jugador.get_idclub() != 0) {
+                archivo.grabarEnDisco(jugador);
+                cout << "Jugador guardado con exito." << endl;
+            } else {
+                cout << "Carga cancelada. No se guardo en el archivo." << endl;
+            }
 
             system("pause");
         }
@@ -379,7 +384,12 @@ void Menu::menuEntrenadores()
 
 
             entrenador.cargar();
-            archivo.grabarEnDisco(entrenador);
+            if (entrenador.get_IdClub() != -1) {
+                archivo.grabarEnDisco(entrenador);
+                cout << "Entrenador guardado con exito." << endl;
+            } else {
+                cout << "Carga cancelada. No se guardo en el archivo." << endl;
+            }
             system("pause");
         }
         break;

@@ -3,6 +3,9 @@
 #include <cstdio>
 #include "Jugador.h"
 #include "JugadorArchivo.h"
+#include "ClubArchivo.h"
+#include "Club.h"
+
 
 Jugador::Jugador() {
     _IdJugador = 0;
@@ -21,12 +24,31 @@ void Jugador::cargar() {
     JugadorArchivo archivo;
     set_idjugador(archivo.obtenerProximoID());
     std::cout << "ID JUGADOR ASIGNADO: " << _IdJugador << std::endl;
-    Persona::cargar();
 
-    // DEBERIA CHEQUEAR SI EXISTE ANTES DE CARGARLO
+    // VALIDACIÓN DEL CLUB
     std::cout << "Ingrese ID del club: ";
     std::cin >> idClub;
+
+    ClubArchivo archClub;
+
+    int pos = archClub.buscarPorID(idClub);
+
+    if (pos == -1) {
+        std::cout << "ERROR: El club con ID " << idClub << " no existe en el sistema." << std::endl;
+        return;
+    }
+
+    Club clubAsociado = archClub.leerDeDisco(pos);
+
+    if (clubAsociado.get_activo() == false) {
+        std::cout << "ERROR: El club se encuentra INACTIVO. No se pueden fichar jugadores." << std::endl;
+        return;
+    }
+
     set_idclub(idClub);
+
+
+    Persona::cargar();
 
     std::cout << "Ingrese número de camiseta: ";
     std::cin >> numeroCamiseta;

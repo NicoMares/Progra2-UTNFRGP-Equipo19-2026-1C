@@ -2,23 +2,42 @@
 #include <cstdio>
 #include "Entrenador.h"
 #include "EntrenadorArchivo.h"
+#include "ClubArchivo.h"
+#include "Club.h"
 
 Entrenador::Entrenador() {
     _IdClub = -1;
     _IdEntrenador = 0;
 }
-// LEE Y ASIGNA ID AUTOINCREMENTAL  EN LA CARGA
+
 void Entrenador::cargar() {
     int idclub;
     EntrenadorArchivo archivo;
     set_idEntrenador(archivo.obtenerProximoID());
     std::cout << "ID ENTRENADOR ASIGNADO: " << _IdEntrenador << std::endl;
 
-    Persona::cargar();
-    // DEBERIA  CHEQUEAR QUE EL ID DEL CLUB EXISTE ANTES DE ESCRIBIR
+    // VALIDACIÓN DEL CLUB
     std::cout << "INGRESE ID DEL CLUB: ";
     std::cin >> idclub;
+
+    ClubArchivo archClub;
+    int pos = archClub.buscarPorID(idclub);
+
+    if (pos == -1) {
+        std::cout << "ERROR: El club con ID " << idclub << " no existe en el sistema." << std::endl;
+        return;
+    }
+
+    Club clubAsociado = archClub.leerDeDisco(pos);
+
+    if (clubAsociado.get_activo() == false) {
+        std::cout << "ERROR: El club se encuentra INACTIVO. No se puede contratar entrenador." << std::endl;
+        return;
+    }
+
     set_idclub(idclub);
+
+    Persona::cargar();
 }
 
 void Entrenador::mostrar() {
