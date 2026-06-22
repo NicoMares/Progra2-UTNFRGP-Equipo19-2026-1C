@@ -32,8 +32,16 @@ void Club::cargar()
     std::cout << "Datos Del Club: " << std::endl;
     std::cout << "--------------------------------" << std::endl;
 
-    std::cout << "INGRESE NOMBRE DEL CLUB: ";
-    std::cin.getline(_Nombre, 50);
+    bool nombreValido = false;
+    do {
+        std::cout << "INGRESE NOMBRE DEL CLUB: ";
+        std::cin.getline(_Nombre, 50);
+        if (!soloLetrasYNumeros(_Nombre)) {
+            std::cout << "ERROR: Solo se permiten letras y espacios." << std::endl;
+        } else {
+            nombreValido = true;
+        }
+    } while (!nombreValido);
 
     std::cout << "INGRESE FECHA DE FUNDACIÓN: " << std::endl;
     Fecha f;

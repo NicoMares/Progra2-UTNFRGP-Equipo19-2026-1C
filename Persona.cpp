@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "Persona.h"
+#include "utils.h"
 
 Persona::Persona() {
     strcpy(_Nombre, "");
@@ -15,12 +16,28 @@ void Persona::cargar() {
     int dni;
     Fecha fecha_nacimiento;
 
-    std::cout << "Ingrese nombre: ";
-    std::cin >> nombre;
+    bool nombreValido = false;
+    do {
+        std::cout << "Ingrese nombre: ";
+        std::cin >> nombre;
+        if (!soloLetras(nombre)) {
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
+        } else {
+            nombreValido = true;
+        }
+    } while (!nombreValido);
     set_nombre(nombre);
 
-    std::cout << "Ingrese apellido: ";
-    std::cin >> apellido;
+    bool apellidoValido = false;
+    do {
+        std::cout << "Ingrese apellido: ";
+        std::cin >> apellido;
+        if (!soloLetras(apellido)) {
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
+        } else {
+            apellidoValido = true;
+        }
+    } while (!apellidoValido);
     set_apellido(apellido);
 
     std::cout << "Ingrese DNI: ";

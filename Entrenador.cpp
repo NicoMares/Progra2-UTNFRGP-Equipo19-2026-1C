@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstdio>
 #include "Entrenador.h"
+#include "utils.h"
 #include "EntrenadorArchivo.h"
 #include "ClubArchivo.h"
 #include "Club.h"
@@ -42,10 +43,31 @@ void Entrenador::cargar(int idClub) {
     std::cout << "Cargando Datos del Tecnico:" << std::endl;
     std::cout << "-----------------------------" << std::endl;
 
-    std::cout << "Ingrese nombre: "; std::cin >> nombre; set_nombre(nombre);
-    std::cout << "Ingrese apellido: "; std::cin >> apellido; set_apellido(apellido);
+    bool nombreValido = false;
+    do {
+        std::cout << "Ingrese nombre: ";
+        std::cin >> nombre;
+        if (!soloLetras(nombre)) {
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
+        } else {
+            nombreValido = true;
+        }
+    } while (!nombreValido);
+    set_nombre(nombre);
 
-    //VALIDACIÓN DNI ÚNICO
+    bool apellidoValido = false;
+    do {
+        std::cout << "Ingrese apellido: ";
+        std::cin >> apellido;
+        if (!soloLetras(apellido)) {
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
+        } else {
+            apellidoValido = true;
+        }
+    } while (!apellidoValido);
+    set_apellido(apellido);
+
+    //VALIDACIï¿½N DNI ï¿½NICO
     JugadorArchivo archJ;
     EntrenadorArchivo archE;
     bool dniValido = false;
@@ -54,14 +76,14 @@ void Entrenador::cargar(int idClub) {
         std::cin >> dni;
 
         if (archJ.buscarDNI(dni) != -1 || archE.buscarDNI(dni) != -1) {
-            std::cout << "ERROR: El DNI ya está registrado en el sistema. Intente de nuevo." << std::endl;
+            std::cout << "ERROR: El DNI ya estï¿½ registrado en el sistema. Intente de nuevo." << std::endl;
         } else {
             set_dni(dni);
             dniValido = true;
         }
     } while (!dniValido);
 
-    //VALIDACIÓN DE FECHA (18-80 AÑOS)
+    //VALIDACIï¿½N DE FECHA (18-80 Aï¿½OS)
     Fecha f;
     bool edadValida = false;
     do {
@@ -72,7 +94,7 @@ void Entrenador::cargar(int idClub) {
         if (edad >= 18 && edad <= 80) {
             edadValida = true;
         } else {
-            std::cout << "ERROR: El entrenador debe tener entre 18 y 80 años. Intente de nuevo.\n" << std::endl;
+            std::cout << "ERROR: El entrenador debe tener entre 18 y 80 aï¿½os. Intente de nuevo.\n" << std::endl;
         }
     } while (!edadValida);
     set_fechanacimiento(f);
