@@ -500,8 +500,10 @@ void Menu::menuPartidos() {
                 cout << "Opción inválida." << endl;
         }
 
-        cout << endl;
-        system("pause");
+        if (opcion != 0) {
+            cout << endl;
+            system("pause");
+        }
 
     } while (opcion != 0);
 }
