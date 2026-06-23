@@ -287,6 +287,38 @@ void PartidoArchivo::simularSiguienteJornada()
         std::cout << "\n[!] El torneo ya finalizo. No hay mas jornadas para simular." << std::endl;
         return;
     }
+    /* No se simula la jornada si algun club que participa no tiene 11 jugadores activos. */
+    JugadorArchivo archivoJugadoresValidacion;
+    ClubArchivo archivoClubValidacion;
+    int cantPartidosValidacion = contarRegistros();
+    bool faltanJugadores = false;
+
+    for (int i = 0; i < cantPartidosValidacion; i++) {
+        Partido partido = leerDeDisco(i);
+        if (partido.get_jornada() == jornadaAIntervenir && !partido.get_jugado() && partido.get_activo()) {
+            int jugadoresLocal = archivoJugadoresValidacion.contarJugadoresActivosPorClub(partido.get_idclublocal());
+            int jugadoresVisitante = archivoJugadoresValidacion.contarJugadoresActivosPorClub(partido.get_idclubvisitante());
+
+            if (jugadoresLocal < 11 || jugadoresVisitante < 11) {
+                if (!faltanJugadores) {
+                    std::cout << "No todos los equipos tienen 11 jugadores." << std::endl;
+                    faltanJugadores = true;
+                }
+                if (jugadoresLocal < 11) {
+                    Club club = archivoClubValidacion.leerDeDisco(archivoClubValidacion.buscarPorID(partido.get_idclublocal()));
+                    std::cout << "Club " << club.get_nombre() << " tiene " << jugadoresLocal << " jugadores activos. Faltan " << 11 - jugadoresLocal << "." << std::endl;
+                }
+                if (jugadoresVisitante < 11) {
+                    Club club = archivoClubValidacion.leerDeDisco(archivoClubValidacion.buscarPorID(partido.get_idclubvisitante()));
+                    std::cout << "Club " << club.get_nombre() << " tiene " << jugadoresVisitante << " jugadores activos. Faltan " << 11 - jugadoresVisitante << "." << std::endl;
+                }
+            }
+        }
+    }
+
+    if (faltanJugadores) {
+        return;
+    }
 
     std::cout << "\n=======================================================" << std::endl;
     std::cout << "          SIMULANDO AUTOMATICAMENTE JORNADA " << jornadaAIntervenir << std::endl;
@@ -295,7 +327,6 @@ void PartidoArchivo::simularSiguienteJornada()
     srand(time(NULL));
     int cantPartidos = contarRegistros();
     ClubArchivo archivoClub;
-    JugadorArchivo archivoJugadores;
     AccionArchivo archivoAcciones;
 
     for (int i = 0; i < cantPartidos; i++) {
@@ -314,30 +345,6 @@ void PartidoArchivo::simularSiguienteJornada()
 
             Club clubLocal = archivoClub.leerDeDisco(posLocal);
             Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
-
-            /* VALIDACION DE 11 JUGADORES POR CLUB
-               No se simula el partido si un club no tiene al menos 11
-               jugadores activos, porque las acciones necesitan jugadores reales. */
-            int jugadoresLocal = archivoJugadores.contarJugadoresActivosPorClub(partido.get_idclublocal());
-            int jugadoresVisitante = archivoJugadores.contarJugadoresActivosPorClub(partido.get_idclubvisitante());
-
-            if (jugadoresLocal < 11 || jugadoresVisitante < 11) {
-                std::cout << "No se puede simular el partido ID " << partido.get_idpartido() << "." << std::endl;
-
-                if (jugadoresLocal < 11) {
-                    std::cout << "Club local " << clubLocal.get_nombre()
-                              << " tiene " << jugadoresLocal
-                              << " jugadores activos. Faltan " << 11 - jugadoresLocal << "." << std::endl;
-                }
-
-                if (jugadoresVisitante < 11) {
-                    std::cout << "Club visitante " << clubVisitante.get_nombre()
-                              << " tiene " << jugadoresVisitante
-                              << " jugadores activos. Faltan " << 11 - jugadoresVisitante << "." << std::endl;
-                }
-
-                continue;
-            }
 
             /* LAS ACCIONES GENERAN EL RESULTADO DEL PARTIDO
                Antes se hacia:
