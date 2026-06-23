@@ -48,11 +48,27 @@ void Club::cargar()
     f.cargar();
     set_fechafundacion(f);
 
-    std::cout << "INGRESE CANTIDAD DE TROFEOS: ";
-    std::cin >> _CantidadTrofeos;
+    // VALIDACIÓN TROFEOS
+    int auxTrofeos;
+    do {
+        std::cout << "INGRESE CANTIDAD DE TROFEOS: ";
+        std::cin >> auxTrofeos;
+        if (auxTrofeos < 0) {
+            std::cout << "ERROR: La cantidad de trofeos no puede ser negativa." << std::endl;
+        }
+    } while (auxTrofeos < 0);
+    set_cantidadtrofeos(auxTrofeos);
 
-    std::cout << "INGRESE CANTIDAD DE DESCENSOS: ";
-    std::cin >> _CantidadDescensos;
+    //VALIDACIÓN DESCENSOS
+    int auxDescensos;
+    do {
+        std::cout << "INGRESE CANTIDAD DE DESCENSOS: ";
+        std::cin >> auxDescensos;
+        if (auxDescensos < 0) {
+            std::cout << "ERROR: La cantidad de descensos no puede ser negativa." << std::endl;
+        }
+    } while (auxDescensos < 0);
+    set_cantidaddescensos(auxDescensos);
 
     _Activo = true;
 
