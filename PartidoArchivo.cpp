@@ -566,7 +566,17 @@ void PartidoArchivo::listarTablaPosiciones()
             //
             if (contadorSegunda >= 3) {
 
-            
+            	//DESCENDER A LOS ULTIMOS 3
+                std::cout << "-> Procesando descensos a Segunda Division..." << std::endl;
+                for (int i = cantidadRegistros - 3; i < cantidadRegistros; i++) {
+                    int idDescendido = tabla[i].getClub().get_idclub();
+                    int pos = archClub.buscarPorID(idDescendido);
+                    if (pos != -1) {
+                        Club c = archClub.leerDeDisco(pos);
+                        c.set_division(2);
+                        archClub.modificarEnDisco(c, pos);
+                    }
+                }
 
                 //ASCENDER A 3 RANDOM
                 std::cout << "\n=== NUEVOS ASCENDIDOS A PRIMERA DIVISION ===" << std::endl;
