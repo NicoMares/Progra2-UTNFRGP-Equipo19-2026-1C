@@ -13,6 +13,7 @@ private:
     int _CantidadDescensos;
     int _Racha[16];
     bool _Activo;
+    int _Division;
 
 public:
     Club();
@@ -39,4 +40,6 @@ public:
     void set_cantidaddescensos(int cantidadDescensos);
     void set_racha(int jornada, int resultado);
     void set_activo(bool activo);
+    int get_division();
+    void set_division(int division);
 };

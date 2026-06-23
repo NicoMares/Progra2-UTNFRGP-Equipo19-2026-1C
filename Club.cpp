@@ -14,6 +14,7 @@ Club::Club()
     _CantidadTrofeos = 0;
     _CantidadDescensos = 0;
     _Activo = true;
+    _Division = 1;
 
     for (int i = 0; i < 16; i++)
     {
@@ -42,6 +43,15 @@ void Club::cargar()
             nombreValido = true;
         }
     } while (!nombreValido);
+
+
+    int div;
+    do {
+        std::cout << "INGRESE DIVISION (1-Primera, 2-Segunda): ";
+        std::cin >> div;
+    } while (div != 1 && div != 2);
+    set_division(div);
+
 
     std::cout << "INGRESE FECHA DE FUNDACIÓN: " << std::endl;
     Fecha f;
@@ -87,6 +97,13 @@ void Club::mostrar()
     std::cout << std::endl;
     std::cout << "ID CLUB: " << _IdClub << std::endl;
     std::cout << "NOMBRE: " << _Nombre << std::endl;
+
+    std::cout << "Division: ";
+    if (_Division == 1) {
+        std::cout << "Primera Division" << std::endl;
+    } else {
+        std::cout << "Segunda Division" << std::endl;
+    }
 
     std::cout << "PRESIDENTE: " << _Presidente.get_nombre() << " " << _Presidente.get_apellido() << std::endl;
 
@@ -256,4 +273,12 @@ void Club::set_racha(int jornada, int resultado)
 void Club::set_activo(bool activo)
 {
     _Activo = activo;
+}
+
+int Club::get_division() {
+    return _Division;
+}
+
+void Club::set_division(int division) {
+    _Division = division;
 }

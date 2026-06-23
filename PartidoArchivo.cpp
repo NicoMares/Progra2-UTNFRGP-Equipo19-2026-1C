@@ -168,23 +168,23 @@ void PartidoArchivo::generarFixtureTorneo() {
         return;
     }
 
-    // Solo participan clubes ACTIVOS: los eliminados (baja logica) no entran al fixture.
+    // Solo participan clubes ACTIVOS y de PRIMERA DIVISION
     int vIdsClubes[16];
     int cantidadActivos = 0;
     for (int i = 0; i < cantidadClubes && cantidadActivos < 16; i++) {
         Club c = archivoClub.leerDeDisco(i);
-        if (c.get_activo()) {
+
+        if (c.get_activo() && c.get_division() == 1) {
             vIdsClubes[cantidadActivos] = c.get_idclub();
             cantidadActivos++;
         }
     }
 
     if (cantidadActivos < 16) {
-        std::cout << "Error: Se necesitan al menos 16 clubes ACTIVOS para generar el fixture." << std::endl;
+        std::cout << "Error: Se necesitan al menos 16 clubes ACTIVOS y de PRIMERA DIVISION para generar el fixture." << std::endl;
         return;
     }
 
-    // Ponemos en 0 todas las rachas de los clubes antes de arrancar
     for (int i = 0; i < cantidadClubes; i++) {
         Club c = archivoClub.leerDeDisco(i);
         for (int j = 0; j < 16; j++) {
@@ -199,10 +199,8 @@ void PartidoArchivo::generarFixtureTorneo() {
     FILE *pLimpiar = fopen("partidos.dat", "wb");
     if (pLimpiar != NULL) fclose(pLimpiar);
 
-    /* AL GENERAR FIXTURE NUEVO SE BORRAN LAS ACCIONES ANTERIORES
-       Antes solo se limpiaban los partidos.
-       Ahora tambien se limpian acciones porque esas acciones pertenecian
-       al fixture anterior. */
+    // AL GENERAR FIXTURE NUEVO SE BORRAN LAS ACCIONES ANTERIORES
+
     AccionArchivo archivoAcciones;
     archivoAcciones.vaciarArchivo();
 
@@ -223,7 +221,7 @@ void PartidoArchivo::generarFixtureTorneo() {
             nuevoPartido.set_idclubvisitante(idVisitante);
             nuevoPartido.set_jornada(jornada);
 
-            // Nacen sin goles y en FALSE (no jugados todavía)
+
             nuevoPartido.set_goleslocal(0);
             nuevoPartido.set_golesvisitante(0);
             nuevoPartido.set_jugado(false);
@@ -239,7 +237,7 @@ void PartidoArchivo::generarFixtureTorneo() {
         vIdsClubes[1] = ultimo;
     }
 
-    std::cout << "¡Fixture de 15 jornadas generado con éxito! Listo para simular progresivamente." << std::endl;
+    std::cout << "Fixture generado exitosamente con 16 equipos de Primera Division." << std::endl;
 }
 
 int PartidoArchivo::obtenerSiguienteJornadaAJugarse()
@@ -421,7 +419,7 @@ int PartidoArchivo::calcularGolesFavor(int idClub)
                 total += partidoJugado.get_goleslocal();
 
             }
-            
+
             else if (partidoJugado.get_idclubvisitante() == idClub)
             {
                 total += partidoJugado.get_golesvisitante();
@@ -441,7 +439,7 @@ int PartidoArchivo::calcularGolesContra(int idClub)
 
         Partido partidoJugado = leerDeDisco(i);
 
-        if (partidoJugado.get_activo() && partidoJugado.get_jugado()) 
+        if (partidoJugado.get_activo() && partidoJugado.get_jugado())
         {
 
             if (partidoJugado.get_idclublocal() == idClub)
@@ -455,7 +453,7 @@ int PartidoArchivo::calcularGolesContra(int idClub)
             total += partidoJugado.get_goleslocal();
 
         }
-        
+
         }
     }
     return total;
@@ -501,8 +499,7 @@ void PartidoArchivo::listarTablaPosiciones()
             estado = "DESCENSO";
         }
 
-        std::cout << i + 1 << "\t"
-                  << nombreClub;
+        std::cout << i + 1 << "\t" << nombreClub;
 
         for (int j = strlen(nombreClub); j < 24; j++)
         {
@@ -518,6 +515,86 @@ void PartidoArchivo::listarTablaPosiciones()
 
     std::cout << "==============================================================================" << std::endl;
     std::cout << "GF: Goles a favor | GC: Goles en contra | DG: Diferencia de gol | PTS: Puntos" << std::endl;
+
+    if (torneoFinalizado) {
+        ClubArchivo archClub;
+
+        Club ultimoEquipo = tabla[cantidadRegistros - 1].getClub();
+        int posUltimo = archClub.buscarPorID(ultimoEquipo.get_idclub());
+        Club checkClub = archClub.leerDeDisco(posUltimo);
+
+        if (checkClub.get_division() == 1) {
+            std::cout << "\n[!] PROCESANDO CIERRE DE TEMPORADA..." << std::endl;
+
+            // 1. CORONAR AL CAMPEÓN (Esto se hace siempre)
+            int idCampeon = tabla[0].getClub().get_idclub();
+            int posCamp = archClub.buscarPorID(idCampeon);
+            if (posCamp != -1) {
+                Club cCamp = archClub.leerDeDisco(posCamp);
+                cCamp.set_cantidadtrofeos(cCamp.get_cantidadtrofeos() + 1);
+                archClub.modificarEnDisco(cCamp, posCamp);
+                std::cout << "-> Se ha sumado 1 trofeo a " << cCamp.get_nombre() << " por salir CAMPEON." << std::endl;
+            }
+
+            // Contamos primero cuántos hay en Segunda
+            int totalRegistros = archClub.contarRegistros();
+            int posicionesSegunda[100];
+            int contadorSegunda = 0;
+
+            for (int i = 0; i < totalRegistros; i++) {
+                Club c = archClub.leerDeDisco(i);
+                if (c.get_activo() && c.get_division() == 2) {
+                    posicionesSegunda[contadorSegunda] = i;
+                    contadorSegunda++;
+                }
+            }
+
+            //
+            if (contadorSegunda >= 3) {
+
+                //DESCENDER A LOS ULTIMOS 3
+                std::cout << "-> Procesando descensos a Segunda Division..." << std::endl;
+                for (int i = cantidadRegistros - 3; i < cantidadRegistros; i++) {
+                    int idDescendido = tabla[i].getClub().get_idclub();
+                    int pos = archClub.buscarPorID(idDescendido);
+                    if (pos != -1) {
+                        Club c = archClub.leerDeDisco(pos);
+                        c.set_cantidaddescensos(c.get_cantidaddescensos() + 1);
+                        c.set_division(2);
+                        archClub.modificarEnDisco(c, pos);
+                    }
+                }
+
+                //ASCENDER A 3 RANDOM
+                std::cout << "\n=== NUEVOS ASCENDIDOS A PRIMERA DIVISION ===" << std::endl;
+                int ascendidos = 0;
+                bool elegido[100] = { false };
+                srand(time(NULL));
+
+                while (ascendidos < 3) {
+                    int indiceAzar = rand() % contadorSegunda;
+                    if (!elegido[indiceAzar]) {
+                        elegido[indiceAzar] = true;
+                        int posDisco = posicionesSegunda[indiceAzar];
+
+                        Club c = archClub.leerDeDisco(posDisco);
+                        c.set_division(1);
+                        archClub.modificarEnDisco(c, posDisco);
+
+                        std::cout << "- " << c.get_nombre() << " (Ascendio de 2da a 1era)" << std::endl;
+                        ascendidos++;
+                    }
+                }
+                std::cout << "============================================" << std::endl;
+
+            } else {
+                // Si no hay tres en segunda, se cancela el recambio de equipos para no romper el fixture
+                std::cout << "\n[AVISO] No hay suficientes equipos en 2da Division (Solo hay " << contadorSegunda << ")." << std::endl;
+                std::cout << "-> Esta temporada NO HABRA DESCENSOS para mantener los 16 equipos de Primera." << std::endl;
+                std::cout << "-> Por favor, crea mas clubes en Segunda Division para activar el sistema." << std::endl;
+            }
+        }
+    }
 }
 
 /* RACHAS ORDENADAS DEL MEJOR AL PEOR RENDIMIENTO */
