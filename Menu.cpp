@@ -482,6 +482,7 @@ void Menu::menuPartidos() {
             cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
         }
 
+        cout << "5. Simular Todo el Torneo" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
@@ -500,6 +501,9 @@ void Menu::menuPartidos() {
             case 4:
                 // Llama a la función que simula todos los partidos de esa fecha juntos
                 archivoPartidos.simularSiguienteJornada();
+                break;
+            case 5:
+                archivoPartidos.simularTorneoCompleto();
                 break;
             case 0:
                 break;
@@ -683,10 +687,14 @@ void cargarDatosDePrueba()
     p = fopen("acciones.dat", "wb");
     if (p != NULL) fclose(p);
 
+    p = fopen("entrenadores.dat", "wb");
+    if (p != NULL) fclose(p);
+
     ClubArchivo archivoClubes;
     JugadorArchivo archivoJugadores;
+    EntrenadorArchivo archivoEntrenadores;
 
-    const char *clubes[16] = {
+    const char *clubes[20] = {
         "Boca Juniors",
         "River Plate",
         "Racing Club",
@@ -702,10 +710,14 @@ void cargarDatosDePrueba()
         "Huracan",
         "Argentinos Juniors",
         "Talleres",
-        "Belgrano"
+        "Belgrano",
+        "Defensa y Justicia",
+        "Tigre",
+        "Platense",
+        "Godoy Cruz"
     };
 
-    const char *presidentes[16] = {
+    const char *presidentes[20] = {
         "Presidente Boca",
         "Presidente River",
         "Presidente Racing",
@@ -721,12 +733,17 @@ void cargarDatosDePrueba()
         "Presidente Huracan",
         "Presidente Argentinos",
         "Presidente Talleres",
-        "Presidente Belgrano"
+        "Presidente Belgrano",
+        "Presidente Defensa",
+        "Presidente Tigre",
+        "Presidente Platense",
+        "Presidente Godoy Cruz"
     };
 
-    int aniosFundacion[16] = {
+    int aniosFundacion[20] = {
         1905, 1901, 1903, 1905, 1908, 1910, 1905, 1887,
-        1889, 1903, 1915, 1896, 1908, 1904, 1913, 1905
+        1889, 1903, 1915, 1896, 1908, 1904, 1913, 1905,
+        1935, 1902, 1905, 1921
     };
 
     const char *nombres[12] = {
@@ -748,7 +765,7 @@ void cargarDatosDePrueba()
 
     int idJugador = 1;
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 20; i++)
     {
         Fecha fechaClub;
         fechaClub.set_Dia(1);
@@ -760,6 +777,14 @@ void cargarDatosDePrueba()
         club.set_nombre(clubes[i]);
         Persona pres;
         pres.set_nombre(presidentes[i]);
+        pres.set_apellido(apellidos[i % 12]);
+        pres.set_dni(10000000 + i);
+        Fecha fechaPres;
+        fechaPres.set_Dia(1 + (i % 28));
+        fechaPres.set_Mes(1 + (i % 12));
+        fechaPres.set_Anio(1950 + (i % 20));
+        pres.set_fechanacimiento(fechaPres);
+        pres.set_activo(true);
         club.set_presidente(pres);
         club.set_fechafundacion(fechaClub);
         club.set_cantidadtrofeos(0);
@@ -771,7 +796,29 @@ void cargarDatosDePrueba()
             club.set_racha(j, 0);
         }
 
+        if (i < 16) {
+            club.set_division(1); // 1 = Primera Division
+        } else {
+            club.set_division(2); // 2 = Segunda Division
+        }
+
         archivoClubes.grabarEnDisco(club);
+
+        Entrenador dt;
+        dt.set_idEntrenador(i + 1);
+        dt.set_nombre(nombres[i % 12]);
+        dt.set_apellido(apellidos[i % 12]);
+        dt.set_dni(20000000 + i);
+
+        Fecha fechaDT;
+        fechaDT.set_Dia(1 + (i % 28));
+        fechaDT.set_Mes(1 + (i % 12));
+        fechaDT.set_Anio(1960 + (i % 15));
+        dt.set_fechanacimiento(fechaDT);
+
+        dt.set_idclub(i + 1);
+        dt.set_activo(true);
+        archivoEntrenadores.grabarEnDisco(dt);
 
         for (int j = 0; j < 12; j++)
         {
@@ -802,8 +849,8 @@ void cargarDatosDePrueba()
     archivoPartidos.generarFixtureTorneo();
 
     cout << "Datos de prueba cargados correctamente." << endl;
-    cout << "Clubes cargados: 16" << endl;
-    cout << "Jugadores cargados: 192" << endl;
+    cout << "Clubes cargados: 20 (16 de Primera, 4 de Segunda)" << endl;
+    cout << "Jugadores cargados: 240" << endl;
     cout << "Fixture generado: 120 partidos" << endl;
     cout << "Ahora podes simular jornadas." << endl;
 }

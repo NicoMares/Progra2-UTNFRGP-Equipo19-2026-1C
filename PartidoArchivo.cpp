@@ -389,16 +389,38 @@ void PartidoArchivo::simularSiguienteJornada()
                 archivoClub.modificarEnDisco(clubVisitante, posVisitante);
 
                 std::cout << " -> " << clubLocal.get_nombre() << " " << golesL
-                          << " - " << golesV << " " << clubVisitante.get_nombre() << " [OK]" << std::endl;
+                          << " - " << golesV << " " << clubVisitante.get_nombre() << std::endl;
             }
         }
     }
     std::cout << "=======================================================" << std::endl;
-    std::cout << "[OK] Jornada " << jornadaAIntervenir << " procesada con exito." << std::endl;
+    std::cout << "Jornada " << jornadaAIntervenir << " procesada con exito." << std::endl;
 
     if (obtenerSiguienteJornadaAJugarse() == -1)
     {
         aplicarResultadosFinales();
+    }
+}
+
+/* Simula todas las jornadas que falten de una sola vez (para testeo rapido).
+   (p. ej. la validacion la bloqueo porque un club no tiene 11 jugadores). */
+void PartidoArchivo::simularTorneoCompleto()
+{
+    int fecha = obtenerSiguienteJornadaAJugarse();
+
+    if (fecha == -1) {
+        std::cout << "\n[!] El torneo ya finalizo. No hay jornadas para simular." << std::endl;
+        return;
+    }
+
+    while (fecha != -1) {
+        simularSiguienteJornada();
+
+        int siguiente = obtenerSiguienteJornadaAJugarse();
+        if (siguiente == fecha) {
+            break;
+        }
+        fecha = siguiente;
     }
 }
 
