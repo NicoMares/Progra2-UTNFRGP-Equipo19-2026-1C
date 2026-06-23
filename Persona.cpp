@@ -11,42 +11,38 @@ Persona::Persona() {
 }
 
 void Persona::cargar() {
-    char nombre[30];
-    char apellido[30];
+    char nombre[30], apellido[30];
     int dni;
-    Fecha fecha_nacimiento;
+    Fecha fecha;
 
-    bool nombreValido = false;
+    //Validación Nombre
     do {
         std::cout << "Ingrese nombre: ";
         std::cin >> nombre;
-        if (!soloLetras(nombre)) {
-            std::cout << "ERROR: Solo se permiten letras." << std::endl;
-        } else {
-            nombreValido = true;
-        }
-    } while (!nombreValido);
+    } while (!soloLetras(nombre));
     set_nombre(nombre);
 
-    bool apellidoValido = false;
+    //Validación Apellido
     do {
         std::cout << "Ingrese apellido: ";
         std::cin >> apellido;
-        if (!soloLetras(apellido)) {
-            std::cout << "ERROR: Solo se permiten letras." << std::endl;
-        } else {
-            apellidoValido = true;
-        }
-    } while (!apellidoValido);
+    } while (!soloLetras(apellido));
     set_apellido(apellido);
 
-    std::cout << "Ingrese DNI: ";
-    std::cin >> dni;
+    //Validación DNI (20M a 50M)
+    do {
+        std::cout << "Ingrese DNI (20.000.000 - 50.000.000): ";
+        std::cin >> dni;
+        if (dni < 20000000 || dni > 50000000) {
+            std::cout << "ERROR: El DNI debe estar entre 20M y 50M." << std::endl;
+        }
+    } while (dni < 20000000 || dni > 50000000);
     set_dni(dni);
 
+    //Fecha
     std::cout << "Ingrese fecha de nacimiento: " << std::endl;
-    fecha_nacimiento.cargar();
-    set_fechanacimiento(fecha_nacimiento);
+    fecha.cargar();
+    set_fechanacimiento(fecha);
 
     set_activo(true);
 }

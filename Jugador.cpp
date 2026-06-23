@@ -16,69 +16,46 @@ Jugador::Jugador() {
 }
 
 void Jugador::cargar() {
-    int idClub, numeroCamiseta, dni;
-    char posicion[30], nombre[30], apellido[30];
-    float valorMercado;
+    Persona::cargar();
+
 
     JugadorArchivo archivo;
     set_idjugador(archivo.obtenerProximoID());
     std::cout << "ID JUGADOR ASIGNADO: " << _IdJugador << std::endl;
 
-    //VALIDACIÓN DE CLUB
+    // Validación de Club
+    int idClub;
     std::cout << "Ingrese ID del club: ";
     std::cin >> idClub;
+
     ClubArchivo archClub;
     int pos = archClub.buscarPorID(idClub);
-    if (pos == -1) {
-        std::cout << "ERROR: El club no existe." << std::endl;
-        return;
-    }
-    Club clubAsociado = archClub.leerDeDisco(pos);
-    if (!clubAsociado.get_activo()) {
-        std::cout << "ERROR: El club está INACTIVO." << std::endl;
+
+
+    if (pos == -1 || !archClub.leerDeDisco(pos).get_activo()) {
+        std::cout << "ERROR: El club no es válido o no existe." << std::endl;
         return;
     }
     set_idclub(idClub);
 
-    std::cout << "Ingrese nombre: "; std::cin >> nombre; set_nombre(nombre);
-    std::cout << "Ingrese apellido: "; std::cin >> apellido; set_apellido(apellido);
 
-    //VALIDACIÓN DNI ÚNICO
-    JugadorArchivo archJ;
-    EntrenadorArchivo archE;
-    bool dniValido = false;
-    do {
-        std::cout << "Ingrese DNI: ";
-        std::cin >> dni;
+    int numeroCamiseta;
+    char posicion[30];
+    float valorMercado;
 
-        if (archJ.buscarDNI(dni) != -1 || archE.buscarDNI(dni) != -1) {
-            std::cout << "ERROR: El DNI ya está registrado en el sistema. Intente de nuevo." << std::endl;
-        } else {
-            set_dni(dni);
-            dniValido = true;
-        }
-    } while (!dniValido);
+    std::cout << "Ingrese número de camiseta: ";
+    std::cin >> numeroCamiseta;
+    set_numerocamiseta(numeroCamiseta);
 
-    // VALIDACIÓN DE FECHA (15-45 AÑOS)
-    Fecha f;
-    bool edadValida = false;
-    do {
-        std::cout << "Ingrese fecha de nacimiento: " << std::endl;
-        f.cargar();
+    std::cout << "Ingrese posición: ";
+    std::cin >> posicion;
+    set_posicion(posicion);
 
-        int edad = 2026 - f.get_Anio();
-        if (edad >= 15 && edad <= 45) {
-            edadValida = true;
-        } else {
-            std::cout << "ERROR: El jugador debe tener entre 15 y 45 años. Intente de nuevo.\n" << std::endl;
-        }
-    } while (!edadValida);
-    set_fechanacimiento(f);
+    std::cout << "Ingrese valor de mercado: ";
+    std::cin >> valorMercado;
+    set_valormercado(valorMercado);
+
     set_activo(true);
-
-    std::cout << "Ingrese número de camiseta: "; std::cin >> numeroCamiseta; set_numerocamiseta(numeroCamiseta);
-    std::cout << "Ingrese posición: "; std::cin >> posicion; set_posicion(posicion);
-    std::cout << "Ingrese valor de mercado: "; std::cin >> valorMercado; set_valormercado(valorMercado);
 }
 
 void Jugador::mostrar() {
