@@ -47,7 +47,15 @@ void Entrenador::mostrar() {
     Persona::mostrar();
 
     std::cout << "ID ENTRENADOR: " << _IdEntrenador << std::endl;
-    std::cout << "ID CLUB: " << _IdClub << std::endl;
+
+    ClubArchivo archivoClub;
+    int pos = archivoClub.buscarPorID(_IdClub);
+    if (pos != -1) {
+        Club club = archivoClub.leerDeDisco(pos);
+        std::cout << "CLUB: " << club.get_nombre() << std::endl;
+    } else {
+        std::cout << "CLUB: (no encontrado)" << std::endl;
+    }
 }
 
 
