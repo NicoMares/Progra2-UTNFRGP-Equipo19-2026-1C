@@ -548,15 +548,7 @@ void PartidoArchivo::listarTablaPosiciones()
         if (checkClub.get_division() == 1) {
             std::cout << "\n[!] PROCESANDO CIERRE DE TEMPORADA..." << std::endl;
 
-            // 1. CORONAR AL CAMPEÓN (Esto se hace siempre)
-            int idCampeon = tabla[0].getClub().get_idclub();
-            int posCamp = archClub.buscarPorID(idCampeon);
-            if (posCamp != -1) {
-                Club cCamp = archClub.leerDeDisco(posCamp);
-                cCamp.set_cantidadtrofeos(cCamp.get_cantidadtrofeos() + 1);
-                archClub.modificarEnDisco(cCamp, posCamp);
-                std::cout << "-> Se ha sumado 1 trofeo a " << cCamp.get_nombre() << " por salir CAMPEON." << std::endl;
-            }
+        
 
             // Contamos primero cuántos hay en Segunda
             int totalRegistros = archClub.contarRegistros();
@@ -574,18 +566,7 @@ void PartidoArchivo::listarTablaPosiciones()
             //
             if (contadorSegunda >= 3) {
 
-                //DESCENDER A LOS ULTIMOS 3
-                std::cout << "-> Procesando descensos a Segunda Division..." << std::endl;
-                for (int i = cantidadRegistros - 3; i < cantidadRegistros; i++) {
-                    int idDescendido = tabla[i].getClub().get_idclub();
-                    int pos = archClub.buscarPorID(idDescendido);
-                    if (pos != -1) {
-                        Club c = archClub.leerDeDisco(pos);
-                        c.set_cantidaddescensos(c.get_cantidaddescensos() + 1);
-                        c.set_division(2);
-                        archClub.modificarEnDisco(c, pos);
-                    }
-                }
+            
 
                 //ASCENDER A 3 RANDOM
                 std::cout << "\n=== NUEVOS ASCENDIDOS A PRIMERA DIVISION ===" << std::endl;
