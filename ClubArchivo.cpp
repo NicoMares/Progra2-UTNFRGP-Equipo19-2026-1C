@@ -297,15 +297,25 @@ void ClubArchivo::ModificarClub()
     else if (opcion == 4)
     {
         int trofeos;
-         std::cout << "Ingrese la nueva cantidad de trofeos: ";
-         std::cin >> trofeos;
+        std::cout << "Ingrese la nueva cantidad de trofeos: ";
+        std::cin >> trofeos;
+        if (trofeos < 0)
+        {
+            std::cout << "La cantidad de trofeos no puede ser negativa." << std::endl;
+            return;
+        }
         club.set_cantidadtrofeos(trofeos);
     }
     else if (opcion == 5)
     {
         int descensos;
-         std::cout << "Ingrese la nueva cantidad de descensos: ";
-         std::cin >> descensos;
+        std::cout << "Ingrese la nueva cantidad de descensos: ";
+        std::cin >> descensos;
+        if (descensos < 0)
+        {
+            std::cout << "La cantidad de descensos no puede ser negativa." << std::endl;
+            return;
+        }
         club.set_cantidaddescensos(descensos);
     }
     else
