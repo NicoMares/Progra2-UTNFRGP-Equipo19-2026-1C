@@ -62,7 +62,14 @@ void Jugador::mostrar() {
     Persona::mostrar();
 
     std::cout << "ID Jugador: " << _IdJugador << std::endl;
-    std::cout << "ID Club: " << _IdClub << std::endl;
+
+    ClubArchivo archClub;
+    int posClub = archClub.buscarPorID(_IdClub);
+    if (posClub != -1) {
+        std::cout << "Club: " << archClub.leerDeDisco(posClub).get_nombre() << std::endl;
+    } else {
+        std::cout << "Club: (desconocido)" << std::endl;
+    }
     std::cout << "Número de camiseta: " << _NumeroCamiseta << std::endl;
     std::cout << "Posición: " << _Posicion << std::endl;
     std::cout << "Valor de mercado: $" << (int)_ValorMercado << std::endl;
