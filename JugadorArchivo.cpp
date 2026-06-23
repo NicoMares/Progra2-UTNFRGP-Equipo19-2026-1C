@@ -143,21 +143,14 @@ void JugadorArchivo ::consultarPorPosicion() {
 }
 
 int JugadorArchivo::buscarDNI(int dni) {
-    int pos = 0;
-    Jugador j;
-    // Abrimos el archivo y recorremos registro por registro
-    FILE* p = fopen("jugadores.dat", "rb");
-    if (p == NULL) return -1;
+    int cantidad = contarRegistros();
 
-    while (fread(&j, sizeof(Jugador), 1, p)) {
-        if (j.get_dni() == dni) {
-            fclose(p);
-            return pos; // Devuelve la posición si lo encuentra
-        }
-        pos++;
+    for (int i = 0; i < cantidad; i++) {
+        Jugador jugador = leerDeDisco(i);
+        if (jugador.get_dni() == dni) return i;
     }
-    fclose(p);
-    return -1; // No se encontró
+
+    return -1;
 }
 
 void JugadorArchivo::listarPorDNI() {

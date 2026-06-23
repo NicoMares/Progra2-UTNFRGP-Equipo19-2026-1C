@@ -183,45 +183,34 @@ void ClubArchivo::eliminarDeDisco()
         }
 
 void ClubArchivo::listarActivos() {
-    Club aux;
-    // Abrimos en modo lectura binaria ("rb")
-    FILE *p = fopen("clubes.dat", "rb");
-
-    if (p == NULL) {
+    int cantidad = contarRegistros();
+    if (cantidad == 0) {
         std::cout << "No hay clubes cargados en el sistema." << std::endl;
         return;
     }
 
-    // Leemos registro por registro
-    while (fread(&aux, sizeof(Club), 1, p) == 1) {
+    for (int i = 0; i < cantidad; i++) {
+        Club aux = leerDeDisco(i);
         if (aux.get_activo()) {
             aux.mostrar();
-
-            // 👈 AGREGAMOS LA LLAMADA A LA RACHA AQUÍ
             aux.mostrarRacha();
-
             std::cout << "--------------------------------" << std::endl;
         }
     }
-
-    fclose(p);
 }
 
 void ClubArchivo::listar() {
-    Club aux;
-    FILE *p = fopen("clubes.dat", "rb");
-
-    if (p == NULL) {
+    int cantidad = contarRegistros();
+    if (cantidad == 0) {
         std::cout << "No hay clubes cargados en el sistema." << std::endl;
         return;
     }
 
-    while (fread(&aux, sizeof(Club), 1, p) == 1) {
+    for (int i = 0; i < cantidad; i++) {
+        Club aux = leerDeDisco(i);
         aux.mostrar();
         std::cout << "--------------------------------" << std::endl;
     }
-
-    fclose(p);
 }
 
 void ClubArchivo::sumarTrofeo(int idClub)

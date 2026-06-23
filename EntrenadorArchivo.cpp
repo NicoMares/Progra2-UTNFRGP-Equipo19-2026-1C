@@ -70,19 +70,13 @@ int EntrenadorArchivo::contarRegistros() {
 }
 
 int EntrenadorArchivo::buscarDNI(int dni) {
-    int pos = 0;
-    Entrenador e;
-    FILE* p = fopen("entrenadores.dat", "rb"); //
-    if (p == NULL) return -1;
+    int cantidad = contarRegistros();
 
-    while (fread(&e, sizeof(Entrenador), 1, p)) {
-        if (e.get_dni() == dni) {
-            fclose(p);
-            return pos;
-        }
-        pos++;
+    for (int i = 0; i < cantidad; i++) {
+        Entrenador entrenador = leerDisco(i);
+        if (entrenador.get_dni() == dni) return i;
     }
-    fclose(p);
+
     return -1;
 }
 
