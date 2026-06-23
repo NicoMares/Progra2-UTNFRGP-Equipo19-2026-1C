@@ -5,6 +5,8 @@
 
 #include "AccionArchivo.h"
 #include "JugadorArchivo.h"
+#include "ClubArchivo.h"
+#include "PartidoArchivo.h"
 
 /* IDS DE TIPO DE ACCION
    Antes se comparaba por texto con strcmp("Gol", "Roja", etc.).
@@ -415,6 +417,82 @@ void AccionArchivo::listarRendimientoJugadores()
     delete [] tabla;
 }
 
+void AccionArchivo::mostrarConDetalles(Accion accion)
+{
+    JugadorArchivo archivoJugadores;
+    ClubArchivo archivoClubes;
+    PartidoArchivo archivoPartidos;
+
+    int posJugador = archivoJugadores.buscarPorDNI(accion.get_dnijugador());
+    int posClub = archivoClubes.buscarPorID(accion.get_idclub());
+
+    Partido partido;
+    bool partidoEncontrado = false;
+    int cantPartidos = archivoPartidos.contarRegistros();
+    for (int i = 0; i < cantPartidos; i++)
+    {
+        Partido p = archivoPartidos.leerDeDisco(i);
+        if (p.get_idpartido() == accion.get_idpartido())
+        {
+            partido = p;
+            partidoEncontrado = true;
+            break;
+        }
+    }
+
+    std::cout << "ID TIPO ACCION: " << accion.get_idaccion() << std::endl;
+    std::cout << "TIPO DE ACCION: " << accion.get_tipoaccion() << std::endl;
+
+    if (partidoEncontrado)
+    {
+        int posLocal = archivoClubes.buscarPorID(partido.get_idclublocal());
+        int posVisitante = archivoClubes.buscarPorID(partido.get_idclubvisitante());
+        Club clubLocal = archivoClubes.leerDeDisco(posLocal);
+        Club clubVisitante = archivoClubes.leerDeDisco(posVisitante);
+        std::cout << "PARTIDO: " << clubLocal.get_nombre() << " vs " << clubVisitante.get_nombre() << std::endl;
+        std::cout << "JORNADA: " << partido.get_jornada() << std::endl;
+    }
+    else
+    {
+        std::cout << "PARTIDO: (ID " << accion.get_idpartido() << ")" << std::endl;
+    }
+
+    if (posJugador != -1)
+    {
+        Jugador jugador = archivoJugadores.leerDeDisco(posJugador);
+        std::cout << "JUGADOR: " << jugador.get_nombre() << " " << jugador.get_apellido() << std::endl;
+    }
+    else
+    {
+        std::cout << "JUGADOR: (DNI " << accion.get_dnijugador() << ")" << std::endl;
+    }
+
+    if (posClub != -1)
+    {
+        Club club = archivoClubes.leerDeDisco(posClub);
+        std::cout << "CLUB: " << club.get_nombre() << std::endl;
+    }
+    else
+    {
+        std::cout << "CLUB: (ID " << accion.get_idclub() << ")" << std::endl;
+    }
+
+    std::cout << "MINUTO: " << accion.get_minuto() << std::endl;
+    std::cout << "PUNTAJE: " << accion.get_puntaje() << std::endl;
+
+    std::cout << "POSITIVA: ";
+    if (accion.get_positiva())
+        std::cout << "SI" << std::endl;
+    else
+        std::cout << "NO" << std::endl;
+
+    std::cout << "ACTIVO: ";
+    if (accion.get_activo())
+        std::cout << "SI" << std::endl;
+    else
+        std::cout << "NO" << std::endl;
+}
+
 void AccionArchivo::listarActivos()
 {
     Accion accion;
@@ -425,7 +503,7 @@ void AccionArchivo::listarActivos()
         accion = leerDeDisco(pos);
         if (accion.get_activo() == true)
         {
-            accion.mostrar();
+            mostrarConDetalles(accion);
             std::cout << "--------------------------------" << std::endl;
             encontro = true;
         }
@@ -445,7 +523,7 @@ void AccionArchivo::listar()
     for (int pos = 0; pos < contarRegistros(); pos++)
     {
         accion = leerDeDisco(pos);
-        accion.mostrar();
+        mostrarConDetalles(accion);
         std::cout << "--------------------------------" << std::endl;
         encontro = true;
     }
@@ -470,7 +548,7 @@ void AccionArchivo::consultarPorJugador()
         accion = leerDeDisco(pos);
         if (accion.get_dnijugador() == dniBuscado && accion.get_activo() == true)
         {
-            accion.mostrar();
+            mostrarConDetalles(accion);
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
         }
@@ -496,7 +574,7 @@ void AccionArchivo::consultarPorPartido()
         accion = leerDeDisco(pos);
         if (accion.get_idpartido() == idPartidoBuscado && accion.get_activo() == true)
         {
-            accion.mostrar();
+            mostrarConDetalles(accion);
             std::cout << "-----------------------------" << std::endl;
             encontrado = true;
         }

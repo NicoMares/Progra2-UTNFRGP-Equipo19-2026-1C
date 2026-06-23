@@ -29,4 +29,5 @@ private:
     int calcularPuntaje(int idAccion, const char posicionJugador[]);
     int obtenerTipoAccionRandom();
     void configurarTipoAccion(Accion &accion, int idAccion);
+    void mostrarConDetalles(Accion accion);
 };
