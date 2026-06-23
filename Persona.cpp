@@ -2,6 +2,7 @@
 #include <cstring>
 #include "Persona.h"
 #include "utils.h"
+#include "ValidadorDNI.h"
 
 Persona::Persona() {
     strcpy(_Nombre, "");
@@ -15,28 +16,46 @@ void Persona::cargar() {
     int dni;
     Fecha fecha;
 
-    //Validación Nombre
+    //Validaciï¿½n Nombre
     do {
         std::cout << "Ingrese nombre: ";
         std::cin >> nombre;
     } while (!soloLetras(nombre));
     set_nombre(nombre);
 
-    //Validación Apellido
+    //Validaciï¿½n Apellido
     do {
         std::cout << "Ingrese apellido: ";
         std::cin >> apellido;
     } while (!soloLetras(apellido));
     set_apellido(apellido);
 
-    //Validación DNI (20M a 50M)
+    //Validaciï¿½n DNI (20M a 50M) + unicidad entre personas
+    bool dniValido;
     do {
+        dniValido = true;
         std::cout << "Ingrese DNI (20.000.000 - 50.000.000): ";
         std::cin >> dni;
         if (dni < 20000000 || dni > 50000000) {
             std::cout << "ERROR: El DNI debe estar entre 20M y 50M." << std::endl;
+            dniValido = false;
+        } else {
+            std::string nombreEncontrado, apellidoEncontrado, tipoEncontrado;
+            if (buscarDNIEnSistema(dni, nombreEncontrado, apellidoEncontrado, tipoEncontrado)) {
+                if (nombreEncontrado == nombre && apellidoEncontrado == apellido) {
+                    std::cout << "AVISO: El DNI " << dni << " ya pertenece a "
+                              << nombreEncontrado << " " << apellidoEncontrado
+                              << " (" << tipoEncontrado << "). Se permite registrar un nuevo rol." << std::endl;
+                } else {
+                    std::cout << "ERROR: El DNI " << dni << " ya esta registrado con: "
+                              << nombreEncontrado << " " << apellidoEncontrado
+                              << ", que es un " << tipoEncontrado
+                              << ". No puede registrarse otra persona con el mismo DNI." << std::endl;
+                    dniValido = false;
+                }
+            }
         }
-    } while (dni < 20000000 || dni > 50000000);
+    } while (!dniValido);
     set_dni(dni);
 
     //Fecha
