@@ -248,8 +248,18 @@ void ClubArchivo::ModificarClub()
 {
     ClubArchivo archivo;
     int idClub;
-    std::cout << "Ingrese el ID del club a modificar: ";
-    std:: cin >> idClub;
+    bool idValido = false;
+    do {
+        std::cout << "Ingrese el ID del club a modificar: ";
+        std::cin >> idClub;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     int pos = archivo.buscarPorID(idClub);
     if (pos == -1)
@@ -281,8 +291,18 @@ void ClubArchivo::ModificarClub()
      std::cout << "3. Fecha de fundación" <<  std::endl;
      std::cout << "4. Cantidad de trofeos" <<  std::endl;
      std::cout << "5. Cantidad de descensos" <<  std::endl;
-     std::cout << "Seleccioná el campo a modificar: ";
-     std::cin >> opcion;
+    bool opcionValida = false;
+    do {
+        std::cout << "Seleccioná el campo a modificar: ";
+        std::cin >> opcion;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            opcionValida = true;
+        }
+    } while (!opcionValida);
 
     if (opcion == 1)
     {
@@ -317,25 +337,39 @@ void ClubArchivo::ModificarClub()
     else if (opcion == 4)
     {
         int trofeos;
-        std::cout << "Ingrese la nueva cantidad de trofeos: ";
-        std::cin >> trofeos;
-        if (trofeos < 0)
-        {
-            std::cout << "La cantidad de trofeos no puede ser negativa." << std::endl;
-            return;
-        }
+        bool trofeosValido = false;
+        do {
+            std::cout << "Ingrese la nueva cantidad de trofeos: ";
+            std::cin >> trofeos;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else if (trofeos < 0) {
+                std::cout << "ERROR: La cantidad de trofeos no puede ser negativa." << std::endl;
+            } else {
+                trofeosValido = true;
+            }
+        } while (!trofeosValido);
         club.set_cantidadtrofeos(trofeos);
     }
     else if (opcion == 5)
     {
         int descensos;
-        std::cout << "Ingrese la nueva cantidad de descensos: ";
-        std::cin >> descensos;
-        if (descensos < 0)
-        {
-            std::cout << "La cantidad de descensos no puede ser negativa." << std::endl;
-            return;
-        }
+        bool descensosValido = false;
+        do {
+            std::cout << "Ingrese la nueva cantidad de descensos: ";
+            std::cin >> descensos;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else if (descensos < 0) {
+                std::cout << "ERROR: La cantidad de descensos no puede ser negativa." << std::endl;
+            } else {
+                descensosValido = true;
+            }
+        } while (!descensosValido);
         club.set_cantidaddescensos(descensos);
     }
     else
