@@ -262,6 +262,7 @@ void ClubArchivo::ModificarClub()
         return;
     }
 
+
     int opcion;
 
      std::cout << "1. Nombre" <<  std::endl;
@@ -275,9 +276,17 @@ void ClubArchivo::ModificarClub()
     if (opcion == 1)
     {
         char nombre[50];
-         std::cout << "Ingrese el nuevo nombre: ";
-         std::cin >> std::ws;
-         std::cin.getline(nombre, 50);
+        bool nombreValido = false;
+        do {
+            std::cout << "Ingrese el nuevo nombre: ";
+            std::cin >> std::ws;
+            std::cin.getline(nombre, 50);
+            if (!soloLetrasYNumeros(nombre)) {
+                std::cout << "ERROR: Solo se permiten letras y espacios." << std::endl;
+            } else {
+                nombreValido = true;
+            }
+        } while (!nombreValido);
         club.set_nombre(nombre);
     }
     else if (opcion == 2)

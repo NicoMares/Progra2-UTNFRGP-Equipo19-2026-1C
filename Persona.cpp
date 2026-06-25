@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <cstring>
 #include "Persona.h"
 #include "utils.h"
@@ -19,6 +20,8 @@ void Persona::cargar() {
     do {
         std::cout << "Ingrese nombre: ";
         std::cin >> nombre;
+        if (!soloLetras(nombre))
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
     } while (!soloLetras(nombre));
     set_nombre(nombre);
 
@@ -26,6 +29,8 @@ void Persona::cargar() {
     do {
         std::cout << "Ingrese apellido: ";
         std::cin >> apellido;
+        if (!soloLetras(apellido))
+            std::cout << "ERROR: Solo se permiten letras." << std::endl;
     } while (!soloLetras(apellido));
     set_apellido(apellido);
 
@@ -35,6 +40,13 @@ void Persona::cargar() {
         dniValido = true;
         std::cout << "Ingrese DNI (20.000.000 - 50.000.000): ";
         std::cin >> dni;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números en el DNI." << std::endl;
+            dniValido = false;
+            continue;
+        }
         if (dni < 20000000 || dni > 50000000) {
             std::cout << "ERROR: El DNI debe estar entre 20M y 50M." << std::endl;
             dniValido = false;
