@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -540,8 +541,18 @@ void AccionArchivo::consultarPorJugador()
     Accion accion;
     bool encontrado = false;
 
-    std::cout << "INGRESE DNI DEL JUGADOR: ";
-    std::cin >> dniBuscado;
+    bool dniValido = false;
+    do {
+        std::cout << "INGRESE DNI DEL JUGADOR: ";
+        std::cin >> dniBuscado;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números en el DNI." << std::endl;
+        } else {
+            dniValido = true;
+        }
+    } while (!dniValido);
 
     for (int pos = 0; pos < contarRegistros(); pos++)
     {
