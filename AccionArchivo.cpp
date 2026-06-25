@@ -577,8 +577,18 @@ void AccionArchivo::consultarPorPartido()
     Accion accion;
     bool encontrado = false;
 
-    std::cout << "INGRESE ID DEL PARTIDO: ";
-    std::cin >> idPartidoBuscado;
+    bool idValido = false;
+    do {
+        std::cout << "INGRESE ID DEL PARTIDO: ";
+        std::cin >> idPartidoBuscado;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     for (int pos = 0; pos < contarRegistros(); pos++)
     {
