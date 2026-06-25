@@ -161,8 +161,8 @@ break;
     archivo.listarActivos();
 
     std::cout << "\nPresioná Enter para volver al menú...";
-    std::cin.ignore(); 
-    std::cin.get();   
+    std::cin.ignore();
+    std::cin.get();
 }
 break;
         case 4:
@@ -179,7 +179,7 @@ break;
         case 5:
         {
             cout << "\n[Acción] Modificando Equipo... \n" << endl;
-            
+
             ClubArchivo archivo;
 
            archivo.ModificarClub();
@@ -334,7 +334,7 @@ void Menu::menuJugadores()
         {
         cout << "\n[Acción] Modificar Jugador... \n" << endl;
          cout<< "-------------------------------------------------------------"<<endl;
-         
+
          JugadorArchivo archivo;
          archivo.ModificarJugador();
          system("pause");
@@ -388,7 +388,7 @@ void Menu::menuEntrenadores()
 
         switch (op)
         {
-        
+
         case 1:
             {
             cout << "\n[Acción] Consulta por ID de Entrenador...\n" << endl;
@@ -399,7 +399,7 @@ void Menu::menuEntrenadores()
             archivo.mostrarDTPorID();
 
             system("pause");
-            
+
             }
             break;
         case 2:
@@ -429,7 +429,7 @@ void Menu::menuEntrenadores()
         case 4:
         {
             cout << "\n[Acción] Modificar Entrenador... \n" << endl;
-            
+
             EntrenadorArchivo Archivo;
             Archivo.modificarEntrenador();
             system("pause");
@@ -465,7 +465,6 @@ void Menu::menuPartidos() {
     do {
         system("cls");
 
-        // 👈 ESTO ES LO CRUCIAL: Se calcula en cada repetición del menú
         int proximaFecha = archivoPartidos.obtenerSiguienteJornadaAJugarse();
 
         cout << "========================================" << endl;
@@ -475,13 +474,11 @@ void Menu::menuPartidos() {
         cout << "2. Ver Partidos de una Jornada" << endl;
         cout << "3. Ver Todos los Partidos" << endl;
 
-        // El menú cambia visualmente solo según los datos reales del archivo binario
         if (proximaFecha != -1) {
-            cout << "4. Simular Jornada " << proximaFecha << endl; // Muestra "Simular Jornada 1", "Simular Jornada 2", etc.
+            cout << "4. Simular Jornada " << proximaFecha << endl;
         } else {
             cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
         }
-
         cout << "5. Simular Todo el Torneo" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
@@ -499,7 +496,6 @@ void Menu::menuPartidos() {
                 archivoPartidos.VerPartidos();
                 break;
             case 4:
-                // Llama a la función que simula todos los partidos de esa fecha juntos
                 archivoPartidos.simularSiguienteJornada();
                 break;
             case 5:
@@ -530,7 +526,6 @@ void Menu::menuAcciones()
         cout << "==========================================================" << endl;
         cout << "|                    GESTION DE ACCIONES                 |" << endl;
         cout << "==========================================================" << endl;
-        /* LAS ACCIONES SE GENERAN AL SIMULAR PARTIDOS */
         cout << "| 1. Consultar Acciones por Jugador                      |" << endl;
         cout << "| 2. Consultar Acciones por Partido                      |" << endl;
         cout << "| 3. Listar Acciones Activas                             |" << endl;
