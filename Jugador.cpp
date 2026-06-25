@@ -94,7 +94,7 @@ const char* Jugador::get_posicion() {
 float Jugador::get_valormercado() {
     return _ValorMercado;
 }
-/*cpnexion club*/
+
 void Jugador::set_idjugador(int idJugador) {
     _IdJugador = idJugador;
 }
@@ -102,7 +102,7 @@ void Jugador::set_idjugador(int idJugador) {
 void Jugador::set_idclub(int idClub) {
     _IdClub = idClub;
 }
-/*SIRVE O NO SIRVE ? */
+
 void Jugador::set_numerocamiseta(int numeroCamiseta) {
     _NumeroCamiseta = numeroCamiseta;
 }
@@ -110,7 +110,7 @@ void Jugador::set_numerocamiseta(int numeroCamiseta) {
 void Jugador::set_posicion(const char posicion[]) {
     strcpy(_Posicion, posicion);
 }
-/*SIRVE O NO SIRVE ? */
+
 void Jugador::set_valormercado(float valorMercado) {
     _ValorMercado = valorMercado;
 }

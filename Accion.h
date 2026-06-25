@@ -16,7 +16,7 @@ private:
 public:
     Accion();
 
-    void cargar();
+
     void mostrar();
 
     int get_idaccion();
