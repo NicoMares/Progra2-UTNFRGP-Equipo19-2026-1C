@@ -9,8 +9,6 @@ public:
     bool modificarEnDisco(Partido partido, int posicion);
     int contarRegistros();
 
-    int buscarPorID(int idPartido);
-    void mostrarPorID();
     void listarPorJornada(int jornadaBuscada);
     void generarFixtureTorneo();
     void VerJornada();
