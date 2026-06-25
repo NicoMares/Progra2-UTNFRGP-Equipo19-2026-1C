@@ -17,6 +17,7 @@ public:
     void simularTorneoCompleto();
     void listarTablaPosiciones();
     void listarRachasClubesOrdenadas();
+    void SuspenderPartido();
     int obtenerSiguienteJornadaAJugarse();
 
     int calcularGolesFavor(int idClub);

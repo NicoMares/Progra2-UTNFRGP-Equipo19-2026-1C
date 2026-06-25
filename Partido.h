@@ -10,6 +10,7 @@ private:
     int _golesVisitante;
     bool _jugado;
     bool _activo;
+    bool _suspendido;
 
 public:
     Partido();
@@ -23,6 +24,7 @@ public:
     int get_golesvisitante();
     bool get_jugado();
     bool get_activo();
+    bool get_suspendido();
 
     // Setters
     void set_idpartido(int id);
@@ -33,6 +35,7 @@ public:
     void set_golesvisitante(int golesV);
     void set_jugado(bool jugado);
     void set_activo(bool activo);
+    void set_suspendido(bool suspendido);
 
     // Métodos de interfaz corta
     void mostrar();

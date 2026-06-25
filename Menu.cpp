@@ -496,10 +496,12 @@ void Menu::menuPartidos() {
             cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
         }
         cout << "5. Simular Todo el Torneo" << endl;
+         cout <<"6. Suspender Partido" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
         cin >> opcion;
+       
         if (cin.fail()) {
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
@@ -522,7 +524,12 @@ void Menu::menuPartidos() {
             case 5:
                 archivoPartidos.simularTorneoCompleto();
                 break;
-            case 0:
+            
+            case 6:
+            archivoPartidos.SuspenderPartido();
+            break;
+            
+                case 0:
                 break;
             default:
                 cout << "Opción inválida." << endl;

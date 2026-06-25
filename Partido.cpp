@@ -10,6 +10,7 @@ Partido::Partido() {
     _golesVisitante = 0;
     _jugado = false;
     _activo = true;
+    _suspendido = false;
 }
 
 // Getters
@@ -21,6 +22,7 @@ int Partido::get_goleslocal() { return _golesLocal; }
 int Partido::get_golesvisitante() { return _golesVisitante; }
 bool Partido::get_jugado() { return _jugado; }
 bool Partido::get_activo() { return _activo; }
+bool Partido::get_suspendido() { return _suspendido; }
 
 // Setters
 void Partido::set_idpartido(int id) { _idPartido = id; }
@@ -31,6 +33,7 @@ void Partido::set_goleslocal(int golesL) { _golesLocal = golesL; }
 void Partido::set_golesvisitante(int golesV) { _golesVisitante = golesV; }
 void Partido::set_jugado(bool jugado) { _jugado = jugado; }
 void Partido::set_activo(bool activo) { _activo = activo; }
+void Partido::set_suspendido(bool suspendido) { _suspendido = suspendido; }
 
 void Partido::mostrar() {
     std::cout << " Partido ID: " << _idPartido << " | ";

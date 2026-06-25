@@ -152,6 +152,7 @@ void PartidoArchivo::listarPorJornada(int jornadaBuscada)
             std::cout << "Goles Local: " << partido.get_goleslocal() << std::endl;
             std::cout << "Goles Visitante: " << partido.get_golesvisitante() << std::endl;
             std::cout << "Jugado: " << (partido.get_jugado() ? "Si" : "No") << std::endl;
+            std::cout << "Suspendido: " << (partido.get_suspendido() ? "Si" : "No") << std::endl;
             std::cout << "------------------------" << std::endl;
         }
     }
@@ -681,5 +682,44 @@ void PartidoArchivo:: VerJornada(){
 
 }
 
+void PartidoArchivo::SuspenderPartido() {
+    
+    int idBuscado;
+    std::cout << "Ingrese el ID del partido a suspender: ";
+    std::cin >> idBuscado;
 
+    int cantidad = contarRegistros();
+    ClubArchivo archivoClub;
+
+    for (int i = 0; i < cantidad; i++) {
+        Partido partido = leerDeDisco(i);
+
+        if (partido.get_idpartido() == idBuscado) {
+            if (partido.get_suspendido()) {
+                std::cout << "El partido ya esta suspendido." << std::endl;
+                return;
+            }
+            if (partido.get_jugado()) {
+                std::cout << "No se puede suspender un partido ya jugado." << std::endl;
+                return;
+            }
+
+            int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+            int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
+
+            Club clubLocal = archivoClub.leerDeDisco(posLocal);
+            Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+            partido.set_suspendido(true);
+            modificarEnDisco(partido, i);
+
+            std::cout << "Partido " << clubLocal.get_nombre() << " vs " << clubVisitante.get_nombre() << " fue suspendido." << std::endl;
+            return;
+        }
+    }
+
+    std::cout << "No se encontro un partido con ID " << idBuscado << "." << std::endl;
+
+
+}
 
