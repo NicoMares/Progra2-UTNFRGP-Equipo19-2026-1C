@@ -1,6 +1,7 @@
 #include "EntrenadorArchivo.h"
 #include "Entrenador.h"
 #include <iostream>
+#include <limits>
 
 
 
@@ -284,8 +285,20 @@ void EntrenadorArchivo::modificarEntrenador()
     else if (opcion == 3)
     {
         int dni;
-        std:: cout << "Ingrese el nuevo DNI: ";
-        std:: cin >> dni;
+        bool dniValido = false;
+        do {
+            std::cout << "Ingrese el nuevo DNI (20.000.000 - 50.000.000): ";
+            std::cin >> dni;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números en el DNI." << std::endl;
+            } else if (dni < 20000000 || dni > 50000000) {
+                std::cout << "ERROR: El DNI debe estar entre 20M y 50M." << std::endl;
+            } else {
+                dniValido = true;
+            }
+        } while (!dniValido);
         entrenador.set_dni(dni);
     }
     else if (opcion == 4)
