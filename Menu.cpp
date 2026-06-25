@@ -495,10 +495,10 @@ void Menu::menuPartidos() {
         if (proximaFecha != -1) {
             cout << "6. Simular Jornada " << proximaFecha << endl;
         } else {
-            cout << "7. Simular Jornada (Torneo Finalizado)" << endl;
+            cout << "6. Simular Jornada (Torneo Finalizado)" << endl;
         }
-        cout << "8. Simular Todo el Torneo" << endl;
-         cout <<"9. Suspender Partido" << endl;
+        cout << "7. Simular Todo el Torneo" << endl;
+         cout <<"8. Suspender Partido" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
