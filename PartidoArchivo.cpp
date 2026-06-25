@@ -259,6 +259,62 @@ int PartidoArchivo::obtenerSiguienteJornadaAJugarse()
     return -1; // Solo si recorrió absolutamente TODO y todo está en true, devuelve -1
 }
 
+int PartidoArchivo::buscarPorID(int idPartido)
+{
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        Partido partido = leerDeDisco(i);
+        if (partido.get_idpartido() == idPartido)
+            return i;
+    }
+
+    return -1;
+}
+
+void PartidoArchivo ::mostrarPorID()
+{
+    int idBuscado;
+    std::cout << "Ingrese el ID del partido que desea consultar: ";
+    std::cin >> idBuscado;
+
+    PartidoArchivo archivo;
+    int pos = archivo.buscarPorID(idBuscado);
+
+    if (pos == -1)
+    {
+        std::cout << "No se encontró un partido con el ID: " << idBuscado << std::endl;
+        return;
+    }
+
+    Partido partidoTemp = archivo.leerDeDisco(pos);
+    if (!partidoTemp.get_activo())
+    {
+        std::cout << "No se encontró un partido activo con el ID: " << idBuscado << std::endl;
+        return;
+    }
+
+    ClubArchivo archivoClub;
+    Partido partido = leerDeDisco(pos);
+
+    int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+    int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
+
+    Club clubLocal = archivoClub.leerDeDisco(posLocal);
+    Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+    std::cout << "------------------------" << std::endl;
+    std::cout << "ID Partido: " << partido.get_idpartido() << std::endl;
+    std::cout << "Local: " << clubLocal.get_nombre() << std::endl;
+    std::cout << "Visitante: " << clubVisitante.get_nombre() << std::endl;
+    std::cout << "Goles Local: " << partido.get_goleslocal() << std::endl;
+    std::cout << "Goles Visitante: " << partido.get_golesvisitante() << std::endl;
+    std::cout << "Jugado: " << (partido.get_jugado() ? "Si" : "No") << std::endl;
+    std::cout << "Suspendido: " << (partido.get_suspendido() ? "Si" : "No") << std::endl;
+    std::cout << "------------------------" << std::endl;
+}
+
 void PartidoArchivo::VerPartidos()
 {
     system("cls");
