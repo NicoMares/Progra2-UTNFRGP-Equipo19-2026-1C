@@ -1,4 +1,4 @@
-#include "PartidoArchivo.h"
+﻿#include "PartidoArchivo.h"
 #include "AccionArchivo.h"
 #include "ClubArchivo.h"
 #include "Club.h"
@@ -723,3 +723,120 @@ void PartidoArchivo::SuspenderPartido() {
 
 }
 
+void PartidoArchivo::CargarPartido() {
+    int idLocal, idVisitante, jornada, golesL, golesV;
+
+    std::cout << "ID del club local: ";
+    std::cin >> idLocal;
+    std::cout << "ID del club visitante: ";
+    std::cin >> idVisitante;
+    std::cout << "Jornada (1-15): ";
+    std::cin >> jornada;
+    if (jornada < 1 || jornada > 15) {
+        std::cout << "Jornada invalida. Debe ser entre 1 y 15." << std::endl;
+        return;
+    }
+    std::cout << "Goles del local: ";
+    std::cin >> golesL;
+    std::cout << "Goles del visitante: ";
+    std::cin >> golesV;
+
+    ClubArchivo archivoClub;
+    int posLocal = archivoClub.buscarPorID(idLocal);
+    int posVisitante = archivoClub.buscarPorID(idVisitante);
+
+    if (posLocal == -1 || posVisitante == -1) {
+        std::cout << "Uno o ambos clubes no existen." << std::endl;
+        return;
+    }
+
+    Club clubLocal = archivoClub.leerDeDisco(posLocal);
+    Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+    Partido nuevo;
+    nuevo.set_idpartido(contarRegistros() + 1);
+    nuevo.set_idclublocal(idLocal);
+    nuevo.set_idclubvisitante(idVisitante);
+    nuevo.set_jornada(jornada);
+    nuevo.set_goleslocal(golesL);
+    nuevo.set_golesvisitante(golesV);
+    nuevo.set_jugado(true);
+    nuevo.set_activo(true);
+    nuevo.set_suspendido(false);
+    grabarEnDisco(nuevo);
+
+    if (golesL > golesV) {
+        clubLocal.set_racha(jornada, 1);
+        clubVisitante.set_racha(jornada, 3);
+    } else if (golesL < golesV) {
+        clubLocal.set_racha(jornada, 3);
+        clubVisitante.set_racha(jornada, 1);
+    } else {
+        clubLocal.set_racha(jornada, 2);
+        clubVisitante.set_racha(jornada, 2);
+    }
+
+    archivoClub.modificarEnDisco(clubLocal, posLocal);
+    archivoClub.modificarEnDisco(clubVisitante, posVisitante);
+
+    std::cout << "Partido " << clubLocal.get_nombre() << " " << golesL
+              << " - " << golesV << " " << clubVisitante.get_nombre()
+              << " cargado correctamente." << std::endl;
+}
+
+int PartidoArchivo::buscarPorID(int idPartido)
+{
+    int cantidad = contarRegistros();
+
+    for (int i = 0; i < cantidad; i++)
+    {
+        Partido partido = leerDeDisco(i);
+        if (partido.get_idpartido() == idPartido)
+            return i;
+    }
+
+    return -1;
+}
+
+void PartidoArchivo :: mostrarPorID(){
+    
+int idBuscado;
+    std::cout << "Ingrese el ID del partido que desea consultar: ";
+    std::cin >> idBuscado;
+
+    PartidoArchivo archivo;
+    int pos = archivo.buscarPorID(idBuscado);
+
+    if (pos == -1)
+    {
+        std::cout << "No se encontró un partido con el ID: " << idBuscado << std::endl;
+        return;
+    }
+
+    Partido partidoTemp = archivo.leerDeDisco(pos);
+    if (!partidoTemp.get_activo())
+    {
+        std::cout << "No se encontró un partido activo con el ID: " << idBuscado << std::endl;
+        return;
+    }
+
+    ClubArchivo archivoClub;
+    Partido partido = leerDeDisco(pos);
+
+    int posLocal = archivoClub.buscarPorID(partido.get_idclublocal());
+    int posVisitante = archivoClub.buscarPorID(partido.get_idclubvisitante());
+
+    Club clubLocal = archivoClub.leerDeDisco(posLocal);
+    Club clubVisitante = archivoClub.leerDeDisco(posVisitante);
+
+    std::cout << "------------------------" << std::endl;
+    std::cout << "ID Partido: " << partido.get_idpartido() << std::endl;
+    std::cout << "Local: " << clubLocal.get_nombre() << std::endl;
+    std::cout << "Visitante: " << clubVisitante.get_nombre() << std::endl;
+    std::cout << "Goles Local: " << partido.get_goleslocal() << std::endl;
+    std::cout << "Goles Visitante: " << partido.get_golesvisitante() << std::endl;
+    std::cout << "Jugado: " << (partido.get_jugado() ? "Si" : "No") << std::endl;
+    std::cout << "Suspendido: " << (partido.get_suspendido() ? "Si" : "No") << std::endl;
+    std::cout << "------------------------" << std::endl;
+
+}

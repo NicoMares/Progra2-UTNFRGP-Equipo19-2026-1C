@@ -18,12 +18,15 @@ public:
     void listarTablaPosiciones();
     void listarRachasClubesOrdenadas();
     void SuspenderPartido();
+    void CargarPartido();
+    void mostrarPorID();
     int obtenerSiguienteJornadaAJugarse();
 
     int calcularGolesFavor(int idClub);
     int calcularGolesContra(int idClub);
     int calcularDiferenciaGol(int idClub);
-
+    int buscarPorID(int idPartido);
+    
 private:
     void aplicarResultadosFinales();
     int cargarTabla(PosicionTabla filas[]);

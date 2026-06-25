@@ -487,16 +487,18 @@ void Menu::menuPartidos() {
         cout << "            MENU DE PARTIDOS            " << endl;
         cout << "========================================" << endl;
         cout << "1. Generar Fixture del Torneo" << endl;
-        cout << "2. Ver Partidos de una Jornada" << endl;
-        cout << "3. Ver Todos los Partidos" << endl;
+        cout << "2. Cargar Partido"<< endl;
+        cout << "3. Buscar Partido por ID" << endl;
+        cout << "4. Ver Partidos de una Jornada" << endl;
+        cout << "5. Ver Todos los Partidos" << endl;
 
         if (proximaFecha != -1) {
-            cout << "4. Simular Jornada " << proximaFecha << endl;
+            cout << "6. Simular Jornada " << proximaFecha << endl;
         } else {
-            cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
+            cout << "7. Simular Jornada (Torneo Finalizado)" << endl;
         }
-        cout << "5. Simular Todo el Torneo" << endl;
-         cout <<"6. Suspender Partido" << endl;
+        cout << "8. Simular Todo el Torneo" << endl;
+         cout <<"9. Suspender Partido" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
@@ -513,19 +515,27 @@ void Menu::menuPartidos() {
                 archivoPartidos.generarFixtureTorneo();
                 break;
             case 2:
+                archivoPartidos.CargarPartido();
+                break;
+                
+                case 3:
+
+            archivoPartidos.mostrarPorID();
+            break;
+            case 4:
                 archivoPartidos.VerJornada();
                 break;
-            case 3:
+            case 5:
                 archivoPartidos.VerPartidos();
                 break;
-            case 4:
+            case 6:
                 archivoPartidos.simularSiguienteJornada();
                 break;
-            case 5:
+            case 7:
                 archivoPartidos.simularTorneoCompleto();
                 break;
             
-            case 6:
+            case 8:
             archivoPartidos.SuspenderPartido();
             break;
             
