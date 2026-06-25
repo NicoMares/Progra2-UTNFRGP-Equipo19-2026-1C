@@ -1,5 +1,6 @@
 #include "Menu.h"
 #include <iostream>
+#include <limits>
 #include <cstdio>
 
 #include "Club.h"
@@ -119,6 +120,11 @@ void Menu::menuEquipos()
         cout << "=======================================" << endl;
         cout << "Ingresá una opción: " << endl;
         cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
 
         switch (op)
         {
@@ -235,6 +241,11 @@ void Menu::menuJugadores()
         cout << "==========================================================" << endl;
         cout << " Seleccioná una opción: ";
         cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
 
         switch (op)
         {
@@ -385,6 +396,11 @@ void Menu::menuEntrenadores()
         cout << "==========================================================" << endl;
         cout << " Seleccioná una opción: ";
         cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
 
         switch (op)
         {
@@ -484,6 +500,11 @@ void Menu::menuPartidos() {
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
         cin >> opcion;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            opcion = -1;
+        }
 
         switch (opcion) {
             case 1:
@@ -534,6 +555,11 @@ void Menu::menuAcciones()
         cout << "==========================================================" << endl;
         cout << "Selecciona una opcion: ";
         cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
 
         switch (op)
         {
@@ -620,6 +646,11 @@ void Menu::menuTabla()
         cout << "==========================================================" << endl;
         cout << "Selecciona una opcion: ";
         cin >> op;
+        if (cin.fail()) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
 
         switch (op)
         {
