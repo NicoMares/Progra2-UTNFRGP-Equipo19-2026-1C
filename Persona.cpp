@@ -2,7 +2,6 @@
 #include <cstring>
 #include "Persona.h"
 #include "utils.h"
-#include "ValidadorDNI.h"
 
 Persona::Persona() {
     strcpy(_Nombre, "");

@@ -73,8 +73,6 @@
 		</Unit>
 		<Unit filename="Utils.cpp" />
 		<Unit filename="utils.h" />
-		<Unit filename="ValidadorDNI.cpp" />
-		<Unit filename="ValidadorDNI.h" />
 		<Unit filename="PosicionTabla.cpp" />
 		<Unit filename="PosicionTabla.h" />
 		<Extensions>
