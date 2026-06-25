@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include "Fecha.h"
 #include <cstdlib>
 
@@ -53,11 +54,17 @@ void Fecha::cargar() {
         std::cout << "Mes: "; std::cin >> _Mes;
         std::cout << "Año: "; std::cin >> _Anio;
 
-        //Validación
+        if (std::cin.fail()) { /// detecta si se recibió una letra u otro carácter inválido.
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "\n¡ERROR! Solo se pueden ingresar números en la fecha." << std::endl;
+            std::cout << "Por favor, ingrese los datos nuevamente.\n" << std::endl;
+            continue; ///vuelve al inicio del loop sin errores
+        }
+
         if (esValida()) {
             esCorrecta = true;
         } else {
-
             std::cout << "\n¡ERROR EN LA CARGA DE DATOS! La fecha ingresada no es válida." << std::endl;
             std::cout << "Por favor, ingrese los datos nuevamente.\n" << std::endl;
         }
