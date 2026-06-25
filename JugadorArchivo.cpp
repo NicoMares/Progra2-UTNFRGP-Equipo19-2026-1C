@@ -374,8 +374,18 @@ void JugadorArchivo::ModificarJugador()
 {
     JugadorArchivo archivo;
     int idJugador;
-     std::cout << "Ingrese el ID del jugador a modificar: ";
-     std::cin >> idJugador;
+    bool idValido = false;
+    do {
+        std::cout << "Ingrese el ID del jugador a modificar: ";
+        std::cin >> idJugador;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     int pos = archivo.buscarPorID(idJugador);
     if (pos == -1)
@@ -409,8 +419,18 @@ void JugadorArchivo::ModificarJugador()
      std::cout << "6. Número de camiseta" <<  std::endl;
      std::cout << "7. Posición" <<  std::endl;
      std::cout << "8. Valor de mercado" <<  std::endl;
-     std::cout << "Seleccioná el campo a modificar: ";
-     std::cin >> opcion;
+    bool opcionValida = false;
+    do {
+        std::cout << "Seleccioná el campo a modificar: ";
+        std::cin >> opcion;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            opcionValida = true;
+        }
+    } while (!opcionValida);
 
     if (opcion == 1)
     {
@@ -457,15 +477,35 @@ void JugadorArchivo::ModificarJugador()
     else if (opcion == 5)
     {
         int idClub;
-         std::cout << "Ingrese el nuevo ID de club: ";
-         std::cin >> idClub;
+        bool idClubValido = false;
+        do {
+            std::cout << "Ingrese el nuevo ID de club: ";
+            std::cin >> idClub;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else {
+                idClubValido = true;
+            }
+        } while (!idClubValido);
         jugador.set_idclub(idClub);
     }
     else if (opcion == 6)
     {
         int camiseta;
-         std::cout << "Ingresá el nuevo número de camiseta: ";
-         std::cin >> camiseta;
+        bool camisetaValida = false;
+        do {
+            std::cout << "Ingresá el nuevo número de camiseta: ";
+            std::cin >> camiseta;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else {
+                camisetaValida = true;
+            }
+        } while (!camisetaValida);
         jugador.set_numerocamiseta(camiseta);
     }
     else if (opcion == 7)
@@ -479,8 +519,18 @@ void JugadorArchivo::ModificarJugador()
     else if (opcion == 8)
     {
         float valor;
-         std::cout << "Ingrese el nuevo valor de mercado: ";
-         std::cin >> valor;
+        bool valorValido = false;
+        do {
+            std::cout << "Ingrese el nuevo valor de mercado: ";
+            std::cin >> valor;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else {
+                valorValido = true;
+            }
+        } while (!valorValido);
         jugador.set_valormercado(valor);
     }
     else

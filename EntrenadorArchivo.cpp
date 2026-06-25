@@ -240,8 +240,18 @@ void EntrenadorArchivo::modificarEntrenador()
 {
     EntrenadorArchivo archivo;
     int idEntrenador;
-    std:: cout << "Ingrese el ID del entrenador a modificar: ";
-    std:: cin >> idEntrenador;
+    bool idValido = false;
+    do {
+        std::cout << "Ingrese el ID del entrenador a modificar: ";
+        std::cin >> idEntrenador;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     int pos = archivo.buscarPorID(idEntrenador);
     if (pos == -1)
@@ -272,8 +282,18 @@ void EntrenadorArchivo::modificarEntrenador()
     std:: cout << "3. DNI" <<  std::endl;
     std:: cout << "4. Fecha de nacimiento" <<  std::endl;
      std::cout << "5. Club" <<  std::endl;
-     std::cout << "Seleccioná el campo a modificar: ";
-     std::cin >> opcion;
+    bool opcionValida = false;
+    do {
+        std::cout << "Seleccioná el campo a modificar: ";
+        std::cin >> opcion;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            opcionValida = true;
+        }
+    } while (!opcionValida);
 
     if (opcion == 1)
     {
@@ -320,8 +340,18 @@ void EntrenadorArchivo::modificarEntrenador()
     else if (opcion == 5)
     {
         int idClub;
-         std::cout << "Ingrese el nuevo ID de club: ";
-        std:: cin >> idClub;
+        bool idClubValido = false;
+        do {
+            std::cout << "Ingrese el nuevo ID de club: ";
+            std::cin >> idClub;
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+            } else {
+                idClubValido = true;
+            }
+        } while (!idClubValido);
         entrenador.set_idclub(idClub);
     }
     else
