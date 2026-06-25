@@ -1,4 +1,5 @@
 #include <iostream>
+#include <limits>
 #include <cstring>
 #include <cstdio>
 #include "Club.h"
@@ -49,6 +50,13 @@ void Club::cargar()
     do {
         std::cout << "INGRESE DIVISION (1-Primera, 2-Segunda): ";
         std::cin >> div;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else if (div != 1 && div != 2) {
+            std::cout << "ERROR: Ingrese 1 para Primera o 2 para Segunda." << std::endl;
+        }
     } while (div != 1 && div != 2);
     set_division(div);
 
