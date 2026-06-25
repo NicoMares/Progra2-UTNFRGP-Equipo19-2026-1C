@@ -1,5 +1,6 @@
 #include "ClubArchivo.h"
 #include <iostream>
+#include <limits>
 
 #include <cstring>
 #include <cstdio>
@@ -138,8 +139,18 @@ void ClubArchivo::eliminarDeDisco()
 {
             
             int idBuscado;
-            std::cout << "Ingrese el ID del club que desea eliminar: ";
-            std::cin >> idBuscado;
+            bool idValido = false;
+            do {
+                std::cout << "Ingrese el ID del club que desea eliminar: ";
+                std::cin >> idBuscado;
+                if (std::cin.fail()) {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+                } else {
+                    idValido = true;
+                }
+            } while (!idValido);
 
             Club equipo;
             ClubArchivo archivo;

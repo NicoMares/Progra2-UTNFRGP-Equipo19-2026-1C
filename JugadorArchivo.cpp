@@ -318,9 +318,19 @@ Jugador JugadorArchivo::obtenerJugadorRandomPorClub(int idClub)
 
 void JugadorArchivo::EliminarJugador() {
  
- int idBuscado;
-    std::cout << "Ingrese el ID del jugador a eliminar: ";
-    std::cin >> idBuscado;
+    int idBuscado;
+    bool idValido = false;
+    do {
+        std::cout << "Ingrese el ID del jugador a eliminar: ";
+        std::cin >> idBuscado;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     JugadorArchivo ArchivoTemp;
     int pos = ArchivoTemp.buscarPorID(idBuscado);
