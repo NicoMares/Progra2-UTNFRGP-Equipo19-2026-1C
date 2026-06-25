@@ -97,8 +97,18 @@ int JugadorArchivo::obtenerProximoID() {
 
 void JugadorArchivo::ConsultarPorDNI() {
     int dniBuscado;
-    std::cout << "Ingrese el DNI del jugador que desea consultar: ";
-    std::cin >> dniBuscado;
+    bool dniValido = false;
+    do {
+        std::cout << "Ingrese el DNI del jugador que desea consultar: ";
+        std::cin >> dniBuscado;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números en el DNI." << std::endl;
+        } else {
+            dniValido = true;
+        }
+    } while (!dniValido);
 
     JugadorArchivo ArchivoTemp;
     int pos = ArchivoTemp.buscarPorDNI(dniBuscado);
@@ -118,7 +128,7 @@ void JugadorArchivo::ConsultarPorDNI() {
 
 void JugadorArchivo ::consultarPorPosicion() {
     char posicionBuscada[50];
-    std::cout << "Ingrese la posición del jugador que desea consultar: ";
+    std::cout << "Ingrese el Nombre de la posición del jugador que desea consultar: ";
     std::cin >> posicionBuscada;
 
    JugadorArchivo ArchivoTemp;

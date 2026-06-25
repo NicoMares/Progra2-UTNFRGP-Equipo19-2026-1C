@@ -119,9 +119,18 @@ int EntrenadorArchivo::obtenerProximoID() {
 
 void EntrenadorArchivo::mostrarDTPorID() {
     int idBuscado;
-
-    std::cout << "Ingrese el ID del entrenador a buscar: " << std::endl;
-    std::cin >> idBuscado;
+    bool idValido = false;
+    do {
+        std::cout << "Ingrese el ID del entrenador a buscar: ";
+        std::cin >> idBuscado;
+        if (std::cin.fail()) {
+            std::cin.clear();
+            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            std::cout << "ERROR: Solo se pueden ingresar números." << std::endl;
+        } else {
+            idValido = true;
+        }
+    } while (!idValido);
 
     EntrenadorArchivo archivo;
     int pos = archivo.buscarPorID(idBuscado);
