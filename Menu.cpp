@@ -496,7 +496,8 @@ void Menu::menuPartidos() {
             cout << "4. Simular Jornada (Torneo Finalizado)" << endl;
         }
         cout << "5. Simular Todo el Torneo" << endl;
-         cout <<"6. Suspender Partido" << endl;
+        cout << "6. Suspender Partido" << endl;
+        cout << "7. Buscar Partido por ID" << endl;
         cout << "0. Volver al Menu Principal" << endl;
         cout << "========================================" << endl;
         cout << "Ingresá una opción: ";
@@ -526,10 +527,19 @@ void Menu::menuPartidos() {
                 break;
             
             case 6:
-            archivoPartidos.SuspenderPartido();
-            break;
-            
-                case 0:
+                archivoPartidos.SuspenderPartido();
+                break;
+            case 7:
+            {
+                cout << "\n[Acción] Consulta por ID de Partido... \n"
+                     << endl;
+
+                PartidoArchivo archivo;
+
+                archivo.mostrarPorID();
+            }
+                break;
+            case 0:
                 break;
             default:
                 cout << "Opción inválida." << endl;
